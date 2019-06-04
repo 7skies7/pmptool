@@ -29,7 +29,8 @@ library.add(faEdit)
 library.add(faTrash)
 library.add(faPlusSquare)
 library.add(faUserCircle)
-
+// import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Toasted from 'vue-toasted';
 Vue.use(Toasted, 
 	{
@@ -43,6 +44,8 @@ Vue.use(Toasted,
 })
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -55,7 +58,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
+Vue.component('dropdown', require('./components/Dropdown.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

@@ -4,14 +4,18 @@
             <div :class="cardWidth">
                 <div class="card card-default shadow-sm border-0">
                     <div class="card-header">
-                            <img src="/svg/project.svg" class="header-svg"/>
-                            <span>Projects</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex flex-column">
-                            <div class="pb-10">
-                                <button class="btn btn-primary float-right" @click="showAddProgram">Add New</button>
+                        <div class="d-flex">
+                            <div class="flex-1">
+                                <img src="/svg/project.svg" class="header-svg"/>
+                                <span>Project</span>
                             </div>
+                            <div class="pb-11">
+                                <button class="btn btn-add float-right" @click="showAddProgram">Add New</button>
+                            </div>
+                        </div>
+                    </div>
+                <div class="card-body p-0">
+                        <div class="d-flex flex-column">
                             <div class="flex-1">
                                 <table class="table">
                                     <thead>

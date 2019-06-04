@@ -44,11 +44,13 @@ class ProgramController extends Controller
                                             'program_end_date' => 'required',
                                             'program_desc' => 'required',
                                         ]);
-
         
+        $attributes['created_by'] = auth()->user()->id;
+        $attributes['modified_by'] = auth()->user()->id;
+        $attributes['program_manager'] = auth()->user()->id;
         $attributes['program_start_date'] = Carbon::parse($attributes['program_start_date'])->format('Y-m-d');
         $attributes['program_end_date'] = Carbon::parse($attributes['program_end_date'])->format('Y-m-d');
-        // dd($attributes);
+        
         //store in database
         $program = auth()->user()->program()->create($attributes);
         //save in session

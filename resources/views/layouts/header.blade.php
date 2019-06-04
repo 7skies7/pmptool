@@ -1,7 +1,8 @@
 <nav class="navbar navbar-expand-md navbar-light navbar-laravel top-nav">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ url('/') }}">
-            {{ config('app.name', 'Laravel') }}
+            <!-- {{ config('app.name', 'Laravel') }} -->
+            <img src="/svg/cisco.jpg">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
@@ -40,25 +41,32 @@
                     @endif
 
                 @else
+                <span class="rounded-circle usercard">{{ Auth::user()->initials() }}</span>
+                <dropdown align="right" width="200px">
+                                    <template v-slot:trigger>
+                                        <button
+                                            class="usernameplate"
+                                            v-pre
+                                        >
+                                        {{ auth()->user()->first_name }}
+                                        </button>
+                                    </template>
 
+                                    <form id="logout-form" method="POST" action="/logout">
+                                        @csrf
+
+                                        <button type="submit" class="usernameplate dropdown-menu-link w-full text-left">Logout</button>
+                                    </form>
+                                </dropdown><!-- 
                     <li class="nav-item dropdown">
-                        <div class="d-flex flex-row">
-                            <span class="rounded-circle usercard">{{ Auth::user()->initials() }}</span>
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>{{ Auth::user()->name }} <span class="caret"></span>
-                            </a>
-                        </div>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                        </div>
-                    </li>
+                    <div style="display: flex">
+                        <span class="rounded-circle usercard">{{ Auth::user()->initials() }}</span>
+                        <b-dropdown text="{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}" class="usernameplate">
+                            <b-dropdown-item href="#" onclick="logout()">Logout</b-dropdown-item>
+                        </b-dropdown>
+                    </div>
+                    </li> -->
+                    
                 @endguest
             </ul>
         </div>
@@ -108,7 +116,14 @@
                 <router-link to='/users' class="nav-link"><font-awesome-icon icon="clock" ></font-awesome-icon>Users</router-link>
             </li>
         </div>
+        <div class="text-center main-menu-links"> 
+            <li class="nav-item ">
+                <router-link to='/company' class="nav-link"><font-awesome-icon icon="clock" ></font-awesome-icon>Organization</router-link>
+            </li>
+        </div>
+
     <!-- </div> -->
     <!-- </div> -->
 </nav>
 @endauth
+

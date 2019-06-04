@@ -26,6 +26,12 @@ body{
 .navbar-light .navbar-brand:hover {
     color:#fff;
 }
+.navbar-light .navbar-brand img{
+    margin-top: -15px;
+    margin-bottom: -15px;
+    width:75px;
+    height:50px;
+}
 .navbar-light .navbar-nav .nav-link{color:#fff}
 .is-white{background:#fff;}
 .primary-menu{padding:0px;}
@@ -54,18 +60,41 @@ body{
 .no-border{border:0;padding-bottom:2rem;}
 .main-menu-links{padding-right:3em}
 .main-menu-links svg{margin-right: 10px;}
-.btn{ border:2px solid transparent;font-weight:bold}
+//.btn{ border:2px solid transparent;font-weight:bold}
 .btn-primary:hover,.btn-danger:hover{
 	color:#fff!important;
 }
+.btn{
+    font-weight:400;
+    text-decoration: none;
+    border-radius: .5rem;
+    font-size: .875rem;
+    padding: .5rem 1.25rem;
+    color: #fff;
+    box-shadow: 0 2px 7px 0 #b0eaff;
+    border:2px solid transparent;
+    font-weight:bold;
+}
+
 .btn-primary{    
-	color: #4773E3!important;
+	box-shadow: unset;
+    padding: 0.375rem 0.75rem;
+    color: #4773E3!important;
     background-color: transparent; 
-    border-color: #4773E3!important}
+    border-color: #19BDF0!important
+}
 .btn-danger{ 
 	color: #e3342f!important;
 	background-color: transparent; 
 	border-color: #e3342f!important;
+}
+
+.btn-add{
+    background-color: #19BDF0;
+}
+.btn-sm{
+    box-shadow: unset;
+    padding: 0.375rem 0.75rem;
 }
 .card-header{
 	text-align: center;
@@ -73,7 +102,7 @@ body{
     font-size: 20px;
     text-transform: uppercase;
     padding: 25px;
-    color:#4773E3;
+    color:#19BDF0;
     background:#fff;
 }
 .no-link:after{
@@ -88,6 +117,9 @@ body{
 //padding
 .pb-10{
     padding-bottom:15px;
+}
+.p-0{
+    padding:0;
 }
 .p-none{
     padding:0;
@@ -157,4 +189,41 @@ body{
 }
 .task-card{
     background:#19BDF0;
+}
+.usernameplate , .usernameplate button:hover, .usernameplate button:visited{
+    background:transparent;
+    border:unset;
+    align-items: center;
+    display:flex;
+    padding: 10px
+}
+.show > .btn-secondary.dropdown-toggle{
+    background:transparent;
+    box-shadow:unset;
+    border:unset;
+}
+
+//dropdown menu
+.relative {
+    position: relative;
+}
+.absolute {
+    position: absolute;
+}
+.bg-card {
+    background-color: var(--card-background-color);
+}
+.py-2 {
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+} 
+.rounded {
+    border-radius: .25rem;
+
+}
+.shadow {
+    box-shadow: 0 0 5px 0 rgba(0,0,0,.08);
+}
+.mt-2{
+    margin-top: .5rem;
 }

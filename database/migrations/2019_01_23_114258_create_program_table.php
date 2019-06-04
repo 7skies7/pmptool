@@ -15,13 +15,18 @@ class CreateProgramTable extends Migration
     {
         Schema::create('program', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
             $table->string('program_name');
             $table->date('program_start_date');
             $table->date('program_end_date');
             $table->text('program_desc');
-            $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedInteger('program_manager')->nullable();
+            $table->unsignedInteger('created_by')->nullable();
+            $table->unsignedInteger('modified_by')->nullable();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('modified_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('program_manager')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'first_name', 'last_name', 'email', 'password', 'role_id', 'designation_id',
     ];
 
     /**
@@ -30,7 +30,12 @@ class User extends Authenticatable
 
     public function program()
     {
-        return $this->hasMany(Program::class);
+        return $this->hasMany(Program::class, 'created_by');
+    }
+
+    public function company()
+    {
+        return $this->belongsToMany(Company::class, 'company_manager');
     }
 
     /**
@@ -39,7 +44,8 @@ class User extends Authenticatable
      * @var array
      */
     public function initials(){
-        $words = explode(" ", $this->name );
+        $words[0] = $this->first_name;
+        $words[1] = $this->last_name;
         $initials = null;
         foreach ($words as $w) {
             $initials .= $w[0];

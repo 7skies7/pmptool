@@ -13,11 +13,11 @@ class Program extends Model
      * @var array
      */
     protected $fillable = [
-        'program_name', 'program_start_date', 'program_end_date', 'program_desc','user_id'
+        'program_name', 'program_start_date', 'program_end_date', 'program_desc','created_by','created_at','modified_at','modified_by','program_manager'
     ];
 
 	public function user()
 	{
-		return $this->belongsTo(User::class)->select(['id','name']);
+		return $this->belongsTo(User::class)->select(['id','first_name']);
 	}
 }

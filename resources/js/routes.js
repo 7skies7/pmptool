@@ -20,7 +20,11 @@ var routes = [
 	{
 		path: '/tasks',
 		component: require('./views/Tasks/index').default		
-	}
+	},
+	{
+		path: '/company',
+		component: require('./views/Company/index').default		
+	},
 
 	// {
 	// 	path: '/login',
