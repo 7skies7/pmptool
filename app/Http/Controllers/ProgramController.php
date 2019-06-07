@@ -17,7 +17,7 @@ class ProgramController extends Controller
     public function index()
     {
         // return Program::with('user')->latest()->get();
-        return auth()->user()->program;
+        return Program::with('user')->latest()->get();
     }
 
     /**
@@ -47,23 +47,26 @@ class ProgramController extends Controller
         
         $attributes['created_by'] = auth()->user()->id;
         $attributes['modified_by'] = auth()->user()->id;
-        $attributes['program_manager'] = auth()->user()->id;
         $attributes['program_start_date'] = Carbon::parse($attributes['program_start_date'])->format('Y-m-d');
         $attributes['program_end_date'] = Carbon::parse($attributes['program_end_date'])->format('Y-m-d');
+        $managers = request('program_manager');
+        $attributes['program_manager'] = implode(', ', array_map(function ($manager) {
+            return $manager['id'];
+        }, $managers));
         
         //store in database
-        $program = auth()->user()->program()->create($attributes);
+        $program = Program::create($attributes);
         //save in session
-        return $program->load('user');
+        return $program;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Status  $status
+     * @param  \App\Program  $Program
      * @return \Illuminate\Http\Response
      */
-    public function show(Status $status)
+    public function show(Program $Program)
     {
         //
     }
@@ -71,33 +74,56 @@ class ProgramController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Status  $status
+     * @param  \App\Program  $Program
      * @return \Illuminate\Http\Response
      */
-    public function edit(Status $status)
+    public function edit($id)
     {
         //
+        $program = Program::with('user')->find($id);
+        return json_encode($program);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Status  $status
+     * @param  \App\  $Program
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Status $status)
+    public function update(Request $request, $id)
     {
-        //
+        //validate
+        $attributes = request()->validate(['program_name'=> 'required', 
+                                            'program_start_date' => 'required',
+                                            'program_end_date' => 'required',
+                                            'program_desc' => 'required',
+                                            'program_manager' => 'required',
+                                        ]);
+
+        $attributes['program_start_date'] = Carbon::parse($attributes['program_start_date'])->format('Y-m-d');
+        $attributes['program_end_date'] = Carbon::parse($attributes['program_end_date'])->format('Y-m-d');
+        $managers = request('program_manager');
+
+        $attributes['program_manager'] = implode(', ', array_map(function ($manager) {
+            return $manager['id'];
+        }, $managers));
+        
+        $attributes['modified_by'] = auth()->user()->id;
+            
+        //store in database
+        $program = Program::where('id', $id)->update($attributes);
+        //save in session
+        return $program;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Status  $status
+     * @param  \App\Program  $Program
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Status $status)
+    public function destroy(Program $Program)
     {
         //
     }

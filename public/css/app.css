@@ -10790,6 +10790,7 @@ body {
 .btn-group-sm > .btn {
   box-shadow: unset;
   padding: 0.375rem 0.75rem;
+  margin-right: 5px;
 }
 
 .card-header {
@@ -10808,6 +10809,10 @@ body {
 
 .flex-1 {
   flex: 1;
+}
+
+.flex-1 span {
+  float: right;
 }
 
 .pb-10 {
@@ -10943,5 +10948,13 @@ body {
 
 .mt-2 {
   margin-top: 0.5rem;
+}
+
+.tdaction {
+  padding: 7px 24px !important;
+}
+
+.removeCardPadding {
+  padding: 0px !important;
 }
 

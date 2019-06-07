@@ -17,7 +17,7 @@ class Program extends Model
     ];
 
 	public function user()
-	{
-		return $this->belongsTo(User::class)->select(['id','first_name']);
-	}
+    {
+        return $this->hasMany(User::class, 'id','program_manager')->select(['id','first_name','last_name']);
+    }
 }

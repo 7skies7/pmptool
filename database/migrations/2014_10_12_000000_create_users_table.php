@@ -25,12 +25,12 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->unsignedInteger('created_by');
             $table->unsignedInteger('modified_by');
+            $table->unsignedInteger('deleted_by')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
-            // $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
-            // $table->foreign('modified_by')->references('id')->on('users')->onDelete('cascade');
-            // $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+            $table->timestamp('deleted_at')->nullable();
             // $table->foreign('designation_id')->references('id')->on('designations')->onDelete('cascade');
+            
         });
     }
 

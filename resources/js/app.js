@@ -31,6 +31,17 @@ library.add(faPlusSquare)
 library.add(faUserCircle)
 // import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import NProgress from 'nprogress';
+import '../../node_modules/nprogress/nprogress.css'
+
+//Vuetify plugin
+import Vuetify from 'vuetify'
+Vue.use(Vuetify)
+import 'vuetify/dist/vuetify.min.css' 
+//Vuetify plugin end
+
+
+
 import Toasted from 'vue-toasted';
 Vue.use(Toasted, 
 	{
@@ -64,7 +75,16 @@ Vue.component('dropdown', require('./components/Dropdown.vue').default);
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+router.beforeResolve((to, from, next) => {
+  if (to.name) {
+      NProgress.start()
+  }
+  next()
+})
 
+router.afterEach((to, from) => {
+  NProgress.done()
+})
 const app = new Vue({
     el: '#app',
     router

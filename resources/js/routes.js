@@ -7,7 +7,7 @@ var routes = [
 	},
 	{
 		path: '/program',
-		component: require('./views/Program').default
+		component: require('./views/Program/index').default
 	},
 	{
 		path: '/project',
@@ -24,6 +24,10 @@ var routes = [
 	{
 		path: '/company',
 		component: require('./views/Company/index').default		
+	},
+	{
+		path: '/acl',
+		component: require('./views/Acl/index').default		
 	},
 
 	// {

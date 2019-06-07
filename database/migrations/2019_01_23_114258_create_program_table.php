@@ -22,10 +22,13 @@ class CreateProgramTable extends Migration
             $table->unsignedInteger('program_manager')->nullable();
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('modified_by')->nullable();
+            $table->unsignedInteger('deleted_by')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('modified_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('deleted_by')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('program_manager')->references('id')->on('users')->onDelete('cascade');
         });
     }

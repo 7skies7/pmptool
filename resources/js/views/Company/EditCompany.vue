@@ -2,9 +2,8 @@
     <div class="col-md-6">
         <div class="card card-default shadow-sm">
             <div class="card-header">Edit Company</div>
-
             <div class="card-body">
-                <form @submit.prevent="onSubmit" @keydown="form.errors.clear()">
+                <form @submit.prevent="onUpdate" @keydown="form.errors.clear()">
                     <!-- <input type="hidden" > -->
 
                     <div class="form-group row">
@@ -50,10 +49,11 @@
                     <div class="hr-line-dashed"></div>
                     <div class="form-group row mb-0">
                         <div class="col-md-8 offset-md-4">
-                            <button type="submit" class="btn btn-primary" :disabled="form.errors.any()">
+                            <v-progress-circular indeterminate v-show="isLoading" color="primary"></v-progress-circular>
+                            <button v-show="!isLoading" type="submit" class="btn btn-primary" :disabled="form.errors.any()" >
                                 Save
                             </button>
-                            <button type="button" class="btn btn-primary" @click="closeAddForm">
+                            <button v-show="!isLoading" type="button" class="btn btn-primary" @click="closeEditForm">
                                 Close
                             </button>
                         </div>
@@ -62,15 +62,20 @@
             </div>
         </div>
     </div>
+    
 </template>
 
 <script>
     import Datepicker from 'vuejs-datepicker';
     import moment from 'moment';
     import Multiselect from 'vue-multiselect';
+    // Import component
+    import Loading from 'vue-loading-overlay';
+    // Import stylesheet
+    import 'vue-loading-overlay/dist/vue-loading.css';
     export default {
         components: {
-            Datepicker,Multiselect
+            Datepicker,Multiselect,Loading
         },
         props: ['companyid'],
         data() {
@@ -80,41 +85,35 @@
                     company_desc: '',
                     company_manager: '',
                 }),
-                options: []
+                options: [],
+                isLoading: false,
+                fullPage: true
             }
         },
         created() {
             axios.get('/company/getResources').then((resources) => {
                         
                         this.options = resources.data;
-                        console.log(this.options);
-                        axios.get('/company/edit/'+this.companyid).then((response) => {
-                                         
-                            this.form.company_name = response.data[0].company_name;
-                            this.form.company_desc = response.data[0].company_desc;
-                            this.form.company_manager = [{id:response.data[0].user[0].id, name:response.data[0].user[0].first_name+ " " + response.data[0].user[0].last_name}];
+                        axios.get('/company/edit/'+this.companyid).then((response) => {             
+                            this.form.company_name = response.data.company_name;
+                            this.form.company_desc = response.data.company_desc;
+                            this.form.company_manager = [{id:response.data.user[0].id, name:response.data.user[0].first_name+ " " + response.data.user[0].last_name}];
+                            this.isLoading = false;
                         });    
                 });
         },
         methods: {
-            onSubmit() {
-                this.form.post('/company/update/')
-               .then(company => this.$emit('completed', company));
+            onUpdate() {
+                this.form.post('/company/update/'+this.companyid)
+               .then(companies => this.$emit('updatecompleted', companies));
             },                                                  
-            closeAddForm() {
-                this.$emit('closeAddForm');
+            closeEditForm() {
+                this.$emit('closeEditForm');
             }
         },
         mounted() {
-            // $.ajax({
-            //     url:"/company/getResources",
-            //     method:"GET",
-            //     dataType: "JSON",
-            //     success: results => this.options = results
-            // });
-
-
-            console.log(this.form);
+            this.isLoading = true;
+            // console.log("this is edit company comp");
         }
     }
 </script>

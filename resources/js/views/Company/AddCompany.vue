@@ -39,7 +39,7 @@
                             <multiselect v-model="form.company_manager" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select Manager" label="name" track-by="id" :preselect-first="false" >
                                 <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
                             </multiselect>
-                            <h5><b-badge pill variant="info" v-for="manager in form.company_manager">{{ manager.name }} </b-badge></h5>
+                            <h5><b-badge pill variant="info" v-for="manager in form.company_manager" v-bind:key="manager.id">{{ manager.name }} </b-badge></h5>
                             <!-- @if ($errors->has('program_name')) -->
                                 <span class="invalid-feedback" role="alert">
                                     <!-- <strong>{{ $errors->first('program_name') }}</strong> -->
@@ -72,6 +72,7 @@
         components: {
             Datepicker,Multiselect
         },
+        props: ['companyid'],
         data() {
             return {
                 form: new Form({
@@ -92,6 +93,7 @@
             }
         },
         mounted() {
+            // console.log('this is add company comp');
             $.ajax({
                 url:"/company/getResources",
                 method:"GET",

@@ -18,12 +18,16 @@ class CreateCompaniesTable extends Migration
             $table->string('company_name');
             $table->text('company_desc');
             $table->unsignedInteger('company_manager');
+            $table->integer('is_deleted')->default(0);
             $table->unsignedInteger('created_by');
             $table->unsignedInteger('modified_by');
+            $table->unsignedInteger('deleted_by')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('modified_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('deleted_by')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('company_manager')->references('id')->on('users')->onDelete('cascade');
         });
     }

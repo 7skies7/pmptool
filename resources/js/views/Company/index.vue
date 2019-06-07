@@ -17,39 +17,17 @@
                 <div class="card-body p-0">
                         <div class="d-flex flex-column">
                             <div class="flex-1">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Description</th>
-                                            <th scope="col">Managers</th>
-                                            <!-- <th scope="col">Description</th> -->
-                                            <th scope="col">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="company in companies">
-                                            <td>{{ company.company_name }}</td>
-                                            <td>{{ company.company_desc }}</td>
-                                            <td>{{ company.company_manager }}</td>
-                                            <!-- <td>{{ program.program_desc }}</td> -->
-                                            <td>
-                                                <button class="btn btn-sm btn-primary" @click="showEditCompany(company.id)"><font-awesome-icon icon="edit" ></font-awesome-icon></button>
-                                                <!-- <button class="btn btn-sm btn-primary"><font-awesome-icon icon="edit" ></font-awesome-icon></button> -->
-                                                <button class="btn btn-sm btn-danger"><font-awesome-icon icon="trash" ></font-awesome-icon></button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <grid :key="latestCompanies" @showeditcompany="showEditCompany" @deletecompany="deleteCompany"></grid>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <add-company v-if="addCompany" @completed="addNewCompany" @closeAddForm="closeForm"></add-company>
-            <edit-company v-if="editCompany" :companyid="companyid" @completed="editCompany" @closeEditForm="closeForm"></edit-company>
+            <add-company v-if="addCompany" :key="latestCompanies" @completed="addNewCompany" @closeAddForm="closeForm"></add-company>
+            <edit-company v-if="editCompany" :key="latestCompanies" :companyid="companyid" @updatecompleted="updateCompany" @closeEditForm="closeForm"></edit-company>
         </div>
     </div>
+    
 </template>
 
 <script>
@@ -57,10 +35,11 @@
     import moment from 'moment';
     import AddCompany from './AddCompany.vue';
     import EditCompany from './EditCompany.vue';
+    import Grid from './Grid.vue';
     import Company from '../../models/Company';
     export default {
         components: {
-            Datepicker,AddCompany,EditCompany
+            Datepicker,AddCompany,EditCompany,Grid
         },
         data() {
             return{
@@ -68,11 +47,13 @@
                 editCompany: false,
                 companyid:'',
                 companies: [],
-                cardWidth: 'col-md-10'
+                cardWidth: 'col-md-10',
+                form: new Form(),
+                latestCompanies: 0
             }
         },
         created() {
-            Company.all(companies => this.companies = companies)            
+            // Company.all(companies => this.companies = companies)            
                 // .then(({data}) => this.statuses = data)
         },
         methods: {
@@ -82,14 +63,30 @@
                 this.cardWidth = 'col-md-6';
            },
            showEditCompany(id) {
+                this.editCompany = false;
                 this.companyid = id;
                 this.addCompany = false;
                 this.editCompany = true;
                 this.cardWidth = 'col-md-6';
            },
-           addNewCompany(program) {
-                this.companies.unshift(program);
-                this.$toasted.success('Congratulations! Your new organizaions has been added successfully.')
+           addNewCompany(company) {
+                // this.companies.unshift(company);
+                this.$toasted.success('Congratulations! Your new organization has been added successfully.');
+                this.latestCompanies += 1;
+                this.closeForm();
+            },
+            updateCompany(companies) {
+                this.companies = companies;
+                this.$toasted.success('Congratulations! Organization has been updated successfully.');
+                this.latestCompanies += 1;
+                this.closeForm();
+            },
+            deleteCompany(companyid) {
+                this.form.post('/company/delete/'+companyid)
+                    .then(company => this.latestCompanies += 1);
+                    this.$toasted.success('Congratulations! Organization has been deleted successfully.');  
+                    this.latestCompanies += 1;
+
             },
             closeForm() {
                 this.addCompany = false;

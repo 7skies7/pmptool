@@ -16,7 +16,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        return Company::latest()->get();
+        return Company::with('user')->where('is_deleted',0)->latest()->get();
     }
 
     /**
@@ -75,8 +75,7 @@ class CompanyController extends Controller
      */
     public function edit($id)
     {
-        $company = Company::with('user')->get();
-        
+        $company = Company::with('user')->find($id);
         return json_encode($company);
     }
 
@@ -87,9 +86,24 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Company $company)
+    public function update(Request $request, $id)
     {
-        //
+        //validate
+        $attributes = request()->validate(['company_name'=> 'required', 
+                                            'company_desc' => 'required',
+                                            'company_manager' => 'required',
+                                        ]);
+        $managers = request('company_manager');
+        $attributes['company_manager'] = implode(', ', array_map(function ($manager) {
+            return $manager['id'];
+        }, $managers));
+        
+        $attributes['modified_by'] = auth()->user()->id;
+            
+        //store in database
+        $company = Company::where('id', $id)->update($attributes);
+        //save in session
+        return $company;
     }
 
     /**
@@ -98,8 +112,14 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Company $company)
+    public function destroy($companyid)
     {
-        //
+
+        $attributes['is_deleted'] = 1;
+        $attributes['deleted_by'] = auth()->user()->id;
+        $attributes['deleted_at'] = (new Carbon)->toDateTimeString();
+        
+        $company = Company::where('id', $companyid)->update($attributes);
+        return $company;   
     }
 }
