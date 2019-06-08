@@ -26,8 +26,8 @@
             <v-progress-linear v-show="isLoading" v-slot:progress color="blue" indeterminate></v-progress-linear>
             <template v-slot:items="props">
                 <td>{{ props.item.company_name }}</td>
-                <td class="text-xs-right">{{ props.item.company_desc }}</td>
-                <td class="text-xs-right">
+                <td>{{ props.item.company_desc }}</td>
+                <td>
                     <h5><b-badge pill variant="info">{{ props.item.user[0].first_name}} {{props.item.user[0].last_name }} </b-badge></h5>
                 </td>
                 <td class="justify-center layout px-0 tdaction" style="padding:7px 24px!important">

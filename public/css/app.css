@@ -10958,3 +10958,31 @@ body {
   padding: 0px !important;
 }
 
+.v-tabs__item:hover {
+  text-decoration: none !important;
+  color: #fff !important;
+}
+
+.primary-gradient {
+  color: #19BDF0;
+}
+
+.secondary-gradient {
+  color: #E64A6C;
+  text-align: center;
+}
+
+#acltable td,
+#acltable th {
+  vertical-align: middle !important;
+  text-align: center !important;
+}
+
+#acltable td div {
+  margin: 0 auto;
+}
+
+#acltable td .v-messages {
+  min-height: 0px !important;
+}
+

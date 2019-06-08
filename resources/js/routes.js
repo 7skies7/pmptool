@@ -27,7 +27,7 @@ var routes = [
 	},
 	{
 		path: '/acl',
-		component: require('./views/Acl/index').default		
+		component: require('./views/ACL/index').default		
 	},
 
 	// {

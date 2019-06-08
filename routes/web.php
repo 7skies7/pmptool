@@ -35,4 +35,4 @@ Route::get('/company/getResources', function(){
 	return $arr;
 });
 
-Route::get('/acl', 'AclController@index');
+Route::get('/roles', 'AclController@roles');
