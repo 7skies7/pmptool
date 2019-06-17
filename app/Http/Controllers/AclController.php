@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Role;
+use App\Module;
+use App\Action;
+use App\Acl;
+use DB;
 use App\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -17,114 +21,84 @@ class AclController extends Controller
     public function roles()
     {
         // return Program::with('user')->latest()->get();
-        return Role::select('role_title')->get();
+        return Role::select('id', 'role_title')->get();
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of all modules.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function modules()
     {
-        //
+        return Module::select('id','module_name')->get();
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Display a listing of all actions.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function actions()
     {
-        //validate
-        $attributes = request()->validate(['program_name'=> 'required', 
-                                            'program_start_date' => 'required',
-                                            'program_end_date' => 'required',
-                                            'program_desc' => 'required',
-                                        ]);
+        return Action::select('id','action_name')->get();
+    }
+
+    /**
+     * Fetach all modules and actions access list related to role
+     * @param $roleid
+     * @return \Illuminate\Http\Response
+     */
+    public function access($roleid)
+    {
+        return (new Acl)->getAccessData($roleid);
+    }
+
+    /**
+     * Update access for the specific role
+     * @param $roleid
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {
+        $isRoleAccessExist = Acl::where('module_id', request('module_id'))->where('action_id', request('action_id'))->where('role_id', request('role_id'))->get()->toArray();
         
-        $attributes['created_by'] = auth()->user()->id;
-        $attributes['modified_by'] = auth()->user()->id;
-        $attributes['program_start_date'] = Carbon::parse($attributes['program_start_date'])->format('Y-m-d');
-        $attributes['program_end_date'] = Carbon::parse($attributes['program_end_date'])->format('Y-m-d');
-        $managers = request('program_manager');
-        $attributes['program_manager'] = implode(', ', array_map(function ($manager) {
-            return $manager['id'];
-        }, $managers));
-        
-        //store in database
-        $program = Program::create($attributes);
-        //save in session
-        return $program;
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Program  $Program
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Program $Program)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Program  $Program
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-        $program = Program::with('user')->find($id);
-        return json_encode($program);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\  $Program
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //validate
-        $attributes = request()->validate(['program_name'=> 'required', 
-                                            'program_start_date' => 'required',
-                                            'program_end_date' => 'required',
-                                            'program_desc' => 'required',
-                                            'program_manager' => 'required',
-                                        ]);
-
-        $attributes['program_start_date'] = Carbon::parse($attributes['program_start_date'])->format('Y-m-d');
-        $attributes['program_end_date'] = Carbon::parse($attributes['program_end_date'])->format('Y-m-d');
-        $managers = request('program_manager');
-
-        $attributes['program_manager'] = implode(', ', array_map(function ($manager) {
-            return $manager['id'];
-        }, $managers));
-        
-        $attributes['modified_by'] = auth()->user()->id;
+        if(count($isRoleAccessExist) > 0)
+        {
+            $attributes['access_status'] = request('access_status');
             
-        //store in database
-        $program = Program::where('id', $id)->update($attributes);
-        //save in session
-        return $program;
+            Acl::where('id', $isRoleAccessExist[0]['id'])->update($attributes);
+        }
+        return (new Acl)->getAccessData(request('role_id'));
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Program  $Program
+     * Populate access for all roles
+     * @param $roleid
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Program $Program)
+    public function fakeaccess()
     {
-        //
+        $modules = Module::select('id')->get();
+        $actions = Action::select('id')->get();
+        $roles = Role::select('id')->get();
+
+        foreach($roles as $role) {
+            $attributes['role_id'] = $role->id;
+            foreach ($modules as $module) {
+                $attributes['module_id'] = $module->id;
+                foreach ($actions as $action) {
+                    $attributes['action_id'] = $action->id;
+                    $attributes['created_by'] = 1;
+                    $attributes['modified_by'] = 1;
+                    // dd($attributes);
+                    Acl::create($attributes);
+                    
+                }
+            }
+        }
+        dd('Access updated');
+        
     }
+    
 }

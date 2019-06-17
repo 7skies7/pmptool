@@ -41,32 +41,14 @@
                     @endif
 
                 @else
-                <span class="rounded-circle usercard">{{ Auth::user()->initials() }}</span>
-                <dropdown align="right" width="200px">
-                                    <template v-slot:trigger>
-                                        <button
-                                            class="usernameplate"
-                                            v-pre
-                                        >
-                                        {{ auth()->user()->first_name }}
-                                        </button>
-                                    </template>
+                
+                <usercard>  
+                    <form id="logout-form" method="POST" action="/logout">
+                        @csrf
 
-                                    <form id="logout-form" method="POST" action="/logout">
-                                        @csrf
-
-                                        <button type="submit" class="usernameplate dropdown-menu-link w-full text-left">Logout</button>
-                                    </form>
-                                </dropdown><!-- 
-                    <li class="nav-item dropdown">
-                    <div style="display: flex">
-                        <span class="rounded-circle usercard">{{ Auth::user()->initials() }}</span>
-                        <b-dropdown text="{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}" class="usernameplate">
-                            <b-dropdown-item href="#" onclick="logout()">Logout</b-dropdown-item>
-                        </b-dropdown>
-                    </div>
-                    </li> -->
-                    
+                        <button type="submit" class="btn btn-add ">Logout</button>
+                    </form>
+                </usercard>
                 @endguest
             </ul>
         </div>

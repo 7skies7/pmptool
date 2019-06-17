@@ -35,4 +35,13 @@ Route::get('/company/getResources', function(){
 	return $arr;
 });
 
-Route::get('/roles', 'AclController@roles');
+Route::get('/acl/roles', 'AclController@roles');
+Route::get('/acl/modules', 'AclController@modules');
+Route::get('/acl/actions', 'AclController@actions');
+Route::get('/acl/getaccess/{roleid}', 'AclController@access');
+Route::post('/acl/update', 'AclController@update');
+
+Route::get('/acl/fakeaccess', 'AclController@fakeaccess');
+Route::get('/acl/userdetails', function(){
+	return json_encode(auth()->user()->toArray());
+});
