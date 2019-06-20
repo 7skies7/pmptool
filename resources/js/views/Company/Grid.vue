@@ -31,8 +31,8 @@
                     <h5><b-badge pill variant="info">{{ props.item.user[0].first_name}} {{props.item.user[0].last_name }} </b-badge></h5>
                 </td>
                 <td class="justify-center layout px-0 tdaction" style="padding:7px 24px!important">
-                    <button class="btn btn-sm btn-primary" @click="showEditCompany(props.item.id)"><font-awesome-icon icon="edit" ></font-awesome-icon></button>
-                    <button class="btn btn-sm btn-danger" @click="deleteCompany(props.item.id)"><font-awesome-icon icon="trash" ></font-awesome-icon></button>
+                    <button v-if="isEditVisible" class="btn btn-sm btn-primary" @click="showEditCompany(props.item.id)"><font-awesome-icon icon="edit" ></font-awesome-icon></button>
+                    <button v-if="isDeleteVisible" class="btn btn-sm btn-danger" @click="deleteCompany(props.item.id)"><font-awesome-icon icon="trash" ></font-awesome-icon></button>
                 </td>
             </template>
             <template v-slot:no-results>
@@ -69,10 +69,15 @@
                         ],
                 companies: [],
                 isLoading: true,
+                isEditVisible: false,
+                isDeleteVisible: false,
             }
         },
         created() {
-            Company.all(companies => this.companies = companies) 
+            Company.all(companies => this.companies = companies)
+            Company.editaccess(editaccess => this.isEditVisible = editaccess); 
+            Company.deleteaccess(deleteaccess => this.isDeleteVisible = deleteaccess);                       
+
         },
         methods: {
             showEditCompany(id) {

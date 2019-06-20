@@ -93,11 +93,13 @@ class Form {
         return new Promise((resolve, reject) => {
             axios[requestType](url, this.data())
                 .then(response => {
+                    
                     this.onSuccess(response.data);
 
                     resolve(response.data);
                 })
                 .catch(error => {
+
                     this.onFail(error.response.data.errors);
 
                     reject(error.response.data.errors);
@@ -113,7 +115,8 @@ class Form {
      */
     onSuccess(data) {
     
-        this.reset();
+        //this.reset();
+        //this.form.errors = [];
     }
 
 
@@ -123,6 +126,7 @@ class Form {
      * @param {object} errors
      */
     onFail(errors) {
+        
         this.errors.record(errors);
     }
 }

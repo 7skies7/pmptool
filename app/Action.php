@@ -8,4 +8,6 @@ class Action extends Model
 {
     //
     protected $table = "actions";
+
+    protected $guarded = [];
 }

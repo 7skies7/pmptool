@@ -11498,3 +11498,11 @@ body {
   margin-bottom: 0px !important;
 }
 
+.invalid-feedback {
+  display: block !important;
+  color: #ff5252 !important;
+  font-size: 12px !important;
+  min-height: 12px !important;
+  font-weight: bold !important;
+}
+

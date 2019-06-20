@@ -10,7 +10,7 @@
                                 <span>Organizations</span>
                             </div>
                             <div class="pb-11">
-                                <button class="btn btn-add float-right" @click="showAddCompany">Add New</button>
+                                <button v-if="isAddVisible" class="btn btn-add float-right" @click="showAddCompany">Add New</button>
                             </div>
                         </div>
                     </div>
@@ -49,18 +49,23 @@
                 companies: [],
                 cardWidth: 'col-md-10',
                 form: new Form(),
-                latestCompanies: 0
+                latestCompanies: 0,
+                isAddVisible: false,
             }
         },
         created() {
-            // Company.all(companies => this.companies = companies)            
-                // .then(({data}) => this.statuses = data)
+            Company.addaccess(addaccess => this.isAddVisible = addaccess);            
         },
         methods: {
            showAddCompany() {
+                if(this.isAddVisible == false)
+                {
+                    window.location.href = "/403";
+                }
                 this.addCompany = true;
                 this.editCompany = false;
                 this.cardWidth = 'col-md-6';
+
            },
            showEditCompany(id) {
                 this.editCompany = false;

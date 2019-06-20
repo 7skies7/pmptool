@@ -6,6 +6,7 @@ use App\Program;
 use App\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Gate;
 
 class ProgramController extends Controller
 {
@@ -16,8 +17,13 @@ class ProgramController extends Controller
      */
     public function index()
     {
+        // Authorize user requests to view all resource
+        if(Gate::allows('View_Program') != true)
+        {
+            return abort('403');
+        }
         // return Program::with('user')->latest()->get();
-        return Program::with('user')->latest()->get();
+        return Program::with('user')->where('is_deleted',0)->latest()->get();
     }
 
     /**
@@ -38,6 +44,12 @@ class ProgramController extends Controller
      */
     public function store(Request $request)
     {
+        // Authorize user requests to store resource details
+        if(Gate::allows('Create_Program') != true)
+        {
+            return abort('403');
+        }
+
         //validate
         $attributes = request()->validate(['program_name'=> 'required', 
                                             'program_start_date' => 'required',
@@ -93,6 +105,12 @@ class ProgramController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Authorize user requests to update resource details
+        if(Gate::allows('Update_Program') != true)
+        {
+            return abort('403');
+        }
+
         //validate
         $attributes = request()->validate(['program_name'=> 'required', 
                                             'program_start_date' => 'required',
@@ -123,8 +141,20 @@ class ProgramController extends Controller
      * @param  \App\Program  $Program
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Program $Program)
+    public function destroy($programid)
     {
-        //
+        // Authorize user requests to delete resource
+        if(Gate::allows('Delete_Program') != true)
+        {
+            return abort('403');
+        }
+        
+        $attributes['is_deleted'] = 1;
+        $attributes['deleted_by'] = auth()->user()->id;
+        $attributes['deleted_at'] = (new Carbon)->toDateTimeString();
+        
+        $program = Program::where('id', $programid)->update($attributes);
+        
+        return $program;  
     }
 }

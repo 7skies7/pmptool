@@ -13,10 +13,10 @@ var routes = [
 		path: '/project',
 		component: require('./views/Project/index').default,
 	},
-	{
-		path: '/project/update',
-		component: require('./views/Project/update').default		
-	},
+	// {
+	// 	path: '/project/update',
+	// 	component: require('./views/Project/update').default		
+	// },
 	{
 		path: '/tasks',
 		component: require('./views/Tasks/index').default		

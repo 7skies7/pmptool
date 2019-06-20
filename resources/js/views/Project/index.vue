@@ -7,85 +7,100 @@
                         <div class="d-flex">
                             <div class="flex-1">
                                 <img src="/svg/project.svg" class="header-svg"/>
-                                <span>Project</span>
+                                <span>Projects</span>
                             </div>
                             <div class="pb-11">
-                                <button class="btn btn-add float-right" @click="showAddProgram">Add New</button>
+                                <button v-if="isAddVisible" class="btn btn-add float-right" @click="showaddProject">Add New</button>
                             </div>
                         </div>
                     </div>
                 <div class="card-body p-0">
                         <div class="d-flex flex-column">
                             <div class="flex-1">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Start Date</th>
-                                            <th scope="col">End Date</th>
-                                            <!-- <th scope="col">Description</th> -->
-                                            <th scope="col">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="program in programs">
-                                            <td>{{ program.program_name }}</td>
-                                            <td>{{ program.program_start_date }}</td>
-                                            <td>{{ program.program_end_date }}</td>
-                                            <!-- <td>{{ program.program_desc }}</td> -->
-                                            <td>
-                                                <router-link to="/project/update" class="btn btn-sm btn-primary no-link"><font-awesome-icon icon="edit" ></font-awesome-icon><Save</router-link>
-                                                <!-- <button class="btn btn-sm btn-primary"><font-awesome-icon icon="edit" ></font-awesome-icon></button> -->
-                                                <button class="btn btn-sm btn-danger"><font-awesome-icon icon="trash" ></font-awesome-icon></button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <grid :key="latestProjects" @showeditproject="showEditProject" @deleteproject="deleteproject"></grid>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <add-program v-if="addProgram" @completed="addNewProgram" @closeAddForm="closeForm"></add-program>
+            <add-project v-if="addProject" :key="latestProjects" @completed="addNewProject" @closeAddForm="closeForm"></add-project>
+            <edit-project v-if="editProject" :key="latestProjects" :projectid="projectid" @updatecompleted="updateProject" @closeEditForm="closeForm"></edit-project>
         </div>
     </div>
+    
 </template>
 
 <script>
     import Datepicker from 'vuejs-datepicker';
     import moment from 'moment';
-    import AddProgram from '../../components/AddProject.vue';
-    import Program from '../../models/Program';
+    import addProject from './addProject.vue';
+    import editProject from './editProject.vue';
+    import Grid from './Grid.vue';
+    import Project from '../../models/Project';
     export default {
         components: {
-            Datepicker,AddProgram
+            Datepicker,addProject,editProject,Grid
         },
         data() {
             return{
-                addProgram: false,
-                programs: [],
-                cardWidth: 'col-md-10'
+                addProject: false,
+                editProject: false,
+                projectid:'',
+                companies: [],
+                cardWidth: 'col-md-10',
+                form: new Form(),
+                latestProjects: 0,
+                isAddVisible: false,
             }
         },
         created() {
-            Program.all(programs => this.programs = programs)            
-                // .then(({data}) => this.statuses = data)
+            
         },
         methods: {
-           showAddProgram() {
-                this.addProgram = true;
+           showaddProject() {
+                if(this.isAddVisible == false)
+                {
+                    window.location.href = "/403";
+                }
+                this.addProject = true;
+                this.editProject = false;
                 this.cardWidth = 'col-md-6';
            },
-           addNewProgram(program) {
-                this.programs.unshift(program);
-                this.$toasted.success('Congratulations! Your new project has been added successfully.')
+           showEditProject(id) {
+                this.editProject = false;
+                this.projectid = id;
+                this.addProject = false;
+                this.editProject = true;
+                this.cardWidth = 'col-md-6';
+           },
+           addNewProject(project) {
+                
+                this.$toasted.success('Congratulations! Your new project has been added successfully.');
+                this.latestProjects += 1;
+                this.closeForm();
+            },
+            updateProject(projects) {
+                // this.companies = companies;
+                this.$toasted.success('Congratulations! Project has been updated successfully.');
+                this.latestProjects += 1;
+                this.closeForm();
+            },
+            deleteproject(projectid) {
+                this.form.post('/project/delete/'+projectid)
+                    .then(project => this.latestProjects += 1);
+                    this.$toasted.success('Congratulations! Project has been deleted successfully.');  
+                    this.latestProjects += 1;
+
             },
             closeForm() {
-                this.addProgram = false;
+                this.addProject = false;
+                this.editProject = false;
+                this.projectid = '';
                 this.cardWidth = 'col-md-10';
             }
         },
         mounted() {
+            Project.addaccess(addaccess => this.isAddVisible = addaccess); 
             console.log('Component mounted.')
         }
     }

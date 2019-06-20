@@ -3,12 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\Policies\CompanyPolicy;
 use App\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
+use App\Module;
+use App\Action;
 
 class CompanyController extends Controller
 {
+    public function __construct()
+    {
+       $this->middleware('can:View_Organization');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,6 +25,13 @@ class CompanyController extends Controller
      */
     public function index()
     {
+        // Authorize user requests to view all companies
+        if(Gate::allows('View_Organization') != true)
+        {
+            return abort('403');
+        }
+
+        //Once authorized return all user created companies
         return Company::with('user')->where('is_deleted',0)->latest()->get();
     }
 
@@ -37,6 +53,11 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
+        // Authorize user requests to store new company details
+        if(Gate::allows('Create_Organization') != true)
+        {
+            return abort('403');
+        }
         //validate
         $attributes = request()->validate(['company_name'=> 'required', 
                                             'company_desc' => 'required',
@@ -88,6 +109,12 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Authorize user requests to update resource details
+        if(Gate::allows('Update_Organization') != true)
+        {
+            return abort('403');
+        }
+
         //validate
         $attributes = request()->validate(['company_name'=> 'required', 
                                             'company_desc' => 'required',
@@ -114,6 +141,11 @@ class CompanyController extends Controller
      */
     public function destroy($companyid)
     {
+        // Authorize user requests to delete resource
+        if(Gate::allows('Delete_Organization') != true)
+        {
+            return abort('403');
+        }
 
         $attributes['is_deleted'] = 1;
         $attributes['deleted_by'] = auth()->user()->id;

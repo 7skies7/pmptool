@@ -25,6 +25,16 @@ Route::post('/program/update/{id}', 'ProgramController@update');
 Route::post('/program/delete/{id}', 'ProgramController@destroy');
 
 
+Route::get('/project', 'ProjectController@index');
+Route::post('/project/store', 'ProjectController@store');
+Route::get('/project/edit/{id}', 'ProjectController@edit');
+Route::post('/project/update/{id}', 'ProjectController@update');
+Route::post('/project/delete/{id}', 'ProjectController@destroy');
+Route::get('/project/getStatus', function(){
+	$arr = App\Status::select('id',"status_name")->get();
+	return $arr;
+});
+
 Route::get('/company', 'CompanyController@index');
 Route::post('/company/store', 'CompanyController@store');
 Route::get('/company/edit/{id}', 'CompanyController@edit');
@@ -34,6 +44,11 @@ Route::get('/company/getResources', function(){
 	$arr = App\User::select('id',DB::raw("CONCAT(users.first_name,' ',users.last_name) as name", "email"))->get();
 	return $arr;
 });
+Route::get('/access/{module_name}/{access_name}', function($module_name, $access_name){
+
+    return json_encode(Gate::allows($access_name.'_'.$module_name));
+});
+
 
 Route::get('/acl/roles', 'AclController@roles');
 Route::get('/acl/modules', 'AclController@modules');
@@ -45,3 +60,8 @@ Route::get('/acl/fakeaccess', 'AclController@fakeaccess');
 Route::get('/acl/userdetails', function(){
 	return json_encode(auth()->user()->toArray());
 });
+
+Route::get('/403', function(){
+	abort(403, "Permission Denied");
+});
+

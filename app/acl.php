@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 
-class acl extends Model
+class Acl extends Model
 {
     //
 	protected $table = "acls";
@@ -17,4 +17,9 @@ class acl extends Model
 		$access = Acl::select(DB::raw("group_concat(concat(module_id,'_',action_id)) as access"))->where('role_id', $roleid)->where('access_status', 1)->get();
 		return explode(',',$access[0]->access);
 	}
+
+	public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
 }

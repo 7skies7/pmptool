@@ -65,12 +65,14 @@
                 <router-link to='/dashboard' class="nav-link"><font-awesome-icon icon="coffee" ></font-awesome-icon>Dashboard</router-link>
             </li>
         </div>
+    @if(Gate::allows('View_Program'))
         <div class="text-center main-menu-links"> 
             <li class="nav-item ">
                 <!-- <a class="nav-link">Program</a> -->
                 <router-link to='/program' class="nav-link"><font-awesome-icon icon="clock" ></font-awesome-icon>Program</router-link>
             </li>
         </div>
+        @endif
         <div class="text-center main-menu-links"> 
             <li class="nav-item ">
                 <!-- <a class="nav-link">Program</a> -->
@@ -88,21 +90,25 @@
                 <router-link to='/sprint' class="nav-link"><font-awesome-icon icon="clock" ></font-awesome-icon>Sprint</router-link>
             </li>
         </div>
+        @if(Gate::allows('View_ACL'))
         <div class="text-center main-menu-links"> 
             <li class="nav-item ">
                 <router-link to='/acl' class="nav-link"><font-awesome-icon icon="clock" ></font-awesome-icon>ACL</router-link>
             </li>
         </div>
+        @endif
         <div class="text-center main-menu-links"> 
             <li class="nav-item ">
                 <router-link to='/users' class="nav-link"><font-awesome-icon icon="clock" ></font-awesome-icon>Users</router-link>
             </li>
         </div>
+        @if(Gate::allows('View_Organization'))
         <div class="text-center main-menu-links"> 
             <li class="nav-item ">
                 <router-link to='/company' class="nav-link"><font-awesome-icon icon="clock" ></font-awesome-icon>Organization</router-link>
             </li>
         </div>
+        @endif
 
     <!-- </div> -->
     <!-- </div> -->

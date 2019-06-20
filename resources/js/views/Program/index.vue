@@ -10,7 +10,7 @@
                                 <span>Programs</span>
                             </div>
                             <div class="pb-11">
-                                <button class="btn btn-add float-right" @click="showaddProgram">Add New</button>
+                                <button v-if="isAddVisible" class="btn btn-add float-right" @click="showaddProgram">Add New</button>
                             </div>
                         </div>
                     </div>
@@ -49,15 +49,19 @@
                 companies: [],
                 cardWidth: 'col-md-10',
                 form: new Form(),
-                latestPrograms: 0
+                latestPrograms: 0,
+                isAddVisible: true,
             }
         },
         created() {
-            // Company.all(companies => this.companies = companies)            
-                // .then(({data}) => this.statuses = data)
+            Program.addaccess(addaccess => this.isAddVisible = addaccess); 
         },
         methods: {
            showaddProgram() {
+                if(this.isAddVisible == false)
+                {
+                    window.location.href = "/403";
+                }
                 this.addProgram = true;
                 this.editProgram = false;
                 this.cardWidth = 'col-md-6';
@@ -69,22 +73,22 @@
                 this.editProgram = true;
                 this.cardWidth = 'col-md-6';
            },
-           addNewProgram(company) {
+           addNewProgram(program) {
                 // this.companies.unshift(company);
                 this.$toasted.success('Congratulations! Your new program has been added successfully.');
                 this.latestPrograms += 1;
                 this.closeForm();
             },
-            updateProgram(companies) {
-                this.companies = companies;
+            updateProgram(programs) {
+                //this.companies = companies;
                 this.$toasted.success('Congratulations! Program has been updated successfully.');
                 this.latestPrograms += 1;
                 this.closeForm();
             },
             deleteprogram(programid) {
-                this.form.post('/company/delete/'+programid)
-                    .then(company => this.latestPrograms += 1);
-                    this.$toasted.success('Congratulations! Organization has been deleted successfully.');  
+                this.form.post('/program/delete/'+programid)
+                    .then(program => this.latestPrograms += 1);
+                    this.$toasted.success('Congratulations! Program has been deleted successfully.');  
                     this.latestPrograms += 1;
 
             },
