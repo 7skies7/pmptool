@@ -30,6 +30,7 @@ Route::post('/project/store', 'ProjectController@store');
 Route::get('/project/edit/{id}', 'ProjectController@edit');
 Route::post('/project/update/{id}', 'ProjectController@update');
 Route::post('/project/delete/{id}', 'ProjectController@destroy');
+Route::post('/project/{id}/scope', 'ProjectController@detail');
 Route::get('/project/getStatus', function(){
 	$arr = App\Status::select('id',"status_name")->get();
 	return $arr;

@@ -64,12 +64,12 @@
                     <div class="form-group row">
                         <label for="project_manager" class="col-md-4 col-form-label text-md-right">Project Manager</label>
                         <div class="col-md-6">
-                            <multiselect v-model="form.project_manager" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select Manager" label="name" track-by="id" :preselect-first="false" >
+                            <multiselect v-model="form.project_managers" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select Manager" label="name" track-by="id" :preselect-first="false" >
                                 <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
                             </multiselect>
-                            <h5><b-badge pill variant="info" v-for="manager in form.project_manager" v-bind:key="manager.id">{{ manager.name }} </b-badge></h5>
+                            <h5><b-badge pill variant="info" v-for="manager in form.project_managers" v-bind:key="manager.id">{{ manager.name }} </b-badge></h5>
                             <!-- @if ($errors->has('project_name')) -->
-                                <span class="invalid-feedback" role="alert" v-if="form.errors.has('project_manager')" v-text="form.errors.get('project_manager')"></span>
+                                <span class="invalid-feedback" role="alert" v-if="form.errors.has('project_managers')" v-text="form.errors.get('project_managers')"></span>
                             <!-- @endif -->
                         </div>
                     </div>
@@ -90,10 +90,10 @@
                     <div class="form-group row">
                         <label for="project_status" class="col-md-4 col-form-label text-md-right">Status</label>
                         <div class="col-md-6">
-                            <multiselect v-model="form.project_status[0]" :options="status" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select Status" label="status_name" track-by="id" :preselect-first="false" >
-                                <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
+                            <multiselect v-model="form.project_status" deselect-label="Can't remove this value" track-by="id" label="status_name" placeholder="Select one" :options="status" :searchable="false" :allow-empty="false">
+                                <template slot="singleLabel" slot-scope="{ option }"><strong>{{ option.status_name }}</strong></template>
                             </multiselect>
-                            <h5><b-badge pill variant="info" v-if="form.project_status">{{ form.project_status[0].status_name }}</b-badge></h5>
+                            <h5><b-badge pill variant="info" v-if="form.project_status" v-text="form.project_status.status_name">{{ form.project_status.status_name }} </b-badge></h5>
                             <!-- @if ($errors->has('project_name')) -->
                                 <span class="invalid-feedback" role="alert" v-if="form.errors.has('project_status')" v-text="form.errors.get('project_status')"></span>
                             <!-- @endif -->
@@ -150,7 +150,7 @@
                     project_desc: '',
                     project_start_date: '',
                     project_end_date: '',
-                    project_manager: '',
+                    project_managers: '',
                     project_stakeholders: '',
                     project_status: '',
                     project_budget: '',
@@ -172,8 +172,11 @@
                             this.form.project_desc = response.data.project_desc;
                             this.form.project_start_date = response.data.project_start_date;
                             this.form.project_end_date = response.data.project_end_date;
-                            this.form.project_status = [{id:response.data.status.id, name:response.data.status.status_name}];
-                            console.log(this.form);
+                            this.form.project_status = response.data.status;
+                            this.form.project_managers = response.data.project_managers;
+                            this.form.project_stakeholders = response.data.project_stakeholders;
+                            this.form.project_budget = response.data.project_budget;
+                            
                             this.isLoading = false;
                         });    
                     });  

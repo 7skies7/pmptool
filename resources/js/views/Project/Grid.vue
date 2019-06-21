@@ -25,7 +25,7 @@
         >
             <v-progress-linear v-show="isLoading" v-slot:progress color="blue" indeterminate></v-progress-linear>
             <template v-slot:items="props">
-                <td>{{ props.item.project_name }}</td>
+                <td><a :href="'#/project/'+props.item.id+'/scope'">{{ props.item.project_name }}</a></td>
                 <td class="text-xs-right">{{ props.item.project_desc }}</td>
                 <td class="text-xs-right">{{ props.item.project_start_date }}</td>
                 <td class="text-xs-right">{{ props.item.project_end_date }}</td>
@@ -67,7 +67,7 @@
                             { text: 'Description', align: 'center', value: 'project_desc' },
                             { text: 'Start Date', align: 'center', value: 'project_start_date' },
                             { text: 'End Date', align: 'center', value: 'project_end_date' },
-                            { text: 'Status', align: 'center', value: 'project_status' },
+                            { text: 'Status', align: 'center', value: 'status.status_name' },
                             { text: 'Budget', align: 'center', value: 'project_budget' },
                             { text: 'Actions', align: 'center', value: 'actions', sortable: false }
                         ],

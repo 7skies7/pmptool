@@ -35,4 +35,9 @@ class Project extends Model
     {
         return $this->hasMany(ProjectManager::class);
     }
+
+    public function stakeholders()
+    {
+        return $this->hasMany(ProjectStakeholder::class);
+    }
 }

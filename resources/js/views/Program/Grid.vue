@@ -30,7 +30,10 @@
                 <td class="text-xs-right">{{ props.item.program_start_date }}</td>
                 <td class="text-xs-right">{{ props.item.program_end_date }}</td>
                 <td class="text-xs-right">
-                    <h5><b-badge pill variant="info">{{ props.item.user[0].first_name}} {{props.item.user[0].last_name }} </b-badge></h5>
+                    <!-- <h5><b-badge pill variant="info">{{ props.item.user[0].first_name}} {{props.item.user[0].last_name }} </b-badge></h5> -->
+                    <v-avatar color="#EF4667" size="35">
+                        <span class="white--text headlinesmal" :title="props.item.user[0].first_name+' '+props.item.user[0].last_name">{{ props.item.user[0].first_name[0]}}{{ props.item.user[0].last_name[0]}}</span>
+                    </v-avatar>
                 </td>
                 <td class="justify-center layout px-0 tdaction" style="padding:7px 24px!important">
                     <button v-if="isEditVisible" class="btn btn-sm btn-primary" @click="showEditProgram(props.item.id)"><font-awesome-icon icon="edit" ></font-awesome-icon></button>
@@ -68,7 +71,7 @@
                             { text: 'Description', align: 'center', value: 'program_desc' },
                             { text: 'Start Date', align: 'center', value: 'program_start_date' },
                             { text: 'End Date', align: 'center', value: 'program_end_date' },
-                            { text: 'Managers', align: 'center', value: 'program_manager' },
+                            { text: 'Managers', align: 'center', value: 'user[0].first_name' },
                             { text: 'Actions', align: 'center', value: 'actions', sortable: false }
                         ],
                 programs: [],

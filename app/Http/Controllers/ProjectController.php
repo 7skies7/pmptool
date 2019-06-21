@@ -57,7 +57,7 @@ class ProjectController extends Controller
                                             'project_start_date' => 'required',
                                             'project_end_date' => 'required',
                                             'project_desc' => 'required',
-                                            'project_manager' => 'required',
+                                            'project_managers' => 'required',
                                             'project_status' => 'required',
                                             'project_stakeholders' => 'required',
                                         ]);
@@ -74,12 +74,12 @@ class ProjectController extends Controller
         // }, $managers));
         
         //store project details in database
-        unset($attributes['project_manager']);
+        unset($attributes['project_managers']);
         unset($attributes['project_stakeholders']);
         
         $project = Project::create($attributes);
         
-        foreach(request('project_manager') as $manager)
+        foreach(request('project_managers') as $manager)
         {
             $managerArr['project_id'] =  $project->id;
             $managerArr['user_id'] = $manager['id'];
@@ -115,7 +115,29 @@ class ProjectController extends Controller
     public function edit($id)
     {
         //
+
         $project = Project::with('status')->with('managers')->find($id);
+
+        if(!empty($project->managers))
+        {
+            $project_manager = [];
+            foreach($project->managers as $manager)
+            {
+                $project_manager[] = User::select('id',\DB::raw("CONCAT(users.first_name,' ',users.last_name) as name"))->find($manager->user_id);
+            } 
+            $project['project_managers'] = $project_manager;
+        }
+        if(!empty($project->stakeholders))
+        {
+            $project_stakeholder = [];
+            foreach($project->stakeholders as $stakeholder)
+            {
+                $project_stakeholder[] = User::select('id',\DB::raw("CONCAT(users.first_name,' ',users.last_name) as name"))->find($stakeholder->user_id);
+            } 
+            $project['project_stakeholders'] = $project_stakeholder;
+        }    
+        
+
         return json_encode($project);
     }
 
@@ -139,21 +161,41 @@ class ProjectController extends Controller
                                             'project_start_date' => 'required',
                                             'project_end_date' => 'required',
                                             'project_desc' => 'required',
-                                            'project_manager' => 'required',
+                                            'project_managers' => 'required',
+                                            'project_status' => 'required',
+                                            'project_stakeholders' => 'required',
                                         ]);
 
+        $attributes['project_status'] = $attributes['project_status']['id'];
+        $attributes['project_budget'] = request('project_budget');
         $attributes['project_start_date'] = Carbon::parse($attributes['project_start_date'])->format('Y-m-d');
         $attributes['project_end_date'] = Carbon::parse($attributes['project_end_date'])->format('Y-m-d');
-        $managers = request('project_manager');
 
-        $attributes['project_manager'] = implode(', ', array_map(function ($manager) {
-            return $manager['id'];
-        }, $managers));
         
         $attributes['modified_by'] = auth()->user()->id;
             
         //store in database
+        unset($attributes['project_managers']);
+        unset($attributes['project_stakeholders']);
         $project = Project::where('id', $id)->update($attributes);
+    
+        //Delete previous project records
+        ProjectManager::where('project_id',$id)->delete();
+        ProjectStakeholder::where('project_id',$id)->delete();
+        
+        foreach(request('project_managers') as $manager)
+        {
+            $managerArr['project_id'] =  $id;
+            $managerArr['user_id'] = $manager['id'];
+            ProjectManager::create($managerArr);
+        }
+        foreach(request('project_stakeholders') as $stakeholder)
+        {
+            $stakeholderArr['project_id'] =  $id;
+            $stakeholderArr['user_id'] = $stakeholder['id'];
+            ProjectStakeholder::create($stakeholderArr);
+        }
+
         //save in session
         return $project;
     }

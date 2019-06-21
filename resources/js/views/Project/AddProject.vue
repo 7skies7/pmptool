@@ -57,14 +57,14 @@
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group row">
-                        <label for="project_manager" class="col-md-4 col-form-label text-md-right">Project Manager</label>
+                        <label for="project_managers" class="col-md-4 col-form-label text-md-right">Project Manager</label>
                         <div class="col-md-6">
-                            <multiselect v-model="form.project_manager" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select Manager" label="name" track-by="id" :preselect-first="false" >
+                            <multiselect v-model="form.project_managers" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select Manager" label="name" track-by="id" :preselect-first="false" >
                                 <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
                             </multiselect>
-                            <h5><b-badge pill variant="info" v-for="manager in form.project_manager" v-bind:key="manager.id">{{ manager.name }} </b-badge></h5>
+                            <h5><b-badge pill variant="info" v-for="manager in form.project_managers" v-bind:key="manager.id">{{ manager.name }} </b-badge></h5>
                             <!-- @if ($errors->has('project_name')) -->
-                                <span class="invalid-feedback" role="alert" v-if="form.errors.has('project_manager')" v-text="form.errors.get('project_manager')"></span>
+                                <span class="invalid-feedback" role="alert" v-if="form.errors.has('project_managers')" v-text="form.errors.get('project_managers')"></span>
                             <!-- @endif -->
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                             <input id="project_budget" type="text" class="form-control" placeholder="Enter project budget" v-model="form.project_budget" name="project_budget" value="" >
 
                             <!-- @if ($errors->has('project_name')) -->
-                                <span class="invalid-feedback" role="alert" v-if="form.errors.has('project_budget')" v-text="form.errors.get('project_budget')"></span>
+                                <span class="invalid-feedback" role="/" v-if="form.errors.has('project_budget')" v-text="form.errors.get('project_budget')"></span>
                             <!-- @endif -->
                         </div>
                     </div>
@@ -139,7 +139,7 @@
                     project_desc: '',
                     project_start_date: '',
                     project_end_date: '',
-                    project_manager: '',
+                    project_managers: '',
                     project_stakeholders: '',
                     project_status: '',
                     project_budget: '',

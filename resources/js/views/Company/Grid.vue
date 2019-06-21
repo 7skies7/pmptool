@@ -25,10 +25,13 @@
         >
             <v-progress-linear v-show="isLoading" v-slot:progress color="blue" indeterminate></v-progress-linear>
             <template v-slot:items="props">
-                <td>{{ props.item.company_name }}</td>
-                <td>{{ props.item.company_desc }}</td>
-                <td>
-                    <h5><b-badge pill variant="info">{{ props.item.user[0].first_name}} {{props.item.user[0].last_name }} </b-badge></h5>
+                <td class="text-xs-center">{{ props.item.company_name }}</td>
+                <td class="text-xs-center">{{ props.item.company_desc }}</td>
+                <td class="text-xs-center">
+                    <!-- <h5><b-badge pill variant="info">{{ props.item.user[0].first_name}} {{props.item.user[0].last_name }} </b-badge></h5> -->
+                    <v-avatar color="#EF4667" size="35">
+                        <span class="white--text headlinesmal" :title="props.item.user[0].first_name+' '+props.item.user[0].last_name">{{ props.item.user[0].first_name[0]}}{{ props.item.user[0].last_name[0]}}</span>
+                    </v-avatar>
                 </td>
                 <td class="justify-center layout px-0 tdaction" style="padding:7px 24px!important">
                     <button v-if="isEditVisible" class="btn btn-sm btn-primary" @click="showEditCompany(props.item.id)"><font-awesome-icon icon="edit" ></font-awesome-icon></button>
@@ -64,7 +67,7 @@
                             { text: 'Name', align: 'center', value: 'company_name'
                             },
                             { text: 'Description', align: 'center', value: 'company_desc' },
-                            { text: 'Managers', align: 'center', value: 'company_manager' },
+                            { text: 'Managers', align: 'center', value: 'user[0].first_name' },
                             { text: 'Actions', align: 'center', value: 'actions', sortable: false }
                         ],
                 companies: [],

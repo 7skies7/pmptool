@@ -11506,3 +11506,22 @@ body {
   font-weight: bold !important;
 }
 
+.projectTabs {
+  margin-top: -15px;
+  margin-bottom: 15px;
+}
+
+.border-0 {
+  border: 1px !important;
+}
+
+.headlinesmal {
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+
+.projectTabs .v-toolbar[data-booted=true] {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+  background: #fff;
+}
+
