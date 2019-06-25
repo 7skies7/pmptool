@@ -30,7 +30,7 @@ Route::post('/project/store', 'ProjectController@store');
 Route::get('/project/edit/{id}', 'ProjectController@edit');
 Route::post('/project/update/{id}', 'ProjectController@update');
 Route::post('/project/delete/{id}', 'ProjectController@destroy');
-Route::post('/project/{id}/scope', 'ProjectController@detail');
+Route::post('/project/{id}/detail', 'ProjectController@detail');
 Route::get('/project/getStatus', function(){
 	$arr = App\Status::select('id',"status_name")->get();
 	return $arr;
@@ -62,6 +62,13 @@ Route::get('/acl/userdetails', function(){
 	return json_encode(auth()->user()->toArray());
 });
 
+
+Route::get('/scope', 'ScopeController@index');
+Route::post('/scope/store', 'ScopeController@store');
+Route::get('/scope/edit/{id}', 'ScopeController@edit');
+Route::post('/scope/update/{id}', 'ScopeController@update');
+Route::post('/scope/delete/{id}', 'ScopeController@destroy');
+Route::post('/scope/comments/{id}/store', 'ScopeController@storeCommment');
 Route::get('/403', function(){
 	abort(403, "Permission Denied");
 });

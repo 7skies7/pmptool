@@ -79,9 +79,8 @@
                 <router-link to='/project' class="nav-link"><font-awesome-icon icon="clock" ></font-awesome-icon>Project</router-link>
             </li>
         </div>
-        <div class="text-center main-menu-links"> 
+<!--         <div class="text-center main-menu-links"> 
             <li class="nav-item ">
-                <!-- <a class="nav-link">Program</a> -->
                 <router-link to='/tasks' class="nav-link"><font-awesome-icon icon="clock" ></font-awesome-icon>Tasks</router-link>
             </li>
         </div>
@@ -89,7 +88,7 @@
             <li class="nav-item ">
                 <router-link to='/sprint' class="nav-link"><font-awesome-icon icon="clock" ></font-awesome-icon>Sprint</router-link>
             </li>
-        </div>
+        </div> -->
         @if(Gate::allows('View_ACL'))
         <div class="text-center main-menu-links"> 
             <li class="nav-item ">

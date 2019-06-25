@@ -11525,3 +11525,47 @@ body {
   background: #fff;
 }
 
+.projectTabs .v-toolbar__title {
+  font-weight: bold;
+  color: #19BDF0 !important;
+}
+
+.projectTabs .v-toolbar__title:not(:first-child) {
+  margin-left: 15% !important;
+}
+
+.projectTabs .v-tabs__item {
+  padding: 15px;
+  color: #777;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 0.7px;
+}
+
+.projectTabs .theme--light.v-tabs__bar .v-tabs__div {
+  font-size: 13px !important;
+}
+
+.projectTabs .v-tabs__item:hover,
+.projectTabs .v-tabs__item--active {
+  color: #EF4667 !important;
+}
+
+.projectTabs .v-toolbar__content {
+  display: flex !important;
+  justify-content: space-between !important;
+}
+
+.spacebetween {
+  justify-content: space-between;
+}
+
+.inputupload .v-input__slot {
+  visibility: block !important;
+  border-radius: 2px !important;
+  background: #fff !important;
+  min-height: 48px !important;
+  padding: 8px !important;
+  color: #000 !important;
+}
+

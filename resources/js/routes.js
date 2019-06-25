@@ -14,7 +14,7 @@ var routes = [
 		component: require('./views/Project/index').default,
 	},
 	{
-		path: '/project/:id/scope',
+		path: '/project/:id/detail',
 		component: require('./views/Scope/index').default		
 	},
 	{
