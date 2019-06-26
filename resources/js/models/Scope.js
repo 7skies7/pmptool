@@ -25,6 +25,17 @@ class Scope{
 		return axios.get('/access/Scope/Delete')
 			.then(({data}) => then(data));
 	}
+
+	static allComments(then, crdid) {
+		return axios.get('/scope/comments/'+crdid)
+			.then(({data}) => then(data))
+			.catch(error => {
+				if(error.response.status == 403)
+				{
+					window.location.href = "/403";
+				}
+			});
+	}
 }
 
 export default Scope;

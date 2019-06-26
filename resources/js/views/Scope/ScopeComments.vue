@@ -21,6 +21,10 @@
                                     </v-text-field>
                                 </v-timeline-item>
                           
+                                <v-timeline-item class="mb-3" hide-dot>
+                                    <v-btn class="mx-0" color="white">Approve CRD</v-btn>
+                                </v-timeline-item>
+
                                 <v-slide-x-transition group>
                                     <v-timeline-item v-for="event in timeline" :key="event.id" class="mb-3" color="pink" small>
                                     <v-layout justify-space-between>
@@ -29,10 +33,6 @@
                                     </v-layout>
                                   </v-timeline-item>
                                 </v-slide-x-transition>
-                          
-                                <v-timeline-item class="mb-3" hide-dot>
-                                    <v-btn class="mx-0" color="white">Approve CRD</v-btn>
-                                </v-timeline-item>
                           
                                 <v-timeline-item class="mb-3" color="grey" icon-color="grey lighten-2" small
                                 >
@@ -81,6 +81,9 @@
                 nonce: 0
             }
         },
+        created() {
+            Scope.allComments(events => this.events = events);
+        },
         methods: {
             onSubmit() {
                 this.form.post('/scope/comments/'+this.crdid+'/store')
@@ -110,16 +113,16 @@
                 reader.readAsDataURL(file);
             },
             comment () {
-                const time = (new Date()).toTimeString()
-                this.events.push({
-                    id: this.nonce++,
-                    text: this.input,
-                    time: time.replace(/:\d{2}\sGMT-\d{4}\s\((.*)\)/, (match, contents, offset) => {
-                    return ` ${contents.split(' ').map(v => v.charAt(0)).join('')}`
-                    })
-                })
+              //   const time = (new Date()).toTimeString()
+              //   this.events.push({
+              //       id: this.nonce++,
+              //       text: this.form.comment,
+              //       time: time.replace(/:\d{2}\sGMT-\d{4}\s\((.*)\)/, (match, contents, offset) => {
+              //       return ` ${contents.split(' ').map(v => v.charAt(0)).join('')}`
+              //       })
+              //   })
 
-              this.input = null
+              // this.input = null
             }       
         },
         computed: {

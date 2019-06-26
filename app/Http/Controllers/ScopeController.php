@@ -192,4 +192,14 @@ class ScopeController extends Controller
         \File::put(storage_path()."/app/public/CRD/".$request->get('crdid').'/'. $fileName, base64_decode($file));
         return $fileName;
     }
+
+    public function fetchCommments($crdid)
+    {
+        $comments = ScopeComment::with('documents')->where('id', $crdid)->get();
+        dd($comments);
+        // foreach($comments as $comment)
+        // {
+
+        // }
+    }
 }

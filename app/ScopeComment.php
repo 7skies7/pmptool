@@ -15,4 +15,9 @@ class ScopeComment extends Model
      * @var array
      */
     protected $guarded = [];
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class, 'id','document_id')->select(['id','file_name']);
+    }
 }

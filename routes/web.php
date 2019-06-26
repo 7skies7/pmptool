@@ -69,6 +69,7 @@ Route::get('/scope/edit/{id}', 'ScopeController@edit');
 Route::post('/scope/update/{id}', 'ScopeController@update');
 Route::post('/scope/delete/{id}', 'ScopeController@destroy');
 Route::post('/scope/comments/{id}/store', 'ScopeController@storeCommment');
+Route::post('/scope/comments/{crdid}', 'ScopeController@fetchCommments');
 Route::get('/403', function(){
 	abort(403, "Permission Denied");
 });

@@ -85,8 +85,10 @@ class AclController extends Controller
 
         foreach($roles as $role) {
             $attributes['role_id'] = $role->id;
-            //foreach ($modules as $module) {
-                $attributes['module_id'] = 9;
+            foreach ($modules as $module) {
+                // $attributes['module_id'] = 9;
+                $attributes['module_id'] = $module->id;
+
                 foreach ($actions as $action) {
                     $attributes['action_id'] = $action->id;
                     $attributes['created_by'] = 1;
@@ -95,7 +97,7 @@ class AclController extends Controller
                     Acl::create($attributes);
                     
                 }
-            //}
+            }
         }
         dd('Access updated');
         
