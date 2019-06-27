@@ -20,4 +20,9 @@ class Scope extends Model
     {
         return $this->belongsTo(Status::class, 'crd_status','id')->select(['id','status_name']);
     }
+
+    public function approveddocument()
+    {
+        return $this->hasOne(Document::class, 'id','approved_document')->select(['id','file_name']);
+    }
 }

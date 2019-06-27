@@ -20,4 +20,9 @@ class ScopeComment extends Model
     {
         return $this->hasMany(Document::class, 'id','document_id')->select(['id','file_name']);
     }
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'id','created_by')->select(['id','first_name', 'last_name']);
+    }
 }

@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Storage;
 
+
 class ScopeController extends Controller
 {
     /**
@@ -26,7 +27,7 @@ class ScopeController extends Controller
             return abort('403');
         }
         // return Project::with('user')->latest()->get();
-        return Scope::with('status')->where('is_deleted',0)->latest()->get();
+        return Scope::with('status')->with('approveddocument')->where('is_deleted',0)->latest()->get();
     }
 
     /**
@@ -195,11 +196,45 @@ class ScopeController extends Controller
 
     public function fetchCommments($crdid)
     {
-        $comments = ScopeComment::with('documents')->where('id', $crdid)->get();
-        dd($comments);
-        // foreach($comments as $comment)
-        // {
+        $commentsArr = [];
+        $comments = ScopeComment::with('documents')->with('users')->where('crd_id', $crdid)->get();
+        
 
-        // }
+        foreach($comments as $comment)
+        {
+            $commentArr['id'] = $comment->id;
+            $commentArr['username'] = $comment->users[0]->first_name.' '.$comment->users[0]->last_name;
+            $commentArr['text'] = $comment->comment;
+            $commentArr['time'] = Carbon::createFromFormat('Y-m-d H:i:s',  $comment->created_at)->format('F j, Y');
+            $commentArr['filename'] = null;
+            if(!empty($comment->documents) && isset($comment->documents[0]))
+            {
+                $commentArr['filename'] = $comment->documents[0]->file_name;
+            }
+            $commentsArr[] = $commentArr;
+
+        }
+        return $commentsArr;
+
+    }
+
+    public function fetchDocuments($crdid)
+    {
+        return Document::select('id','file_name')->where('crd_id', $crdid)->get();
+    }
+
+    public function approveDocument($crdid)
+    {
+        
+        //$approveDoc = Document::where('id',request('approved_document')['id'])->update(['file_status' => 1]);
+        $attributes['approved_document'] = request('approved_document')['id'];
+        $attributes['crd_status'] = 2; //Change from in planning to Approved
+        return Scope::where('id', $crdid)->update($attributes);
+        
+    }
+
+    public function fetchApprovedDocument($crdid)
+    {
+        return Scope::find($crdid)->approveddocument;
     }
 }

@@ -23,7 +23,7 @@
         </div>
         <add-scope v-if="addScope" :key="latestScope" @completed="addNewScope" @closeAddForm="closeForm"></add-scope>
         <edit-scope v-if="editScope" :key="latestScope" :scopeid="scopeid" @updatecompleted="updateScope" @closeEditForm="closeForm"></edit-scope>
-        <scope-comments v-if="scopeComments" :key="latestScopeCommented" :crdid="crdid" @completed="commentAdded"></scope-comments>
+        <scope-comments v-if="scopeComments" :key="latestScopeCommented" :crdid="crdid" @completed="commentAdded" @closeCommentForm="closeForm"></scope-comments>
     </div>
 </template>
 
@@ -47,7 +47,7 @@
                 scopeid:'',
                 crdid:'',
                 form: new Form(),
-                scopeComments: '',
+                scopeComments: false,
                 latestScopeCommented:0,
             }
         },
@@ -100,6 +100,7 @@
             closeForm() {
                 this.addScope = false;
                 this.editScope = false;
+                this.scopeComments = false;
                 this.scopeid = '';
                 this.cardWidth = 'col-md-10';
             },

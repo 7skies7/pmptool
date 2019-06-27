@@ -30,7 +30,9 @@
                 </td>
                 <td class="text-xs-right">{{ props.item.crd_title }}</td>
                 <td class="text-xs-right">{{ props.item.crd_desc }}</td>
-            <td class="text-xs-right"><h5><b-badge pill variant="info">{{ props.item.status.status_name }}</b-badge></h5></td>
+                <td v-if="props.item.approveddocument" class="text-xs-right">{{ props.item.approveddocument.file_name }}</td>
+                <td v-else class="text-xs-right">-</td>
+                <td class="text-xs-right"><h5><b-badge pill variant="info">{{ props.item.status.status_name }}</b-badge></h5></td>
                 <td class="justify-center layout px-0 tdaction" style="padding:7px 24px!important">
                     <button v-if="isEditVisible" class="btn btn-sm btn-primary" @click="showEditScope(props.item.id)"><font-awesome-icon icon="edit" ></font-awesome-icon></button>
                     <button v-if="isDeleteVisible" class="btn btn-sm btn-danger" @click="deleteScope(props.item.id)"><font-awesome-icon icon="trash" ></font-awesome-icon></button>
@@ -66,6 +68,7 @@
                             },
                             { text: 'Title', align: 'center', value: 'crd_title' },
                             { text: 'Description', align: 'center', value: 'crd_desc' },
+                            { text: 'Document', align: 'center', value: 'approveddocument.file_name' },
                             { text: 'Status', align: 'center', value: 'status.status_name' },
                             { text: 'Actions', align: 'center', value: 'actions', sortable: false }
                         ],

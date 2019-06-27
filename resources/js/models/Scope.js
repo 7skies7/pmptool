@@ -36,6 +36,17 @@ class Scope{
 				}
 			});
 	}
+
+	static fetchDocuments(then, crdid) {
+		return axios.get('/scope/documents/'+crdid)
+			.then(({data}) => then(data));
+	}
+
+	static fetchApprovedDocument(then, crdid) {
+		return axios.get('/scope/document/'+crdid)
+			.then(({data}) => then(data));
+	}
+	
 }
 
 export default Scope;

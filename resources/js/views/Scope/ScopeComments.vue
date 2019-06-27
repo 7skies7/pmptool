@@ -2,67 +2,71 @@
     <div class="col-md-6">
         <div class="card card-default shadow-sm">
             <div class="card-header">CRD Comments</div>
+            <v-progress-linear v-show="isLoading" v-slot:progress color="blue" indeterminate class="nomarginprogress" height="4px"></v-progress-linear>
             <div class="card-body">
-                <form @submit.prevent="onSubmit" @keydown="form.errors.clear()" enctype="multipart/form-data"> 
-                    <v-app id="inspire">
-                        <v-container style="max-width: 600px;">
-                            <v-timeline dense clipped>
-                                <v-timeline-item fill-dot class="white--text mb-5" color="#EF4667" large>
-                                    <template v-slot:icon> <span><v-icon medium dark>attach_file</v-icon></span> </template>
-                                    <div class="v-input inputupload v-input__control">
-                                        <div class="v-input__slot">
-                                            <input type="file" id="file" ref="file" class="hidden" @change="onFileChange" />
-                                        </div>
+                <v-app id="inspire">
+                    <v-container style="max-width: 600px;">
+                        <v-timeline dense clipped>
+                            <form @submit.prevent="onSubmit" @keydown="form.errors.clear()" enctype="multipart/form-data"> 
+                            <v-timeline-item fill-dot class="white--text mb-0" color="#EF4667" large>
+                                <template v-slot:icon> <span><v-icon medium dark>attach_file</v-icon></span> </template>
+                                <div class="v-input inputupload v-input__control">
+                                    <div class="v-input__slot">
+                                        <input type="file" id="file" ref="file" class="hidden" @change="onFileChange" />
                                     </div>
-                                    <v-text-field v-model="form.comment" hide-details flat label="Leave a comment..." solo @keydown.enter="comment" >
-                                        <template v-slot:append>
-                                            <v-btn class="mx-0" depressed type="submit">Post</v-btn>
-                                        </template>
-                                    </v-text-field>
-                                </v-timeline-item>
-                          
-                                <v-timeline-item class="mb-3" hide-dot>
-                                    <v-btn class="mx-0" color="white">Approve CRD</v-btn>
-                                </v-timeline-item>
+                                </div>
+                                <v-text-field v-model="form.comment" hide-details flat label="Leave a comment..." solo @keydown.enter="comment" >
+                                    <template v-slot:append>
+                                        <v-btn class="mx-0" depressed type="submit">Post</v-btn>
+                                    </template>
+                                </v-text-field>
+                            </v-timeline-item>
+                            </form>
+                            <form @submit.prevent="onApprove" @keydown="form.errors.clear()" enctype="multipart/form-data"> 
+                            <v-timeline-item class="mb-0" hide-dot>
+                                <span>Select CRD Document to Approve</span>
+                            </v-timeline-item>
+                            <v-timeline-item class="approveselect" hide-dot>
+                                <!-- <v-flex xs12 sm6>
+                                    <v-overflow-btn :items="dropdown_edit" label="Editable Btn" editable item-value="text"></v-overflow-btn>
+                                </v-flex> -->
+                                <multiselect v-model="formApprove.approved_document" :options="documents" :searchable="false" :close-on-select="false" :show-labels="false" track-by="id" label="file_name" placeholder="Pick a value"></multiselect>
+                                <v-btn  class="mx-0" color="white" type="submit">Approve CRD</v-btn>
 
-                                <v-slide-x-transition group>
-                                    <v-timeline-item v-for="event in timeline" :key="event.id" class="mb-3" color="pink" small>
-                                    <v-layout justify-space-between>
-                                      <v-flex xs7 v-text="event.text"></v-flex>
-                                      <v-flex xs5 text-xs-right v-text="event.time"></v-flex>
-                                    </v-layout>
-                                  </v-timeline-item>
-                                </v-slide-x-transition>
-                          
-                                <v-timeline-item class="mb-3" color="grey" icon-color="grey lighten-2" small
-                                >
-                                    <v-layout justify-space-between>
-                                        <v-flex xs7>This order was archived.</v-flex>
-                                        <v-flex xs5 text-xs-right>15:26 EDT</v-flex>
-                                    </v-layout>
-                                </v-timeline-item>
-                          
-                                <v-timeline-item class="mb-3" small >
-                                    <v-layout justify-space-between>
-                                        <v-flex xs7>
-                                            Digital Downloads fulfilled 1 item.
-                                        </v-flex>
-                                        <v-flex xs5 text-xs-right>15:25 EDT</v-flex>
-                                    </v-layout>
-                                </v-timeline-item>
-                            </v-timeline>
-                        </v-container>
-                    </v-app>
-                </form>
+                            </v-timeline-item>
+                            </form>
+                            <v-timeline-item class="mb-4" hide-dot>
+                                <span>Discussions</span>
+                            </v-timeline-item>
+                            <v-slide-x-transition group>
+                                <v-timeline-item v-for="event in timeline" :key="event.id" class="mb-3" color="pink" small>
+                                <v-layout justify-space-between>
+                                    <v-flex xs7 >
+                                        <v-chip class="white--text ml-0" color="purple" label small>
+                                            {{event.username}}
+                                        </v-chip>
+                                        {{ event.text }}
+                                        <span v-if="event.filename"><v-icon>attach_file</v-icon> {{ event.filename}}</span>
+                                    </v-flex>
+                                    <v-flex xs5 text-xs-right v-text="event.time"></v-flex>
+                                </v-layout>
+                              </v-timeline-item>
+                            </v-slide-x-transition>
+                        </v-timeline>
+                    </v-container>
+                    <v-btn xs5 text-md-center depressed small @click="closeCommentForm">CLOSE</v-btn>
+                </v-app>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import Scope from '../../models/Scope';
+    import Multiselect from 'vue-multiselect';
     export default {
         components: {
-            
+            Scope, Multiselect      
         },
         props: ['crdid'],
         data() {
@@ -75,25 +79,36 @@
                     crdid: this.crdid,
                     fileName: '',
                 }),
+                formApprove: new Form({
+                    project_id: this.$route.params.id,
+                    crdid: this.crdid,
+                    approved_document: ''
+                }),
                 status: [],
                 events: [],
                 input: null,
-                nonce: 0
+                nonce: 0,
+                isLoading:true,
+                documents: [],
             }
         },
         created() {
-            Scope.allComments(events => this.events = events);
+            Scope.allComments(events => this.events = events, this.crdid);
+            Scope.fetchDocuments(documents => this.documents = documents, this.crdid);
+            Scope.fetchApprovedDocument(document => this.formApprove.approved_document = document, this.crdid);
+            this.isLoading = false;
         },
         methods: {
             onSubmit() {
                 this.form.post('/scope/comments/'+this.crdid+'/store')
                .then(scope => this.$emit('completed', scope));
-               // axios.post('/image/store',{image: this.image}).then(response => {
-               //     console.log(response);
-               //  });
-            },                                                  
-            closeAddForm() {
-                this.$emit('closeAddForm');
+            },                        
+            onApprove() {
+                this.formApprove.post('/scope/comments/'+this.crdid+'/approvedocument')
+               .then(scope => this.$emit('completed', scope));
+            },                          
+            closeCommentForm() {
+                this.$emit('closeCommentForm');
             },
              onFileChange(e) {
                 let files = e.target.files || e.dataTransfer.files;
@@ -131,8 +146,7 @@
             }
         },
         mounted() {
-
-            
+                        
         }
     }
 </script>
