@@ -157,8 +157,7 @@ class ScopeController extends Controller
     {
         $fileName = '';
         $document_id = '';
-        $attributes = request()->validate(['comment'=> 'required'
-                                        ]);
+        $attributes = request()->validate(['comment'=> 'required']);
         $attributes['created_by'] = auth()->user()->id;
         $attributes['modified_by'] = auth()->user()->id;
         $attributes['project_id'] = $request->get('project_id');
@@ -168,7 +167,11 @@ class ScopeController extends Controller
         //check if file is attachment then save it to the directory and return filename
         if(!empty($request->get('file')))
         {
-            $fileName = $this->saveFile($request);    
+            $fileName = $this->saveFile($request);
+            if(is_array($fileName))
+            {
+                return response()->json($fileName, 422); 
+            }    
             $attributes['file_name'] = $fileName;
             unset($attributes['comment']);
             $document = Document::create($attributes);
@@ -183,9 +186,18 @@ class ScopeController extends Controller
 
     public function saveFile($request)
     {
+        $validExtensions = ['img', 'jpg', 'jpeg', 'docx', 'pdf', 'vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
         $file = $request->get('file');
         $file_ext = explode('/', mime_content_type($file))[1];
-        $file = str_replace('data:application/pdf;base64,', '', $file);
+        if(!in_array($file_ext, $validExtensions)) {
+            $returnData = array(
+                'status' => 'error',
+                'message' => 'Please upload only pdf, jpg, png and docx files only',
+                'file_ext' => $file_ext
+            );
+            return $returnData;
+        }
+        $file = preg_replace('/^data:.*php$/', '', $file);
         $file = str_replace(' ', '+', $file);
         $fileName = time().'_'.$request->get('fileName');
         

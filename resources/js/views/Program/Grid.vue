@@ -30,9 +30,8 @@
                 <td class="text-xs-right">{{ props.item.program_start_date }}</td>
                 <td class="text-xs-right">{{ props.item.program_end_date }}</td>
                 <td class="text-xs-right">
-                    <!-- <h5><b-badge pill variant="info">{{ props.item.user[0].first_name}} {{props.item.user[0].last_name }} </b-badge></h5> -->
-                    <v-avatar color="#EF4667" size="35">
-                        <span class="white--text headlinesmal" :title="props.item.user[0].first_name+' '+props.item.user[0].last_name">{{ props.item.user[0].first_name[0]}}{{ props.item.user[0].last_name[0]}}</span>
+                    <v-avatar color="#EF4667" size="35" v-if="(props.item.managers).length > 0" v-for="manager in props.item.managers" v-bind:key="manager.id">
+                        <span class="white--text headlinesmal" :title="manager.first_name+' '+manager.last_name">{{ manager.first_name[0]}}{{ manager.last_name[0]}}</span>
                     </v-avatar>
                 </td>
                 <td class="justify-center layout px-0 tdaction" style="padding:7px 24px!important">
@@ -67,12 +66,12 @@
                 programs: [],
                 headers:[
                             { text: 'Name', align: 'center', value: 'program_name'
-                            },
-                            { text: 'Description', align: 'center', value: 'program_desc' },
-                            { text: 'Start Date', align: 'center', value: 'program_start_date' },
-                            { text: 'End Date', align: 'center', value: 'program_end_date' },
-                            { text: 'Managers', align: 'center', value: 'user[0].first_name' },
-                            { text: 'Actions', align: 'center', value: 'actions', sortable: false }
+                            ,width: '15%'},
+                            { text: 'Description', align: 'center', value: 'program_desc',width: '25%' },
+                            { text: 'Start Date', align: 'center', value: 'program_start_date',width: '10%' },
+                            { text: 'End Date', align: 'center', value: 'program_end_date',width: '10%' },
+                            { text: 'Managers', align: 'center', value: 'user[0].first_name',width: '25%' },
+                            { text: 'Actions', align: 'center', value: 'actions', sortable: false,width: '15%' }
                         ],
                 programs: [],
                 isLoading: true,

@@ -29,7 +29,7 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
-
+    protected $developer_role_id = '';
     /**
      * Create a new controller instance.
      *
@@ -53,7 +53,6 @@ class RegisterController extends Controller
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
-            'role_id' => ['required', 'integer'],
             'designation_id' => ['required', 'integer'],
         ]);
     }

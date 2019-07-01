@@ -114,7 +114,7 @@
                     program_desc: '',
                     program_start_date: '',
                     program_end_date: '',
-                    program_manager: '',
+                    program_manager: [],
                 }),
                 options: [],
                 isLoading: false,
@@ -130,7 +130,10 @@
                             this.form.program_desc = response.data.program_desc;
                             this.form.program_start_date = response.data.program_start_date;
                             this.form.program_end_date = response.data.program_end_date;
-                            this.form.program_manager = [{id:response.data.user[0].id, name:response.data.user[0].first_name+ " " + response.data.user[0].last_name}];
+                            let managers = response.data.managers;
+                            for(let i = 0; i < managers.length; i++){
+                                this.form.program_manager.push({id:managers[i].id, name:managers[i].first_name+ " " + managers[i].last_name});
+                            }
                             this.isLoading = false;
                         });    
                 });

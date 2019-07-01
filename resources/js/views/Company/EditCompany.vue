@@ -83,7 +83,7 @@
                 form: new Form({
                     company_name: '',
                     company_desc: '',
-                    company_manager: '',
+                    company_manager: [],
                 }),
                 options: [],
                 isLoading: false,
@@ -97,7 +97,10 @@
                         axios.get('/company/edit/'+this.companyid).then((response) => {             
                             this.form.company_name = response.data.company_name;
                             this.form.company_desc = response.data.company_desc;
-                            this.form.company_manager = [{id:response.data.user[0].id, name:response.data.user[0].first_name+ " " + response.data.user[0].last_name}];
+                            let managers = response.data.managers;
+                            for(let i = 0; i < managers.length; i++){
+                                this.form.company_manager.push({id:managers[i].id, name:managers[i].first_name+ " " + managers[i].last_name});
+                            }
                             this.isLoading = false;
                         });    
                 });

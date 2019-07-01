@@ -12,10 +12,8 @@
 
                         <div class="col-md-6">
                             <input id="program_name" type="text" class="form-control" placeholder="Enter program name" v-model="form.program_name" name="program_name" value="" >
+                            <span class="invalid-feedback" role="alert" v-if="form.errors.has('program_name')" v-text="form.errors.get('program_name')"></span>
 
-                            <!-- @if ($errors->has('program_name')) -->
-                                <span class="invalid-feedback" role="alert" v-if="form.errors.has('program_name')" v-text="form.errors.get('program_name')"></span>
-                            <!-- @endif -->
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -24,12 +22,7 @@
 
                         <div class="col-md-6">
                             <textarea id="program_desc" class="form-control" placeholder="Enter program description" v-model="form.program_desc" name="form.program_desc" value="" ></textarea>
-
-                            <!-- @if ($errors->has('program_name')) -->
-                                <span class="invalid-feedback" role="alert">
-                                    <!-- <strong>{{ $errors->first('program_name') }}</strong> -->
-                                </span>
-                            <!-- @endif -->
+                            <span class="invalid-feedback" role="alert" v-if="form.errors.has('program_name')" v-text="form.errors.get('program_name')"></span>
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -37,13 +30,8 @@
                         <label for="program_start_date" class="col-md-4 col-form-label text-md-right">Start Date</label>
 
                         <div class="col-md-6">
-                            <!-- <input id="program_start_date" v-model="form.program_start_date" type="text" class="form-control" name="program_start_date" value="" > -->
                             <Datepicker v-model="form.program_start_date" input-class="form-control" :format="customFormatter"></Datepicker>
-                            <!-- @if ($errors->has('program_name')) -->
-                                <span class="invalid-feedback" role="alert">
-                                    <!-- <strong>{{ $errors->first('program_name') }}</strong> -->
-                                </span>
-                            <!-- @endif -->
+                            <span class="invalid-feedback" role="alert" v-if="form.errors.has('program_name')" v-text="form.errors.get('program_name')"></span>
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -51,7 +39,6 @@
                         <label for="program_end_date" class="col-md-4 col-form-label text-md-right">End Date</label>
 
                         <div class="col-md-6">
-                            <!-- <input id="program_end_date" type="text" v-model="form.program_end_date" class="form-control" name="program_end_date" value="" > -->
                             <Datepicker v-model="form.program_end_date" input-class="form-control" :format="customFormatter"></Datepicker>
 
                             <!-- @if ($errors->has('program_name')) -->

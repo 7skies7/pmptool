@@ -3,7 +3,7 @@
         <div :class="cardWidth">
             <div class="card card-default shadow-sm border-0">
                 <div class="card-header">
-                    <div class="d-flex spacebetween">
+                    <div class="sflex spacebetween">
                         <div>
                             <span>Scope</span>
                         </div>

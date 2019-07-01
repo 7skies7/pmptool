@@ -498,4 +498,16 @@ body{
 	display:flex!important;
 	justify-content:space-between!important;
 }
-
+.btn-link{
+	font-weight: 400;
+    color: #3490dc;
+    text-decoration: none;
+    border:0px;
+    box-shadow:unset!important;
+}
+table.v-table tbody td:first-child{
+	padding:0 10px!important;
+}
+.sflex{
+	flex:!important;
+}

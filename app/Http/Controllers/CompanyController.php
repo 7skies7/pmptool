@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Company;
-use App\Policies\CompanyPolicy;
 use App\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
-use App\Module;
-use App\Action;
+use App\CompanyManager;
+use App\UserRole;
 
 class CompanyController extends Controller
 {
+    protected $company_role_id = 4;
+
     public function __construct()
     {
        $this->middleware('can:View_Organization');
@@ -32,7 +33,8 @@ class CompanyController extends Controller
         }
 
         //Once authorized return all user created companies
-        return Company::with('user')->where('is_deleted',0)->latest()->get();
+        return Company::with('managers')->where('is_deleted',0)->latest()->get();
+        
     }
 
     /**
@@ -63,16 +65,26 @@ class CompanyController extends Controller
                                             'company_desc' => 'required',
                                             'company_manager' => 'required',
                                         ]);
-        $managers = request('company_manager');
-        $attributes['company_manager'] = implode(', ', array_map(function ($manager) {
-            return $manager['id'];
-        }, $managers));
         
         $attributes['created_by'] = auth()->user()->id;
         $attributes['modified_by'] = auth()->user()->id;
             
         //store in database
+        unset($attributes['company_manager']);
         $company = Company::create($attributes);
+
+        foreach(request('company_manager') as $manager)
+        {
+            $managerArr['company_id'] =  $company->id;
+            $managerArr['user_id'] = $manager['id'];
+            CompanyManager::create($managerArr);
+            //Assign Organization Manager role to all the company managers selected
+            $roleArr['user_id'] = $manager['id'];
+            $roleArr['role_id'] = $this->company_role_id;
+            UserRole::firstOrCreate($roleArr,$roleArr);
+        }
+
+
         //save in session
         return $company;
     }
@@ -96,7 +108,7 @@ class CompanyController extends Controller
      */
     public function edit($id)
     {
-        $company = Company::with('user')->find($id);
+        $company = Company::with('managers')->find($id);
         return json_encode($company);
     }
 
@@ -120,16 +132,28 @@ class CompanyController extends Controller
                                             'company_desc' => 'required',
                                             'company_manager' => 'required',
                                         ]);
-        $managers = request('company_manager');
-        $attributes['company_manager'] = implode(', ', array_map(function ($manager) {
-            return $manager['id'];
-        }, $managers));
-        
         $attributes['modified_by'] = auth()->user()->id;
             
         //store in database
+         unset($attributes['company_manager']);
         $company = Company::where('id', $id)->update($attributes);
         //save in session
+
+        //Delete previous company records
+        CompanyManager::where('company_id',$id)->delete();
+        //Delete previous company role for userrecords
+        //UserRole::where('role_id',$this->company_role_id)->delete();
+        
+        foreach(request('company_manager') as $manager)
+        {
+            $managerArr['company_id'] =  $id;
+            $managerArr['user_id'] = $manager['id'];
+            CompanyManager::create($managerArr);
+            //Assign Organization Manager role to all the company managers selected
+            // $roleArr['user_id'] = $manager['id'];
+            // $roleArr['role_id'] = $this->company_role_id;
+            // UserRole::create($roleArr);
+        }
         return $company;
     }
 

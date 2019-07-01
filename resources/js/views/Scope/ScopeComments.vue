@@ -13,6 +13,7 @@
                                 <div class="v-input inputupload v-input__control">
                                     <div class="v-input__slot">
                                         <input type="file" id="file" ref="file" class="hidden" @change="onFileChange" />
+                                         <span class="invalid-feedback" role="alert" v-if="formApprove.errors.has('file')" v-text="formApprove.errors.get('file')"></span>
                                     </div>
                                 </div>
                                 <v-text-field v-model="form.comment" hide-details flat label="Leave a comment..." solo @keydown.enter="comment" >
@@ -27,12 +28,8 @@
                                 <span>Select CRD Document to Approve</span>
                             </v-timeline-item>
                             <v-timeline-item class="approveselect" hide-dot>
-                                <!-- <v-flex xs12 sm6>
-                                    <v-overflow-btn :items="dropdown_edit" label="Editable Btn" editable item-value="text"></v-overflow-btn>
-                                </v-flex> -->
                                 <multiselect v-model="formApprove.approved_document" :options="documents" :searchable="false" :close-on-select="false" :show-labels="false" track-by="id" label="file_name" placeholder="Pick a value"></multiselect>
                                 <v-btn  class="mx-0" color="white" type="submit">Approve CRD</v-btn>
-
                             </v-timeline-item>
                             </form>
                             <v-timeline-item class="mb-4" hide-dot>
@@ -82,7 +79,8 @@
                 formApprove: new Form({
                     project_id: this.$route.params.id,
                     crdid: this.crdid,
-                    approved_document: ''
+                    approved_document: '',
+                    errors:''
                 }),
                 status: [],
                 events: [],
@@ -102,6 +100,8 @@
             onSubmit() {
                 this.form.post('/scope/comments/'+this.crdid+'/store')
                .then(scope => this.$emit('completed', scope));
+               console.log(this.formApprove.errors);
+               
             },                        
             onApprove() {
                 this.formApprove.post('/scope/comments/'+this.crdid+'/approvedocument')

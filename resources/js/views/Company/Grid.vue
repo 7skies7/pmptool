@@ -28,10 +28,10 @@
                 <td class="text-xs-center">{{ props.item.company_name }}</td>
                 <td class="text-xs-center">{{ props.item.company_desc }}</td>
                 <td class="text-xs-center">
-                    <!-- <h5><b-badge pill variant="info">{{ props.item.user[0].first_name}} {{props.item.user[0].last_name }} </b-badge></h5> -->
-                    <v-avatar color="#EF4667" size="35">
-                        <span class="white--text headlinesmal" :title="props.item.user[0].first_name+' '+props.item.user[0].last_name">{{ props.item.user[0].first_name[0]}}{{ props.item.user[0].last_name[0]}}</span>
+                    <v-avatar color="#EF4667" size="35" v-if="(props.item.managers).length > 0" v-for="manager in props.item.managers" v-bind:key="manager.id">
+                        <span class="white--text headlinesmal" :title="manager.first_name+' '+manager.last_name">{{ manager.first_name[0]}}{{ manager.last_name[0]}}</span>
                     </v-avatar>
+
                 </td>
                 <td class="justify-center layout px-0 tdaction" style="padding:7px 24px!important">
                     <button v-if="isEditVisible" class="btn btn-sm btn-primary" @click="showEditCompany(props.item.id)"><font-awesome-icon icon="edit" ></font-awesome-icon></button>
@@ -64,11 +64,11 @@
                 search: '',
                 companies: [],
                 headers:[
-                            { text: 'Name', align: 'center', value: 'company_name'
+                            { text: 'Name', align: 'center', value: 'company_name',width: '15%'
                             },
-                            { text: 'Description', align: 'center', value: 'company_desc' },
-                            { text: 'Managers', align: 'center', value: 'user[0].first_name' },
-                            { text: 'Actions', align: 'center', value: 'actions', sortable: false }
+                            { text: 'Description', align: 'center', value: 'company_desc', width: '40%' },
+                            { text: 'Managers', align: 'center', value: 'user[0].first_name', width: '30%' },
+                            { text: 'Actions', align: 'center', value: 'actions', sortable: false, width: '15%' }
                         ],
                 companies: [],
                 isLoading: true,
