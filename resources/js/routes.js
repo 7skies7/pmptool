@@ -18,6 +18,10 @@ var routes = [
 		component: require('./views/Scope/index').default		
 	},
 	{
+		path: '/project/:id/scope/:crid',
+		component: require('./views/Scope/UserStory').default		
+	},
+	{
 		path: '/tasks',
 		component: require('./views/Tasks/index').default		
 	},

@@ -25,4 +25,9 @@ class Scope extends Model
     {
         return $this->hasOne(Document::class, 'id','approved_document')->select(['id','file_name']);
     }
+
+    public function userstories()
+    {
+        return $this->hasMany(Userstory::class, 'cr_id', 'id');   
+    }
 }

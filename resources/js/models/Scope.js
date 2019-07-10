@@ -37,6 +37,11 @@ class Scope{
 			});
 	}
 
+	static fetchScope(then, crdid) {
+		return axios.get('/userstory/edit/'+crdid)
+			.then(({data}) => then(data));
+	}
+
 	static fetchDocuments(then, crdid) {
 		return axios.get('/scope/documents/'+crdid)
 			.then(({data}) => then(data));

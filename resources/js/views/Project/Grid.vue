@@ -28,11 +28,11 @@
                 <td>
                     <v-btn :href="'#/project/'+props.item.id+'/detail'" flat small color="primary">{{ props.item.project_name }}</v-btn>
                 </td>
-                <td class="text-xs-right">{{ props.item.project_desc }}</td>
-                <td class="text-xs-right">{{ props.item.project_start_date }}</td>
-                <td class="text-xs-right">{{ props.item.project_end_date }}</td>
-                <td class="text-xs-right"><h5><b-badge pill variant="info">{{ props.item.status.status_name }}</b-badge></h5></td>
-                <td class="text-xs-right">{{ props.item.project_budget }}</td>
+                <td class="text-xs-left">{{ props.item.project_desc }}</td>
+                <td class="text-xs-left">{{ props.item.project_start_date }}</td>
+                <td class="text-xs-left">{{ props.item.project_end_date }}</td>
+                <td class="text-xs-center"><h5><b-badge pill variant="info">{{ props.item.status.status_name }}</b-badge></h5></td>
+                <!-- <td class="text-xs-left">{{ props.item.project_budget }}</td> -->
                 <td class="justify-center layout px-0 tdaction" style="padding:7px 24px!important">
                     <button v-if="isEditVisible" class="btn btn-sm btn-primary" @click="showEditProject(props.item.id)"><font-awesome-icon icon="edit" ></font-awesome-icon></button>
                     <button v-if="isDeleteVisible" class="btn btn-sm btn-danger" @click="deleteProject(props.item.id)"><font-awesome-icon icon="trash" ></font-awesome-icon></button>
@@ -70,7 +70,7 @@
                             { text: 'Start Date', align: 'center', value: 'project_start_date' },
                             { text: 'End Date', align: 'center', value: 'project_end_date' },
                             { text: 'Status', align: 'center', value: 'status.status_name' },
-                            { text: 'Budget', align: 'center', value: 'project_budget' },
+                            // { text: 'Budget', align: 'center', value: 'project_budget' },
                             { text: 'Actions', align: 'center', value: 'actions', sortable: false }
                         ],
                 projects: [],

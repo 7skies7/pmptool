@@ -11281,6 +11281,42 @@ table.v-table tbody td:first-child {
 }
 
 .sflex {
-  flex: !important;
+  display: flex !important;
+}
+
+.High {
+  background: #FF0000 !important;
+}
+
+.Medium {
+  background: #FF9900 !important;
+}
+
+.Low {
+  background: #7FFF00 !important;
+}
+
+.accordtable {
+  margin-bottom: unset !important;
+}
+
+.accordtable td {
+  border: unset !important;
+}
+
+.scopeexpan .v-expansion-panel__header {
+  padding: 3px !important;
+}
+
+.flex-1 span.badge {
+  float: unset !important;
+}
+
+.userstorytable table.v-table {
+  width: 99% !important;
+}
+
+.approveicon {
+  margin-left: 5px !important;
 }
 

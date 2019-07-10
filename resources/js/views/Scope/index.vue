@@ -92,7 +92,6 @@
             }
         },
         created() {
-            
         },
         methods: {
             changeTab(tab) {

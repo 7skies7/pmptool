@@ -35,6 +35,11 @@ Route::get('/project/getStatus', function(){
 	$arr = App\Status::select('id',"status_name")->get();
 	return $arr;
 });
+Route::get('/project/getPriority', function(){
+	$arr = App\Priority::select('id',"priority_type")->get();
+	return $arr;
+});
+
 
 Route::get('/company', 'CompanyController@index');
 Route::post('/company/store', 'CompanyController@store');
@@ -73,6 +78,19 @@ Route::post('/scope/comments/{id}/approvedocument', 'ScopeController@approveDocu
 Route::get('/scope/comments/{crdid}', 'ScopeController@fetchCommments');
 Route::get('/scope/documents/{crdid}', 'ScopeController@fetchDocuments');
 Route::get('/scope/document/{crdid}', 'ScopeController@fetchApprovedDocument');
+Route::get('/scope/edit/{id}', 'ScopeController@getStory');
+Route::post('/project/{projectid}/scope/{crid}', 'UserstoryController@index');
+
+Route::get('/userstory/{id}', 'UserstoryController@index');
+Route::post('/userstory/store', 'UserstoryController@store');
+Route::get('/userstory/edit/{id}', 'UserstoryController@edit');
+Route::post('/userstory/update/{id}', 'UserstoryController@update');
+Route::post('/userstory/delete/{id}', 'UserstoryController@destroy');
+Route::post('/userstory/comments/{id}/store', 'UserstoryController@storeCommment');
+Route::post('/userstory/comments/{id}/approvedocument', 'UserstoryController@approveDocument');
+Route::get('/userstory/comments/{crdid}', 'UserstoryController@fetchCommments');
+Route::get('/userstory/documents/{crdid}', 'UserstoryController@fetchDocuments');
+Route::get('/userstory/document/{crdid}', 'UserstoryController@fetchApprovedDocument');
 Route::get('/403', function(){
 	abort(403, "Permission Denied");
 });
