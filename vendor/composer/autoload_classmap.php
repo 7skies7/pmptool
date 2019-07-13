@@ -28,6 +28,7 @@ return array(
     'App\\Http\\Controllers\\ProgramController' => $baseDir . '/app/Http/Controllers/ProgramController.php',
     'App\\Http\\Controllers\\ProjectController' => $baseDir . '/app/Http/Controllers/ProjectController.php',
     'App\\Http\\Controllers\\ScopeController' => $baseDir . '/app/Http/Controllers/ScopeController.php',
+    'App\\Http\\Controllers\\TaskController' => $baseDir . '/app/Http/Controllers/TaskController.php',
     'App\\Http\\Controllers\\UserstoryController' => $baseDir . '/app/Http/Controllers/UserstoryController.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
     'App\\Http\\Middleware\\ACL' => $baseDir . '/app/Http/Middleware/ACL.php',

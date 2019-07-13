@@ -51,6 +51,16 @@ class Scope{
 		return axios.get('/scope/document/'+crdid)
 			.then(({data}) => then(data));
 	}
+
+	static allProjectScope(then, projectid) {
+		return axios.get('/scope/project/'+projectid)
+			.then(({data}) => then(data));
+	}
+
+	static allScopeUserstories(then, scopeid) {
+		return axios.get('/scope/userstory/'+scopeid)
+			.then(({data}) => then(data));
+	}
 	
 }
 

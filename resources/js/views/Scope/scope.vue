@@ -95,7 +95,6 @@
                 this.scopeid = cr_id;
            },
            addNewScope(scope) {
-                
                 this.$toasted.success('Congratulations! Your new CRD has been added successfully.');
                 this.latestScope += 1;
                 this.closeForm();

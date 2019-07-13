@@ -159,6 +159,12 @@
             Userstory.deleteaccess(deleteaccess => this.isDeleteUserstoryVisible = deleteaccess); 
         },
         methods: {
+            showEditScope(id) {
+                this.$emit('showeditscope', id)
+            },
+            deleteScope(id) {
+                this.$emit('deletescope', id)
+            },
             showEditUserstory(id) {
                 this.$emit('showedituserstory', id)
             },

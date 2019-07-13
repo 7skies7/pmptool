@@ -140,7 +140,7 @@
             closeCommentForm() {
                 this.$emit('closeCommentForm');
             },
-             onFileChange(e) {
+            onFileChange(e) {
                 let files = e.target.files || e.dataTransfer.files;
                 if (!files.length)
                     return;

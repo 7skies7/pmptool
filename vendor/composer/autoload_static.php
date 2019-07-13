@@ -535,6 +535,7 @@ class ComposerStaticInit261946309ea1b99d3a816fd5bb03dcd5
         'App\\Http\\Controllers\\ProgramController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProgramController.php',
         'App\\Http\\Controllers\\ProjectController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProjectController.php',
         'App\\Http\\Controllers\\ScopeController' => __DIR__ . '/../..' . '/app/Http/Controllers/ScopeController.php',
+        'App\\Http\\Controllers\\TaskController' => __DIR__ . '/../..' . '/app/Http/Controllers/TaskController.php',
         'App\\Http\\Controllers\\UserstoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserstoryController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\ACL' => __DIR__ . '/../..' . '/app/Http/Middleware/ACL.php',

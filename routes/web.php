@@ -78,8 +78,11 @@ Route::post('/scope/comments/{id}/approvedocument', 'ScopeController@approveDocu
 Route::get('/scope/comments/{crdid}', 'ScopeController@fetchCommments');
 Route::get('/scope/documents/{crdid}', 'ScopeController@fetchDocuments');
 Route::get('/scope/document/{crdid}', 'ScopeController@fetchApprovedDocument');
-Route::get('/scope/edit/{id}', 'ScopeController@getStory');
+// Route::get('/scope/edit/{id}', 'ScopeController@getStory');
 Route::post('/project/{projectid}/scope/{crid}', 'UserstoryController@index');
+Route::get('/scope/project/{projectid}', 'ScopeController@getProjectScope');
+Route::get('/scope/userstory/{scopeid}', 'ScopeController@getScopeUserstory');
+
 
 Route::get('/userstory/{id}', 'UserstoryController@index');
 Route::post('/userstory/store', 'UserstoryController@store');
@@ -95,3 +98,8 @@ Route::get('/403', function(){
 	abort(403, "Permission Denied");
 });
 
+Route::get('/download/{file}', 'DownloadsController@download');
+
+Route::post('/task/wps/{projectid}/store', 'TaskController@storeWBS');
+Route::get('/task/{projectid}', 'TaskController@index');
+Route::get('/task/userstory/{projectid}', 'TaskController@getUserstory');

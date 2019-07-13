@@ -72,7 +72,7 @@
     import moment from 'moment';
     import dashboard from './dashboard.vue';
     import scope from './scope.vue';
-    import task from './task.vue';
+    import task from '../Tasks/index.vue';
     import sprint from './sprint.vue';
     export default {
         components: {

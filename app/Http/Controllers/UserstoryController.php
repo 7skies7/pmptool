@@ -176,8 +176,8 @@ class UserstoryController extends Controller
         $file = str_replace(' ', '+', $file);
         $fileName = time().'_'.$request->get('fileName');
         
-        Storage::disk('public')->makeDirectory('CRD/'.$request->get('crdid'));
-        \File::put(storage_path()."/app/public/CRD/".$request->get('crdid').'/'. $fileName, base64_decode($file));
+        Storage::disk('public')->makeDirectory('CRD/'.$request->get('userstory_id'));
+        \File::put(storage_path()."/app/public/CRD/".$request->get('userstory_id').'/'. $fileName, base64_decode($file));
         return $fileName;
     }
 

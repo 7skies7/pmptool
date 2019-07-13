@@ -10983,7 +10983,6 @@ body {
   font-weight: bold;
   font-size: 20px;
   text-transform: uppercase;
-  padding: 25px;
   color: #19BDF0;
   background: #fff;
 }
@@ -11005,7 +11004,7 @@ body {
 }
 
 .p-0 {
-  padding: 0;
+  padding: 0 !important;
 }
 
 .p-none {
@@ -11285,15 +11284,15 @@ table.v-table tbody td:first-child {
 }
 
 .High {
-  background: #FF0000 !important;
+  background: #FF5252 !important;
 }
 
 .Medium {
-  background: #FF9900 !important;
+  background: #E04848 !important;
 }
 
 .Low {
-  background: #7FFF00 !important;
+  background: #2196F3 !important;
 }
 
 .accordtable {
@@ -11318,5 +11317,43 @@ table.v-table tbody td:first-child {
 
 .approveicon {
   margin-left: 5px !important;
+}
+
+#wpsform .application--wrap {
+  min-height: unset !important;
+}
+
+#wpsform .v-input input {
+  max-height: unset !important;
+}
+
+#wpsform .container {
+  padding: 0px !important;
+}
+
+.multiselectwps .multiselect__tags {
+  background: transparent !important;
+  border: unset !important;
+}
+
+.multiselectwps .multiselect__single {
+  background: transparent !important;
+}
+
+.uploadBtnDiv {
+  display: flex !important;
+  margin-top: 15px !important;
+}
+
+.errorcolor {
+  color: #FF5252 !important;
+}
+
+#wpsform .layout {
+  flex-direction: column !important;
+}
+
+a.v-btn {
+  text-decoration: none !important;
 }
 

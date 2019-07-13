@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Scope;
+use App\Userstory;
 use App\Document;
 use App\ScopeComment;
 use App\User;
@@ -155,5 +156,14 @@ class ScopeController extends Controller
         return $scope;  
     }
 
+    public function getProjectScope($project_id)
+    {
+        return Scope::select('id', 'crd_title', 'crd_id')->where('is_deleted',0)->where('project_id', $project_id)->where('crd_status', 2)->latest()->get();
+    }
+
+    public function getScopeUserstory($scope_id)
+    {
+        return Userstory::select('id', 'userstory_desc', 'userstory_id')->where('is_deleted',0)->where('cr_id', $scope_id)->where('userstory_status', 2)->latest()->get();
+    }
     
 }
