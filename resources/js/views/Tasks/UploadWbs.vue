@@ -140,8 +140,7 @@
                 axios.post('/task/wps/'+this.form.project_id+'/store',
                     formData,{headers: {'Content-Type': 'multipart/form-data'}})
                 .then((data) => {
-                    this.latestTasks += 1;
-                    this.$toasted.success('Congratulations! Your tasks has been uploaded successfully.');
+                    this.$emit('wbsuploaded');
                     this.form = [];
                 })
                 .catch((error) => {

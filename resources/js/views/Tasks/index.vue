@@ -1,4 +1,5 @@
 <template>
+<v-app id="tasksScreen">
     <div class="row justify-content-center">
         <div :class="cardWidth">
             <div class="card card-default shadow-sm border-0">
@@ -17,16 +18,18 @@
                 <div class="card-body p-0">
                     <div class="d-flex flex-column">
                         <div class="flex-1">
-                            <task-grid :key="latestTasks"></task-grid>
+                            <task-grid :addAccess="isAddVisible" :key="latestTasks" @showaddtask="showAddTask" @showedittask="showEditTask" @closeForm="closeForm"></task-grid>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <upload-wbs v-if="isUploadWbsVisible" :key="latestTasks" @closeWBSForm="closeWBSForm"></upload-wbs>
+        <add-task v-if="isAddTaskVisible" :taskid="taskid" :point="point" @closeForm="closeForm" @completed="onTaskAdd"></add-task>
+        <edit-task v-if="isEditTaskVisible"  @closeForm="closeForm"></edit-task>
+        <upload-wbs v-if="isUploadWbsVisible" :key="latestTasks" @wbsuploaded="onWbsUpload" @closeWBSForm="closeWBSForm"></upload-wbs>
     
     </div>
-          
+</v-app>
 </template>
 
 <script>
@@ -34,31 +37,64 @@
     import Scope from '../../models/Scope';
     import TaskGrid from './TaskGrid.vue';
     import UploadWbs from './UploadWbs.vue';
+    import EditTask from './EditTask.vue';
+    import AddTask from './AddTask.vue';
     export default {
         components: {
-            Multiselect, TaskGrid, UploadWbs
+            Multiselect, TaskGrid, UploadWbs, EditTask, AddTask
         },
         data() {
             return {
                 cardWidth: 'col-md-10',
                 isAddVisible: true,
+                isEditTaskVisible: false,
+                isAddTaskVisible: false,
                 dialog:false,
                 latestTasks:0,
                 isUploadWbsVisible:false,
                 project_id: this.$route.params.id,
+                taskid: '',
+                point:'',
             }
         },
         created() {
-            Scope.allProjectScope(scope => this.scopes = scope, this.project_id);
+            
         },
         methods: {
             showUploadWbs(){
                 this.isUploadWbsVisible = true;
                 this.cardWidth = 'col-md-6';
             },
+            showEditTask(){
+                this.isEditTaskVisible = true;
+                this.cardWidth = 'col-md-6';
+            },
+            showAddTask(id, point){
+                this.isAddTaskVisible = true;
+                this.taskid = id;
+                this.point = point;
+                this.cardWidth = 'col-md-6';
+            },
             closeWBSForm(){
                 this.isUploadWbsVisible = false;
                 this.cardWidth = 'col-md-10';
+            },
+            onWbsUpload(){
+                this.latestTasks += 1;
+                this.$toasted.success('Congratulations! Your tasks has been uploaded successfully.');
+                this.closeWBSForm;
+            },
+            closeForm(){
+                this.isEditTaskVisible = false;
+                this.isAddTaskVisible = false;
+                this.cardWidth = 'col-md-10';
+            },
+            onTaskAdd(){
+                this.latestTasks += 1;
+                this.$toasted.success('Congratulations! Your tasks has been added successfully.');
+                this.isAddTaskVisible = false;
+                this.cardWidth = 'col-md-10';
+                
             }
         },
         mounted() {

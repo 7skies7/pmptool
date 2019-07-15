@@ -21,15 +21,32 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($project_id)
     {
         // Authorize user requests to view all resource
-        if(Gate::allows('View_Scope') != true)
+        if(Gate::allows('View_Task') != true)
         {
             return abort('403');
         }
 
-        return Task::with('status')->with('priority')->with('userstory')->where('is_deleted',0)->latest()->get();
+        return Task::with('tasktype')->with('priority')->with('userstory')->with('status')->where('is_deleted',0)->where('task_heirarchy',1)->where('project_id', $project_id)->latest()->get();
+
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getSubtask($task_id)
+    {
+        // Authorize user requests to view all resource
+        if(Gate::allows('View_Task') != true)
+        {
+            return abort('403');
+        }
+
+        return Task::with('assignee')->with('priority')->with('userstory')->with('status')->where('is_deleted',0)->where('task_heirarchy',2)->where('parent_id',$task_id)->latest()->get();
 
     }
 
@@ -52,27 +69,46 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         // Authorize user requests to store resource details
-        if(Gate::allows('Create_Scope') != true)
+        if(Gate::allows('Create_Task') != true)
         {
             return abort('403');
         }
 
         //validate
-        $attributes = request()->validate(['crd_title'=> 'required', 
-                                            'crd_desc' => 'required',
-                                            'crd_status' => 'required',
+        $attributes = request()->validate(['task_desc'=> 'required', 
+                                            'task_point' => 'required',
+                                            'task_assignee' => 'required',
+                                            'task_status' => 'required',
+                                            'task_priority' => 'required',
+                                            'task_start_date' => 'required',
+                                            'task_end_date' => 'required',
+                                            'task_type' => 'required',
                                         ]);
-        
+        if(request('remainingPoint') < $attributes['task_point'])
+        {  
+            $message['errors']['task_point'][] = "Points added should be less than Approved Point"; 
+            $message['errors']['message'] = 'The given data was invalid';
+            return response()->json($message, 422); 
+        }
         $attributes['created_by'] = auth()->user()->id;
         $attributes['modified_by'] = auth()->user()->id;
-        $attributes['crd_status'] = $attributes['crd_status']['id'];
+        $attributes['task_status'] = $attributes['task_status']['id'];
+        $attributes['task_assignee'] = $attributes['task_assignee']['id'];
+        $attributes['task_priority'] = $attributes['task_priority']['id'];
         $attributes['project_id'] = request('project_id');
-        $lastScopeId = Scope::orderBy('id', 'desc')->limit(1)->pluck('id');
-        $attributes['crd_id'] = 'CRD_'.request('project_id').'_'.($lastScopeId[0] + 1);
+        $attributes['parent_id'] = request('parent_id');
+        $parentTask = Task::find(request('parent_id'));
+        $attributes['cr_id'] = $parentTask->cr_id;
+        $attributes['userstory_id'] = $parentTask->userstory_id;
+        $attributes['task_heirarchy'] = 2; 
+        $attributes['task_type'] = 1;  
+        $lastScopeId = Task::orderBy('id', 'desc')->limit(1)->pluck('id');
+        $attributes['task_id'] = 'ST_'.request('cr_id').'_'.request('userstory_id').'_'.($lastScopeId[0] + 1);
+        // dd($attributes);
         //store scope details in database
-        $scope = Scope::create($attributes);
+        $task = Task::create($attributes);
         //save in session
-        return $scope;
+        return $task;
     }
 
     /**
@@ -96,9 +132,9 @@ class TaskController extends Controller
     {
         //
 
-        $scope = Scope::with('status')->find($id);        
+        $task = Task::with('status')->with('priority')->with('assignee')->with('userstory')->find($id);        
 
-        return json_encode($scope);
+        return json_encode($task);
     }
 
     /**
@@ -180,7 +216,8 @@ class TaskController extends Controller
             }    
             
            // Import all rows from the excel, validate the entries if erros then implements the catch to display error to user
-            $taskimport = new TasksImport;
+
+            $taskimport = new TasksImport();
             try{
                 
                 Excel::import($taskimport, $file);
@@ -246,6 +283,25 @@ class TaskController extends Controller
         // return Project::with('user')->latest()->get();
         // return Scope::with('status')->with('approveddocument')->where('is_deleted',0)->latest()->get();
         return Userstory::with('status')->with('priority')->where('is_deleted',0)->where('project_id', $project_id)->latest()->get();
+
+    }
+
+    public function getRemainingPoints($point, $task_id)
+    {
+        $points = Task::where('is_deleted',0)->where('task_heirarchy',2)->where('parent_id',$task_id)->sum('task_point');
+        return abs($points - $point);
+    }
+
+    public function userTasks()
+    {
+        // Authorize user requests to view all resource
+        if(Gate::allows('View_Task') != true)
+        {
+            return abort('403');
+        }
+        $user_id = auth()->user()->id;
+        
+        return Task::with('tasktype')->with('priority')->with('userstory')->with('status')->where('is_deleted',0)->where('task_heirarchy',2)->where('task_assignee', $user_id)->latest()->get();
 
     }
     

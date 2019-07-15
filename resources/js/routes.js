@@ -33,6 +33,10 @@ var routes = [
 		path: '/acl',
 		component: require('./views/ACL/index').default		
 	},
+	{
+		path: '/mytasks',
+		component: require('./views/Tasks/user').default
+	},
 
 	// {
 	// 	path: '/login',

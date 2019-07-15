@@ -91,10 +91,8 @@
                 // .then(({data}) => this.statuses = data)
         },
         methods: {
-           showAddProgram() {
-                this.addProgram = true;
-                this.cardWidth = 'col-md-6';
-                this.addBorder = '';
+           onShowComments() {
+                this.isTaskCommentVisible = !this.isTaskCommentVisible;
            },
            addNewProgram(program) {
                 this.programs.unshift(program);

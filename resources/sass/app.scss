@@ -513,11 +513,24 @@ table.v-table tbody td:first-child{
 .High{
 	background:#FF5252!important;
 }
+.High--text{
+	color:#FF5252!important;
+	font-size:21px!important;
+}
+
 .Medium{
-	background:#E04848!important;
+	background:#FB8C00!important;
+}
+.Medium--text{
+	color:#FB8C00!important;
+	font-size:21px!important;
 }
 .Low{
 	background:#2196F3!important;
+}
+.Low--text{
+	color:#2196F3!important;
+	font-size:21px!important;
 }
 .accordtable{
 	margin-bottom:unset!important;
@@ -537,9 +550,13 @@ table.v-table tbody td:first-child{
 .approveicon{
 	margin-left:5px!important;
 }
-#wpsform .application--wrap{
+#wpsform .application--wrap, .subtaskgrid .application--wrap{
 	min-height:unset!important;
 }
+.subtaskgrid .application--wrap{
+	margin-bottom:10px!important;
+}
+
 #wpsform .v-input input{
 	max-height:unset!important;
 }
@@ -566,4 +583,70 @@ table.v-table tbody td:first-child{
 }
 a.v-btn {
 	text-decoration: none!important;	
+}
+.smallbtn .v-btn--floating.v-btn--small{
+	width:30px!important;
+	height:30px!important;
+}
+
+
+.cardPadding{
+	padding:10px!important;
+	padding-bottom:0px!important;
+}
+
+#editTask .v-card, .customcard{
+	padding:10px!important;
+	padding-bottom:0px!important;
+	box-shadow:unset!important;
+}
+
+#taskcomment1 .v-card{
+	background:#fff!important;
+	box-shadow:unset!important;
+}
+#taskcomment1 {
+	background:#fff!important;
+}
+#taskcomment1 .v-card, #taskcomment1 .v-list{
+	background:#eaeaea!important;
+	box-shadow:unset!important;
+}
+
+#tasksScreen{
+	background:transparent!important;
+}
+.application--wrap{
+	min-height:unset!important;
+}
+.v-messages__message, .v-messages__wrapper{
+	color:#FF5252!important;
+}
+.topnavlist .router-link-exact-active:after, .router-link-active:after{
+	content:'';
+	border:unset!important;
+	color:#fff!important;
+}
+
+.commentContainer{
+	padding:0px!important;
+}
+
+#taskcomment1 .layout{
+	margin-top:10px!important;
+}
+
+#taskcomment1 .v-list__tile__title{
+	
+	color: rgba(0,0,0,.54)!important;
+}
+#taskcomment1 .v-list__tile__sub-title{
+	color: rgba(0,0,0,.87)!important;
+}
+.commentbox{
+	height: 70%;
+}
+.v-slider__thumb-label {
+	width:24px!important;
+	height:24px!important;
 }

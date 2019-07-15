@@ -22,6 +22,9 @@ class TasksImport implements ToModel, WithValidation, WithHeadingRow
     use Importable;
 
     public $tasks_story_points = 0.0;
+
+    public $parent_id = 0;
+    
     /**
     * @param array $row
     *
@@ -30,18 +33,34 @@ class TasksImport implements ToModel, WithValidation, WithHeadingRow
     public function model(array $row)
     {   
         // Sum of story points for all tasks should be less than the approved points for the userstory
+        
         $this->validateStoryPoints($row);
 
-        $lastTaskId = isset((Task::orderBy('id', 'desc')->limit(1)->pluck('id'))[0]) ?? 0;
-        $task_id = $row['task_level'].'_'.request('scope').'_'.request('userstory').'_'.($lastTaskId + mt_rand(0,100000));
+        
+        $lastTask = Task::orderBy('id', 'desc')->limit(1)->pluck('id');
+        $lastTaskId = isset($lastTask[0]) ? $lastTask[0] : 0;
+        $task_id = $row['task_level'].'_'.request('scope').'_'.request('userstory').'_'.($lastTaskId + 1);
+        
+        //Below logic is to add parent task - subtask relationship based on type level
+        if($row['task_level'] == 'ST')
+        {               
+            if($this->parent_id == 0)
+            {
+                $this->parent_id = $lastTaskId;
+            }
+        }else{
+            $this->parent_id = 0;
+        }
 
-        return new Task([
+        return  new Task([
             'task_id' => $task_id,
             'task_heirarchy' => TaskHierarchy::where('level_initial',$row['task_level'])->pluck('id')[0],
             'task_desc'  => $row['task_desc'],
             'task_type'  => TaskType::where('type',$row['task_type'])->pluck('id')[0],
             'task_priority' => Priority::where('priority_type',$row['task_priority'])->pluck('id')[0],
+            'task_status' => 6,
             'task_point'  => $row['task_point'],
+            'parent_id' => $this->parent_id,
             'project_id' => request('project'),
             'cr_id' => request('scope'),
             'userstory_id' => request('userstory'),

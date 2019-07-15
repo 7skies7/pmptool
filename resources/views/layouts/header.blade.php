@@ -11,7 +11,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             @auth
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav mr-auto topnavlist">
                 <li class="nav-item ">
                     <!-- <a class="nav-link">Program</a> -->
                     <router-link to='/mydashboard' class="nav-link"><font-awesome-icon icon="user-circle" ></font-awesome-icon>My Dashboard</router-link>

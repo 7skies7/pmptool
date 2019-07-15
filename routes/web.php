@@ -102,4 +102,13 @@ Route::get('/download/{file}', 'DownloadsController@download');
 
 Route::post('/task/wps/{projectid}/store', 'TaskController@storeWBS');
 Route::get('/task/{projectid}', 'TaskController@index');
+Route::get('/task/subtask/{taskid}', 'TaskController@getSubtask');
 Route::get('/task/userstory/{projectid}', 'TaskController@getUserstory');
+Route::post('/task/store', 'TaskController@store');
+Route::get('/task/subtask/{point}/{taskid}', 'TaskController@getRemainingPoints');
+Route::get('/user/tasks', 'TaskController@userTasks');
+Route::get('/task/edit/{taskid}', 'TaskController@edit');
+Route::get('/project/getTaskType', function(){
+	$arr = App\TaskType::select('id',"type")->get();
+	return $arr;
+});

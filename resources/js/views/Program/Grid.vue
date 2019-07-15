@@ -26,10 +26,10 @@
             <v-progress-linear v-show="isLoading" v-slot:progress color="blue" indeterminate></v-progress-linear>
             <template v-slot:items="props">
                 <td>{{ props.item.program_name }}</td>
-                <td class="text-xs-right">{{ props.item.program_desc }}</td>
-                <td class="text-xs-right">{{ props.item.program_start_date }}</td>
-                <td class="text-xs-right">{{ props.item.program_end_date }}</td>
-                <td class="text-xs-right">
+                <td class="text-xs-left">{{ props.item.program_desc }}</td>
+                <td class="text-xs-center">{{ props.item.program_start_date }}</td>
+                <td class="text-xs-center">{{ props.item.program_end_date }}</td>
+                <td class="text-xs-center">
                     <v-avatar color="#EF4667" size="35" v-if="(props.item.managers).length > 0" v-for="manager in props.item.managers" v-bind:key="manager.id">
                         <span class="white--text headlinesmal" :title="manager.first_name+' '+manager.last_name">{{ manager.first_name[0]}}{{ manager.last_name[0]}}</span>
                     </v-avatar>

@@ -26,9 +26,25 @@ class Task extends Model
         return $this->belongsTo(Priority::class, 'task_priority','id')->select(['id','priority_type', 'priority_color']);
     }
 
-    public function userstory_id()
+    public function userstory()
     {
-        return $this->belongsTo(Userstory::class, 'userstory_id','id')->select(['id','priority_type', 'priority_color']);
+        return $this->belongsTo(Userstory::class, 'userstory_id','id')->select(['id','userstory_desc', 'userstory_id']);
+    }
+
+    public function assignee()
+    {
+        return $this->belongsTo(User::class, 'task_assignee','id')->select(['id','first_name', 'last_name']);
+    }
+
+    public function tasktype()
+    {
+        return $this->belongsTo(TaskType::class, 'task_type','id')->select(['id','type']);
+    }
+
+
+    public function subtasks()
+    {
+        return $this->hasMany(static::class, 'parent_id');
     }
 
    
