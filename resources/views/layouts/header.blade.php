@@ -56,7 +56,7 @@
     </div>
 </nav>
 @auth
-<nav class="container-fluid is-white navbar-nav mx-auto justify-content-center align-items-center primary-menu flex-row shadow-sm">
+<nav class="container-fluid is-white navbar-nav mx-auto justify-content-center align-items-center primary-menu flex-row shadow-sm" >
     <!-- <div class="col-md-22"> -->
     <!-- <div class="row h-100 justify-content-center align-items-center primary-menu"> -->
         <div class="text-center main-menu-links"> 

@@ -108,6 +108,9 @@ Route::post('/task/store', 'TaskController@store');
 Route::get('/task/subtask/{point}/{taskid}', 'TaskController@getRemainingPoints');
 Route::get('/user/tasks', 'TaskController@userTasks');
 Route::get('/task/edit/{taskid}', 'TaskController@edit');
+Route::post('/task/comments/{taskid}/store', 'TaskController@storeComment');
+Route::get('/task/allcomments/{taskid}', 'TaskController@fetchCommments');
+Route::get('/task/availablehours/{taskpoint}/{taskid}', 'TaskController@fetchAvailableHours');
 Route::get('/project/getTaskType', function(){
 	$arr = App\TaskType::select('id',"type")->get();
 	return $arr;

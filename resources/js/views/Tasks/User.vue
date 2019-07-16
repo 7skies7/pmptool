@@ -67,7 +67,7 @@
                                                     <h5 v-else>-</h5>
                                                 </td>
                                                 <td>
-                                                    <v-btn @click="onShowComments(props.item.id)" fab depressed small dark color="primary"><v-icon>add</v-icon></v-btn>
+                                                    <v-btn @click="onShowComments(props.item.id, props.item.task_point)" fab depressed small dark color="primary"><v-icon>add</v-icon></v-btn>
                                                 </td>
                                                
                                             </tr>
@@ -87,7 +87,7 @@
                 </div>
             </div>
         </div>
-        <view-task v-if="isTaskCommentVisible" :taskid="taskid"></view-task>
+        <view-task v-if="isTaskCommentVisible" :taskid="taskid" :taskpoint="taskpoint"></view-task>
         
     </div>
 </template>
@@ -140,9 +140,10 @@
             Task.deleteaccess(deleteaccess => this.isDeleteVisible = deleteaccess); 
         },
         methods: {
-            onShowComments(id) {
+            onShowComments(id, taskpoint) {
                 this.isTaskCommentVisible = !this.isTaskCommentVisible;
                 this.taskid = id;
+                this.taskpoint = taskpoint;
             },
             showAddTask(id, point) {
                 this.$emit('showaddtask', id, point)

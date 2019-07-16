@@ -6,6 +6,8 @@ use App\Scope;
 use App\Userstory;
 use App\User;
 use App\Task;
+use App\TaskComment;
+use App\StoryPointMaster;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
@@ -280,8 +282,7 @@ class TaskController extends Controller
         {
             return abort('403');
         }
-        // return Project::with('user')->latest()->get();
-        // return Scope::with('status')->with('approveddocument')->where('is_deleted',0)->latest()->get();
+
         return Userstory::with('status')->with('priority')->where('is_deleted',0)->where('project_id', $project_id)->latest()->get();
 
     }
@@ -304,5 +305,72 @@ class TaskController extends Controller
         return Task::with('tasktype')->with('priority')->with('userstory')->with('status')->where('is_deleted',0)->where('task_heirarchy',2)->where('task_assignee', $user_id)->latest()->get();
 
     }
+
+    /**
+     * Store hours worked, progress and comment for single task.
+     *
+     * @param  \App\Project  $Project
+     * @return \Illuminate\Http\Response
+     */
+    public function storeComment(Request $request, $taskid)
+    {
+        
+        $attributes = request()->validate(['task_comment'=> 'required', 'task_hours'=> '
+            required','task_completion'=> 'required']);
+
+        //Commented: To valdiated hours with remainging hours for the task
+        // if($attributes['task_hours'] > request('availableHours'))
+        // {
+        //     $message['errors']['task_hours'][] = "Hours added should be less than Available Hours"; 
+        //     $message['errors']['message'] = 'The given data was invalid';
+        //     return response()->json($message, 422); 
+        // }
+        $attributes['created_by'] = auth()->user()->id;
+        $attributes['modified_by'] = auth()->user()->id;
+        $attributes['task_id'] = $request->get('task_id');
+        $task = TaskComment::create($attributes);
+        return $task;
+    }
+
+    /**
+     * Fetch all comments related to task
+     *
+     * @param  \App\Task  $taskid
+     * @return \Illuminate\Http\Response
+     */
+    public function fetchCommments($taskid)
+    {
+        $commentsArr = [];
+        $comments = TaskComment::with('users')->where('task_id', $taskid)->get();
+        
+        
+        foreach($comments as $comment)
+        {
+            $commentArr['id'] = $comment->id;
+            $commentArr['username'] = $comment->users[0]->first_name.' '.$comment->users[0]->last_name;
+            $commentArr['text'] = $comment->task_comment;
+            $commentArr['time'] = Carbon::createFromFormat('Y-m-d H:i:s',  $comment->created_at)->format('F j, Y');
+            $commentArr['task_completion'] = null;
+            if(!empty($comment->task_completion) && isset($comment->task_completion))
+            {
+                $commentArr['task_completion'] = $comment->task_completion;
+            }
+            $commentArr['task_hours'] = null;
+            if(!empty($comment->task_hours) && isset($comment->task_hours))
+            {
+                $commentArr['task_hours'] = $comment->task_hours;
+            }
+            $commentsArr[] = $commentArr;
+
+        }
+        return $commentsArr;
+
+    }
     
+    public function fetchAvailableHours($point, $taskid)
+    {
+        $userHours = TaskComment::where('task_id', $taskid)->sum('task_hours');
+        $hours = StoryPointMaster::pointtohours($point);
+        return $hours - $userHours;
+    }
 }

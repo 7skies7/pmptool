@@ -53,6 +53,10 @@ class Scope{
 			.then(({data}) => then(data));
 	}
 
+	static allComments(then, taskid) {
+		return axios.get('/task/allcomments/'+taskid)
+			.then(({data}) => then(data));
+	}
 	static allUserStory(then, projectid) {
 		return axios.get('/task/userstory/'+projectid)
 			.then(({data}) => then(data))
@@ -111,6 +115,11 @@ class Scope{
 
 	static getTask(then, taskid) {
 		return axios.get('/task/edit/'+taskid)
+			.then(({data}) => then(data));
+	}
+
+	static getAvailableHours(then, taskpoint, taskid) {
+		return axios.get('/task/availablehours/'+taskpoint+'/'+taskid)
 			.then(({data}) => then(data));
 	}
 	
