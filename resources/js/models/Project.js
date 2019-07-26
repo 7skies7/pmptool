@@ -25,6 +25,21 @@ class Project{
 		return axios.get('/access/Project/Delete')
 			.then(({data}) => then(data));
 	}
+
+	static getPrograms(then) {
+		return axios.get('/project/getPrograms')
+			.then(({data}) => then(data));
+	}
+
+	static getResources(then) {
+		return axios.get('/company/getResources')
+			.then(({data}) => then(data));
+	}
+
+	static getStatus(then) {
+		return axios.get('/project/getStatus')
+			.then(({data}) => then(data));
+	}
 }
 
 export default Project;

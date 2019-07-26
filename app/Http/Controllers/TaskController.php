@@ -31,7 +31,7 @@ class TaskController extends Controller
             return abort('403');
         }
 
-        return Task::with('tasktype')->with('priority')->with('userstory')->with('status')->where('is_deleted',0)->where('task_heirarchy',1)->where('project_id', $project_id)->latest()->get();
+        return Task::with('assignee')->with('priority')->with('userstory')->with('status')->where('is_deleted',0)->where('task_heirarchy',1)->where('project_id', $project_id)->latest()->get();
 
     }
 
@@ -149,26 +149,40 @@ class TaskController extends Controller
     public function update(Request $request, $id)
     {
         // Authorize user requests to update resource details
-        if(Gate::allows('Update_Scope') != true)
+        if(Gate::allows('Update_Task') != true)
         {
             return abort('403');
         }
-
         //validate
-        $attributes = request()->validate(['crd_title'=> 'required', 
-                                            'crd_desc' => 'required',
-                                            'crd_status' => 'required',
+        $attributes = request()->validate(['task_desc'=> 'required', 
+                                            'task_point' => 'required',
+                                            'task_assignee' => 'required',
+                                            'task_status' => 'required',
+                                            'task_priority' => 'required',
+                                            'task_start_date' => 'required',
+                                            'task_end_date' => 'required',
                                         ]);
+        
+        
+        $id = request('task_heirarchy') == 1 ? request('userstory_id') : $id;
+        if($this->fetchAvailablePoints($id, request('task_heirarchy'), 1) < $attributes['task_point'])
+        {  
+            $message['errors']['task_point'][] = "Points added should be less than Approved Point"; 
+            $message['errors']['message'] = 'The given data was invalid';
+            return response()->json($message, 422); 
+        }
 
-        $attributes['created_by'] = auth()->user()->id;
         $attributes['modified_by'] = auth()->user()->id;
-        $attributes['crd_status'] = $attributes['crd_status']['id'];
+        $attributes['task_status'] = $attributes['task_status']['id'];
+        $attributes['task_assignee'] = $attributes['task_assignee']['id'];
+        $attributes['task_priority'] = $attributes['task_priority']['id'];
+
             
         //store in database
-        $project = Scope::where('id', $id)->update($attributes);
+        $task = Task::where('id', $id)->update($attributes);
 
         //save in session
-        return $project;
+        return $task;
     }
 
     /**
@@ -189,7 +203,7 @@ class TaskController extends Controller
         $attributes['deleted_by'] = auth()->user()->id;
         $attributes['deleted_at'] = (new Carbon)->toDateTimeString();
         
-        $scope = Scope::where('id', $scopeid)->update($attributes);
+        $scope = Task::where('id', $scopeid)->update($attributes);
         
         return $scope;  
     }
@@ -316,7 +330,7 @@ class TaskController extends Controller
     {
         
         $attributes = request()->validate(['task_comment'=> 'required', 'task_hours'=> '
-            required','task_completion'=> 'required']);
+            required|numeric','task_completion'=> 'required']);
 
         //Commented: To valdiated hours with remainging hours for the task
         // if($attributes['task_hours'] > request('availableHours'))
@@ -329,6 +343,12 @@ class TaskController extends Controller
         $attributes['modified_by'] = auth()->user()->id;
         $attributes['task_id'] = $request->get('task_id');
         $task = TaskComment::create($attributes);
+
+        //update Task completion too
+        if($task)
+        {
+            $taskCompletion  = Task::where('id', $request->get('task_id'))->update(['task_completion' => $attributes['task_completion']]);
+        }
         return $task;
     }
 
@@ -341,7 +361,7 @@ class TaskController extends Controller
     public function fetchCommments($taskid)
     {
         $commentsArr = [];
-        $comments = TaskComment::with('users')->where('task_id', $taskid)->get();
+        $comments = TaskComment::with('users')->where('task_id', $taskid)->orderBy('id', 'asc')->get();
         
         
         foreach($comments as $comment)
@@ -367,10 +387,52 @@ class TaskController extends Controller
 
     }
     
+    /**
+     * Calculate Remaining Hours for Each Day comment for user
+     *
+     * @param  \App\Task  $taskid, $point
+     * @return \Illuminate\Http\Response
+     */
     public function fetchAvailableHours($point, $taskid)
     {
         $userHours = TaskComment::where('task_id', $taskid)->sum('task_hours');
         $hours = StoryPointMaster::pointtohours($point);
         return $hours - $userHours;
     }
+
+    /**
+     * Calculate Remaining Points for Each Day Task (Userpoint Point - (sum of all task +points in that userstory))
+     *
+     * @param  \App\Task  $taskid
+     * @return \Illuminate\Http\Response
+     */
+    public function fetchAvailablePoints($id, $task_type, $server = 0)
+    {   
+        if($task_type == 1)
+        {
+            $userstorypoint = Userstory::find($id)->pluck('userstory_point');
+            $sumTaskPoints = Task::where('userstory_id', $id)->where('task_heirarchy', 1)->sum('task_point');
+            return $userstorypoint[0] - $sumTaskPoints;
+        }elseif($task_type == 2) {
+            $childtask = Task::find($id);
+            $parenttaskPoint = Task::find($childtask->parent_id);
+
+            if($server == 1)
+            {
+
+                $points = Task::where('is_deleted',0)->where('task_heirarchy',2)->where('parent_id',$childtask['parent_id'])->where('id', '!=', $id)->sum('task_point');    
+
+            }else{
+
+                $points = Task::where('is_deleted',0)->where('task_heirarchy',2)->where('parent_id',$childtask['parent_id'])->sum('task_point');
+
+            }
+
+            // dd('asdasdasd');
+            return $parenttaskPoint->task_point - $points;
+        }
+        
+    }
+
+    
 }

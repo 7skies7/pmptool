@@ -11,6 +11,7 @@
                         <div class="pb-11">
                             <!-- <button v-if="isAddVisible" class="btn btn-add float-right" @click="showUploadWbs">Add Tasks</button> -->
                             <!-- <v-btn color="info" v-if="isAddVisible" @click="showUploadWbs"> Add Tasks</v-btn> -->
+                            <!-- <v-btn color="info" v-if="isAddVisible" @click="showUploadWbs"> Add Tasks</v-btn> -->
 
                         </div>
                     </div>
@@ -52,11 +53,11 @@
                                                         <v-icon v-if="props.item.priority" :color="props.item.priority.priority_type" title="props.item.priority.priority_type">star</v-icon>
                                                     <!-- </v-btn> -->
                                                 </td>
-                                                <td class="text-xs-center">
+                                                <!-- <td class="text-xs-center">
                                                     <v-avatar color="#EF4667" size="35" v-if="(props.item.assignee).length > 0" v-for="assignee in props.item.assignee" v-bind:key="manager.id">
                                                         <span class="white--text headlinesmal" :title="assignee.first_name+' '+manager.last_name">{{ assignee.first_name[0]}}{{ assignee.last_name[0]}}</span>
                                                     </v-avatar>
-                                                </td>
+                                                </td> -->
                                                 <td class="text-xs-center"><strong>{{ props.item.task_point }}</strong></td>
                                                 <td class="text-xs-center">{{ props.item.userstory.userstory_id }}</td>
                                                 <!-- <td class="text-xs-center">{{ props.item.tasktype.type }}</td> -->
@@ -110,8 +111,8 @@
                             { text: 'Name', align: 'center', value: 'task_desc'
                             },
                             { text: 'Priority',  align: 'center', value: 'priority.priority_type' },
-                            { text: 'Assignee', align: 'center', value: 'task_assignee'
-                            },
+                            // { text: 'Assignee', align: 'center', value: 'task_assignee'
+                            // },
                             { text: 'Story Point', align: 'center', value: 'task_point' },
                             { text: 'Userstory', align: 'center', value: 'userstory.userstory_desc' },
                             // { text: 'Type', width:"10%", align: 'center', value: 'tasktype.type' },

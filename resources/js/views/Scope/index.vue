@@ -21,12 +21,12 @@
                             </v-avatar>
                         </div>
                         <div>          
-                            <v-toolbar-title>Cnaap Build</v-toolbar-title>   
+                            <v-toolbar-title>{{ this.project.project_name}}</v-toolbar-title>   
                         </div>
                         <!-- <v-spacer></v-spacer> -->
                         <div>
-                            <v-chip title="Start Date">2019-06-01</v-chip>
-                            <v-chip title="End Date">2020-06-01</v-chip>
+                            <v-chip title="Start Date">{{ this.project.project_start_date}}</v-chip>
+                            <v-chip title="End Date">{{ this.project.project_end_date}}</v-chip>
                             <v-btn icon>
                               <v-icon>more_vert</v-icon>
                             </v-btn>
@@ -74,9 +74,11 @@
     import scope from './scope.vue';
     import task from '../Tasks/index.vue';
     import sprint from './sprint.vue';
+    import Scope from '../../models/Scope';
+
     export default {
         components: {
-            Datepicker, scope, task, sprint, dashboard
+            Datepicker, scope, task, sprint, dashboard, Scope
         },
         data() {
             return{     
@@ -88,10 +90,14 @@
                 task:false,
                 sprint:false,
                 latestKey:0,
-                tabsdiv: [true, false, false, false]
+                tabsdiv: [true, false, false, false],
+                project_id: this.$route.params.id,
+                project: {},
             }
         },
         created() {
+            Scope.getProject(project => this.project = project, this.project_id);
+
         },
         methods: {
             changeTab(tab) {

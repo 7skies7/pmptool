@@ -149,10 +149,11 @@
                 isAddStoryVisible: false,
                 isEditUserstoryVisible:false,
                 isDeleteUserstoryVisible:false,
+                project_id: this.$route.params.id,
             }
         },
         created() {
-            Scope.all(scope => this.scopes = scope);
+            Scope.all(scope => this.scopes = scope, this.project_id);
             Scope.editaccess(editaccess => this.isEditVisible = editaccess); 
             Scope.deleteaccess(deleteaccess => this.isDeleteVisible = deleteaccess); 
             Userstory.editaccess(editaccess => this.isEditUserstoryVisible = editaccess); 

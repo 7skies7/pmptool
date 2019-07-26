@@ -31,6 +31,10 @@ Route::get('/project/edit/{id}', 'ProjectController@edit');
 Route::post('/project/update/{id}', 'ProjectController@update');
 Route::post('/project/delete/{id}', 'ProjectController@destroy');
 Route::post('/project/{id}/detail', 'ProjectController@detail');
+Route::get('/project/getPrograms', function(){
+	$arr = App\Program::select('id',"program_name")->get();
+	return $arr;
+});
 Route::get('/project/getStatus', function(){
 	$arr = App\Status::select('id',"status_name")->get();
 	return $arr;
@@ -68,7 +72,7 @@ Route::get('/acl/userdetails', function(){
 });
 
 
-Route::get('/scope', 'ScopeController@index');
+Route::get('/scope/{projectid}', 'ScopeController@index');
 Route::post('/scope/store', 'ScopeController@store');
 Route::get('/scope/edit/{id}', 'ScopeController@edit');
 Route::post('/scope/update/{id}', 'ScopeController@update');
@@ -94,6 +98,7 @@ Route::post('/userstory/comments/{id}/approvedocument', 'UserstoryController@app
 Route::get('/userstory/comments/{crdid}', 'UserstoryController@fetchCommments');
 Route::get('/userstory/documents/{crdid}', 'UserstoryController@fetchDocuments');
 Route::get('/userstory/document/{crdid}', 'UserstoryController@fetchApprovedDocument');
+Route::get('/user/role', 'DashboardController@fetchRoleScreen');
 Route::get('/403', function(){
 	abort(403, "Permission Denied");
 });
@@ -111,7 +116,41 @@ Route::get('/task/edit/{taskid}', 'TaskController@edit');
 Route::post('/task/comments/{taskid}/store', 'TaskController@storeComment');
 Route::get('/task/allcomments/{taskid}', 'TaskController@fetchCommments');
 Route::get('/task/availablehours/{taskpoint}/{taskid}', 'TaskController@fetchAvailableHours');
+Route::post('/task/update/{id}', 'TaskController@update');
+Route::post('/task/delete/{id}', 'TaskController@destroy');
+
+Route::get('/task/availablepoints/{userstory_id}/{task_type}', 'TaskController@fetchAvailablePoints');
 Route::get('/project/getTaskType', function(){
 	$arr = App\TaskType::select('id',"type")->get();
+	return $arr;
+});
+
+
+
+
+Route::get('/user', 'UserController@index');
+Route::post('/user/store', 'UserController@store');
+Route::get('/user/edit/{id}', 'UserController@edit');
+Route::post('/user/update/{id}', 'UserController@update');
+Route::post('/user/delete/{id}', 'UserController@destroy');
+Route::post('/user/capture/{logtype}', 'UserController@capture');
+Route::get('/user/timecard', 'UserController@getTimecard');
+Route::get('/user/today/comment', 'UserController@getTodayComment');
+Route::get('/user/details', 'UserController@fetchUserDetails');
+Route::get('/user/timesheet', 'UserController@fetchUserTimesheet');
+
+Route::get('/dashboard/userstoryprogress', 'DashboardController@fetchUserstoryProgress');
+Route::get('/dashboard/userstorypending', 'DashboardController@fetchUserstoryPending');
+Route::get('/dashboard/projectsdeadline', 'DashboardController@fetchProjectsDeadlinePassed');
+Route::get('/dashboard/projects', 'DashboardController@fetchProjects');
+Route::get('/dashboard/projecttask', 'DashboardController@fetchProjectTask');
+Route::get('/dashboard/commentfeed', 'DashboardController@fetchUserComments');
+
+
+
+// Master Table Routes
+
+Route::get('/roles', function(){
+	$arr = App\Role::select('id',"role_title")->get();
 	return $arr;
 });

@@ -18,7 +18,7 @@ class Project extends Model
      * @var array
      */
     protected $fillable = [
-        'project_name', 'project_start_date', 'project_end_date', 'project_desc','created_by','created_at','modified_at','modified_by','project_status','project_budget'
+        'project_name', 'project_start_date', 'project_end_date', 'project_desc','created_by','created_at','modified_at','modified_by','project_status','project_budget','program_id'
     ];
 
 	public function user()
@@ -31,13 +31,32 @@ class Project extends Model
         return $this->belongsTo(Status::class, 'project_status','id')->select(['id','status_name']);
     }
 
+    public function program()
+    {
+        return $this->belongsTo(Program::class, 'program_id','id')->select(['id','program_name']);
+    }
+
     public function managers()
     {
-        return $this->hasMany(ProjectManager::class);
+        return $this->hasManyThrough(
+            User::class,          // The model to access to
+            ProjectManager::class, // The intermediate table that connects the Company with the User.
+            'project_id',                 // The column of the intermediate table that connects to this model by its ID.
+            'id',              // The column of the intermediate table that connects the Company by its ID.
+            'id',                      // The column that connects this model with the intermediate model table.
+            'user_id'               // The column of the user table that ties it to the Podcast.
+        )->select(['id','first_name','last_name']);
     }
 
     public function stakeholders()
     {
-        return $this->hasMany(ProjectStakeholder::class);
+        return $this->hasManyThrough(
+            User::class,          // The model to access to
+            ProjectStakeholder::class, // The intermediate table that connects the Company with the User.
+            'project_id',                 // The column of the intermediate table that connects to this model by its ID.
+            'id',              // The column of the intermediate table that connects the Company by its ID.
+            'id',                      // The column that connects this model with the intermediate model table.
+            'user_id'               // The column of the user table that ties it to the Podcast.
+        )->select(['id','first_name','last_name']);
     }
 }

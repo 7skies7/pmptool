@@ -115,20 +115,22 @@
         components: {
             Multiselect,TaskGrid
         },
-        props: ['taskid', 'point'],
+        props: ['task'],
         data() {
             return {
                 form: new Form({
-                    task_desc: '',
+                    task_desc: this.task.task_desc,
                     task_start_date: new Date().toISOString().substr(0, 10),
                     task_end_date: new Date().toISOString().substr(0, 10),
                     errors:'',
                     project_id: this.$route.params.id,
-                    task_assignee:'',
-                    task_status:'',
-                    task_priority:'',
-                    parent_id: this.taskid,
-                    task_point:'',
+                    task_assignee:{},
+                    task_status:this.task.status,
+                    task_priority:this.task.priority,
+                    task_id: this.task.id,
+                    task_point:this.task.task_point,
+                    userstory_id: this.task.userstory_id,
+                    task_heirarchy: this.task.task_heirarchy,
                     remainingPoint:0,
                 }),
                 start_date: false,
@@ -148,6 +150,7 @@
             }
         },
         created() {
+            
             Task.allUsers(users => this.users = users);
             Task.allStatus(status => this.status = status);
             Task.allPriority(priority => this.priority = priority);
@@ -158,7 +161,7 @@
                 this.isUploadVisible = true;
             },
             onSubmit() {
-                this.form.post('/task/store')
+                this.form.post('/task/update/' + this.task.id)
                .then(task => this.$emit('completed', task)); 
             },   
             closeWBSForm() {
@@ -170,16 +173,25 @@
             }
         },
         mounted() {
-            console.log('Task mounted.')
+            console.log('Task mounted.');
+            if(this.task.assignee != 0)
+            {
+                this.form.task.task_assignee = {id: this.task.assignee.id, name:this.task.assignee.first_name + ' ' + this.task.assignee.last_name};
+            }
+            
         },
         computed: {
             calcRemainingPoint() {
-                Task.getRemainingPoints(points => this.form.remainingPoint = points, this.point, this.taskid);
+                if(this.task.task_heirarchy == 1)
+                {
+                    Task.getTaskRemainingPoints(points => this.form.remainingPoint = points, this.task.userstory_id,1);    
+                }else if(this.task.task_heirarchy == 2){
+                    Task.getTaskRemainingPoints(points => this.form.remainingPoint = points, this.task.id,2);  
+                }
                 return "'" + this.form.remainingPoint + "'";
             }
         },
         watch: {
-
         }   
     }
 </script>

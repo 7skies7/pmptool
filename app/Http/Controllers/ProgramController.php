@@ -12,7 +12,7 @@ use App\UserRole;
 
 class ProgramController extends Controller
 {
-    protected $program_role_id = 5;
+    protected $program_role_id = 6;
     /**
      * Display a listing of the resource.
      *
@@ -75,7 +75,7 @@ class ProgramController extends Controller
             $managerArr['program_id'] =  $program->id;
             $managerArr['user_id'] = $manager['id'];
             ProgramManager::create($managerArr);
-            //Assign Organization Manager role to all the company managers selected
+            //Assign Program Manager role to all the program managers selected
             $roleArr['user_id'] = $manager['id'];
             $roleArr['role_id'] = $this->program_role_id;
             UserRole::firstOrCreate($roleArr,$roleArr);
@@ -150,10 +150,10 @@ class ProgramController extends Controller
             $managerArr['program_id'] =  $id;
             $managerArr['user_id'] = $manager['id'];
             ProgramManager::create($managerArr);
-            //Assign Organization Manager role to all the company managers selected
-            //$roleArr['user_id'] = $manager['id'];
-            //$roleArr['role_id'] = $this->program_role_id;
-            //UserRole::create($roleArr);
+            //Assign Program Manager role to all the program managers selected
+            $roleArr['user_id'] = $manager['id'];
+            $roleArr['role_id'] = $this->program_role_id;
+            UserRole::firstOrCreate($roleArr,$roleArr);
         }
         //save in session
         return $program;

@@ -5,7 +5,7 @@
             <div class="card card-default shadow-sm border-0">
                 <div class="card-header">
                     <div class="sflex spacebetween">
-                        <div>
+                        <div class="childFlex">
                             <span>Tasks</span>
                         </div>
                         <div class="pb-11">
@@ -25,7 +25,7 @@
             </div>
         </div>
         <add-task v-if="isAddTaskVisible" :taskid="taskid" :point="point" @closeForm="closeForm" @completed="onTaskAdd"></add-task>
-        <edit-task v-if="isEditTaskVisible"  @closeForm="closeForm"></edit-task>
+        <edit-task v-if="isEditTaskVisible" :task="task" @completed="onTaskUpdate" @closeForm="closeForm"></edit-task>
         <upload-wbs v-if="isUploadWbsVisible" :key="latestTasks" @wbsuploaded="onWbsUpload" @closeWBSForm="closeWBSForm"></upload-wbs>
     
     </div>
@@ -55,6 +55,7 @@
                 project_id: this.$route.params.id,
                 taskid: '',
                 point:'',
+                task:'',
             }
         },
         created() {
@@ -65,7 +66,9 @@
                 this.isUploadWbsVisible = true;
                 this.cardWidth = 'col-md-6';
             },
-            showEditTask(){
+            showEditTask(task){
+                
+                this.task = task;
                 this.isEditTaskVisible = true;
                 this.cardWidth = 'col-md-6';
             },
@@ -95,7 +98,15 @@
                 this.isAddTaskVisible = false;
                 this.cardWidth = 'col-md-10';
                 
+            },
+            onTaskUpdate(){
+                this.latestTasks += 1;
+                this.$toasted.success('Congratulations! Your tasks has been updated successfully.');
+                this.isEditTaskVisible = false;
+                this.cardWidth = 'col-md-10';
+                
             }
+
         },
         mounted() {
             console.log('Task mounted.')

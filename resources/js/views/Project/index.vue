@@ -4,13 +4,12 @@
             <div :class="cardWidth">
                 <div class="card card-default shadow-sm border-0">
                     <div class="card-header">
-                        <div class="d-flex">
-                            <div class="flex-1">
-                                <img src="/svg/project.svg" class="header-svg"/>
+                        <div class="sflex spacebetween">
+                            <div class="childFlex">
                                 <span>Projects</span>
                             </div>
                             <div class="pb-11">
-                                <button v-if="isAddVisible" class="btn btn-add float-right" @click="showaddProject">Add New</button>
+                                <v-btn color="info" v-if="isAddVisible" @click="showaddProject">Add New</v-btn>
                             </div>
                         </div>
                     </div>
@@ -24,7 +23,7 @@
                 </div>
             </div>
             <add-project v-if="addProject" :key="latestProjects" @completed="addNewProject" @closeAddForm="closeForm"></add-project>
-            <edit-project v-if="editProject" :key="latestProjects" :projectid="projectid" @updatecompleted="updateProject" @closeEditForm="closeForm"></edit-project>
+            <edit-project v-if="editProject" :key="latestProjects" :project="project" @updatecompleted="updateProject" @closeEditForm="closeForm"></edit-project>
         </div>
     </div>
     
@@ -45,7 +44,7 @@
             return{
                 addProject: false,
                 editProject: false,
-                projectid:'',
+                project:'',
                 companies: [],
                 cardWidth: 'col-md-10',
                 form: new Form(),
@@ -66,9 +65,9 @@
                 this.editProject = false;
                 this.cardWidth = 'col-md-6';
            },
-           showEditProject(id) {
+           showEditProject(project) {
                 this.editProject = false;
-                this.projectid = id;
+                this.project = project;
                 this.addProject = false;
                 this.editProject = true;
                 this.cardWidth = 'col-md-6';

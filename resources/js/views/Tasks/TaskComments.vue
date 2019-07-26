@@ -6,7 +6,7 @@
             <div class="card-body">
                 <v-app id="inspire">
                     <v-container>
-                        <v-timeline dense clipped class="commentblock" v-if="events">
+                        <v-timeline dense clipped class="commentblock" v-if="isAddCommentForm">
                             <v-slide-x-transition group>
                                 <v-timeline-item v-for="event in timeline" :key="event.id" class="mb-3" color="grey" small>
                                 <v-layout justify-space-between>
@@ -29,7 +29,7 @@
                               </v-timeline-item>
                             </v-slide-x-transition> 
                         </v-timeline>
-                        <v-timeline dense clipped>
+                        <v-timeline dense clipped v-if="isAddCommentForm">
                             <form @submit.prevent="onSubmit" @keydown="form.errors.clear()">
                             <v-timeline-item fill-dot class="white--text mb-0" color="info" large>
                                 <template v-slot:icon> <span><v-icon medium dark>comment</v-icon></span> </template>
@@ -40,7 +40,7 @@
                                     </v-flex>
                                     <v-flex xs6>
                                         <v-card flat class="customcard">
-                                            <v-slider v-model="form.task_completion" color="primary" label="Progress" hint="Be honest" min="0" max="100" thumb-label="always" tick :messages="form.errors.get('task_completion')"></v-slider>
+                                            <v-slider v-model="form.task_completion" color="primary" label="Progress" hint="Be honest" min="0" max="100" thumb-label="always"  :messages="form.errors.get('task_completion')" @end="onProgressChange"></v-slider>
                                         </v-card>
                                     </v-flex>
                                     <v-flex xs10>
@@ -55,7 +55,29 @@
                 </v-app>
             </div>
         </div>
+        <v-dialog v-model="dialog" width="700">
+            <v-card>
+                <v-card-title class="headline grey lighten-2" primary-title>
+                    Task Progress 
+                </v-card-title>
+      
+                <v-card-text> 
+                    <div>
+                        <p>Progress cannot be decreased. You are required to increase the progress.</p>
+                        <p><span><strong>Last Progress:</strong></span>{{ this.form.task_completion }}</p>
+                    </div>
+                </v-card-text>
+      
+                <v-divider></v-divider>
+      
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" flat @click="dialog = false">Close</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
+    
 </template>
 
 <script>
@@ -80,11 +102,17 @@
                 input: null,
                 nonce: 0,
                 isLoading:true,
+                isAddCommentForm:false,
+                dialog:false,
             }
         },
         created() {
-            this.isLoading = false;
-            Task.allComments(events => this.events = events, this.taskid);
+            
+            Task.allComments((events) => {
+                    this.events = events;
+                    this.isAddCommentForm = true;
+                    this.isLoading = false;
+            }, this.taskid);
         },
         methods: {
             onSubmit() {
@@ -97,7 +125,14 @@
             closeCommentForm() {
                 this.$emit('closeCommentForm');
             },
-            comment () {
+            onProgressChange (e) {
+                let previousProgress = this.events[this.events.length - 1].task_completion;
+                if(e < previousProgress)
+                {
+                    this.dialog = true;
+                    this.form.task_completion = previousProgress;
+                    
+                }
             }       
         },
         computed: {
@@ -109,8 +144,10 @@
                 return "'Available Hours:" + this.form.availableHours + "'";
             }
         },
-        mounted() {
-                        
+        watch: {
+            events() {
+                this.form.task_completion = this.events[this.events.length - 1].task_completion;
+            }           
         }
     }
 </script>

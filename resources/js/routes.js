@@ -2,8 +2,12 @@ import VueRouter from 'vue-router'
 
 var routes = [
 	{
+		path: '/',
+		component: require('./views/Dashboard/index').default
+	},
+	{
 		path: '/dashboard',
-		component: require('./views/Dashboard').default
+		component: require('./views/Dashboard/index').default
 	},
 	{
 		path: '/program',
@@ -36,6 +40,10 @@ var routes = [
 	{
 		path: '/mytasks',
 		component: require('./views/Tasks/user').default
+	},
+	{
+		path: '/users',
+		component: require('./views/User/index').default
 	},
 
 	// {

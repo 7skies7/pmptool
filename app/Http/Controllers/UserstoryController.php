@@ -47,7 +47,8 @@ class UserstoryController extends Controller
         $attributes['project_id'] = request('project_id');
         $attributes['initial_story_point'] = request('userstory_point');
         $attributes['cr_id'] = request('cr_id');
-        $lastStoryId = isset((Userstory::orderBy('id', 'desc')->limit(1)->pluck('id'))[0]) ?? 0;
+        $userrecord = Userstory::orderBy('id', 'desc')->limit(1)->pluck('id');
+        $lastStoryId = isset($userrecord[0]) ? $userrecord[0] : 0;
         $attributes['userstory_id'] = 'US_'.request('cr_id').'_'.($lastStoryId + 1);
         //store scope details in database
         $userstory = Userstory::create($attributes);

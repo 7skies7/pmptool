@@ -86,7 +86,11 @@ router.beforeResolve((to, from, next) => {
 router.afterEach((to, from) => {
   NProgress.done()
 })
+
+import HighchartsVue from 'highcharts-vue'
+import Highcharts from 'highcharts'
+Vue.use(HighchartsVue)
 const app = new Vue({
     el: '#app',
-    router
+    router,
 });

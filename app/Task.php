@@ -47,5 +47,10 @@ class Task extends Model
         return $this->hasMany(static::class, 'parent_id');
     }
 
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id','id')->select(['id','project_name']);
+    }
+
    
 }

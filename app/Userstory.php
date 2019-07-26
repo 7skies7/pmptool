@@ -35,4 +35,9 @@ class Userstory extends Model
     {
         return $this->belongsToMany(Scope::class, 'cr_id', 'id');   
     }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id','id')->select(['project_name']);
+    }
 }

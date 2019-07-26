@@ -94,7 +94,7 @@ class AclController extends Controller
                     $attributes['created_by'] = 1;
                     $attributes['modified_by'] = 1;
                     // dd($attributes);
-                    Acl::create($attributes);
+                    Acl::firstorcreate($attributes);
                     
                 }
             }

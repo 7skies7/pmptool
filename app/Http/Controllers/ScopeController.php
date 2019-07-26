@@ -20,7 +20,7 @@ class ScopeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($project_id)
     {
         // Authorize user requests to view all resource
         if(Gate::allows('View_Scope') != true)
@@ -29,7 +29,7 @@ class ScopeController extends Controller
         }
         // return Project::with('user')->latest()->get();
         // return Scope::with('status')->with('approveddocument')->where('is_deleted',0)->latest()->get();
-        return Scope::with('status')->where('is_deleted',0)->latest()->get();
+        return Scope::with('status')->where('is_deleted',0)->where('project_id', $project_id)->latest()->get();
 
     }
 
@@ -158,7 +158,7 @@ class ScopeController extends Controller
 
     public function getProjectScope($project_id)
     {
-        return Scope::select('id', 'crd_title', 'crd_id')->where('is_deleted',0)->where('project_id', $project_id)->where('crd_status', 2)->latest()->get();
+        return Scope::select('id', 'crd_title', 'crd_id')->where('is_deleted',0)->where('project_id', $project_id)->where('crd_status', 1)->latest()->get();
     }
 
     public function getScopeUserstory($scope_id)

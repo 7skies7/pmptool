@@ -57,6 +57,8 @@
                 form: new Form(),
                 userstoryComments: false,
                 latestUserstoryCommented:0,
+                project_id: this.$route.params.id,
+                project: {}
             }
         },
         methods: {
@@ -150,6 +152,7 @@
         },
        	mounted() {
             Scope.addaccess(addaccess => this.isAddVisible = addaccess); 
+
             console.log('Scope mounted.')
         }  	
     }

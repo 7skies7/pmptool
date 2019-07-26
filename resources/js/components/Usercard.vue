@@ -1,6 +1,6 @@
 <template>
     
-  <!-- <v-app style="background:transparent;height:auto!important;min-height:unset!important" > -->
+  <v-app style="background:transparent!important">
     <div class="text-xs-center">
       <v-menu
         v-model="menu"
@@ -69,7 +69,7 @@
         </v-card>
       </v-menu>
     </div>
-  <!-- </v-app> -->
+  </v-app>
 
 </template>
 

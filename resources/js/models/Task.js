@@ -1,4 +1,4 @@
-class Scope{
+class Task{
 	
 	static all(then, projectid) {
 		return axios.get('/task/'+ projectid)
@@ -37,6 +37,12 @@ class Scope{
 		return axios.get('/task/subtask/'+point+'/'+taskid)
 			.then(({data}) => then(data));
 	}
+
+	static getTaskRemainingPoints(then, userpoint_id, task_type) {
+		return axios.get('/task/availablepoints/'+userpoint_id+'/'+task_type)
+			.then(({data}) => then(data));
+	}
+
 
 	static addaccess(then) {
 		return axios.get('/access/Scope/Create')
@@ -125,4 +131,4 @@ class Scope{
 	
 }
 
-export default Scope;
+export default Task;

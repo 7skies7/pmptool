@@ -36,8 +36,8 @@
                         <!-- </v-btn> -->
                     </td>
                     <td class="text-xs-center">
-                        <v-avatar color="#EF4667" size="35" v-if="(props.item.assignee).length > 0" v-for="assignee in props.item.assignee" v-bind:key="manager.id">
-                            <span class="white--text headlinesmal" :title="assignee.first_name+' '+manager.last_name">{{ assignee.first_name[0]}}{{ assignee.last_name[0]}}</span>
+                        <v-avatar color="#EF4667" size="35" v-if="props.item.assignee">
+                            <span class="white--text headlinesmal" :title="props.item.assignee.first_name+' '+props.item.assignee.last_name">{{ props.item.assignee.first_name[0]}}{{ props.item.assignee.last_name[0]}}</span>
                         </v-avatar>
                     </td>
                     <td class="text-xs-center"><strong>{{ props.item.task_point }}</strong></td>
@@ -51,7 +51,7 @@
                     </td>
                     <!-- <td class="text-xs-left">{{ props.item.project_budget }}</td> -->
                     <td class="justify-center layout px-0 smallbtn">
-                        <v-btn v-if="isEditVisible" @click="showEditTask(props.item.id)" color="primary" fab depressed small dark><v-icon>edit</v-icon></v-btn>
+                        <v-btn v-if="isEditVisible" @click="showEditTask(props.item)" color="primary" fab depressed small dark><v-icon>edit</v-icon></v-btn>
                         <v-btn v-if="isDeleteVisible" @click="deleteProject(props.item.id)" color="error" fab depressed small dark><v-icon>delete</v-icon></v-btn>
                         <v-btn v-if="addAccess" @click="showAddTask(props.item.id,props.item.task_point)" color="success" fab depressed small dark><v-icon>add</v-icon></v-btn>
                     </td>
@@ -91,7 +91,7 @@
                             { text: 'Name', width:"15%", align: 'center', value: 'task_desc'
                             },
                             { text: 'Priority', width:"10%", align: 'center', value: 'priority.priority_type' },
-                            { text: 'Assignee', width:"10%", align: 'center', value: 'task_assignee'
+                            { text: 'Assignee', width:"10%", align: 'center', value: 'assignee.first_name'
                             },
                             { text: 'Story Point', width:"10%", align: 'center', value: 'task_point' },
                             { text: 'Userstory', width:"10%", align: 'center', value: 'userstory.userstory_desc' },
@@ -115,8 +115,8 @@
             Task.deleteaccess(deleteaccess => this.isDeleteVisible = deleteaccess); 
         },
         methods: {
-            showEditTask(id) {
-                this.$emit('showedittask', id)
+            showEditTask(task) {
+                this.$emit('showedittask', task)
             },
             showAddTask(id, point) {
                 this.$emit('showaddtask', id, point)

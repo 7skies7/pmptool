@@ -29,13 +29,15 @@
                     <v-btn :href="'#/project/'+props.item.id+'/detail'" flat small color="primary">{{ props.item.project_name }}</v-btn>
                 </td>
                 <td class="text-xs-left">{{ props.item.project_desc }}</td>
+                <td class="text-xs-left" v-if="props.item.program">{{ props.item.program.program_name }}</td>
+                <td class="text-xs-left" v-else>-</td>          
                 <td class="text-xs-left">{{ props.item.project_start_date }}</td>
                 <td class="text-xs-left">{{ props.item.project_end_date }}</td>
                 <td class="text-xs-center"><h5><b-badge pill variant="info">{{ props.item.status.status_name }}</b-badge></h5></td>
                 <!-- <td class="text-xs-left">{{ props.item.project_budget }}</td> -->
-                <td class="justify-center layout px-0 tdaction" style="padding:7px 24px!important">
-                    <button v-if="isEditVisible" class="btn btn-sm btn-primary" @click="showEditProject(props.item.id)"><font-awesome-icon icon="edit" ></font-awesome-icon></button>
-                    <button v-if="isDeleteVisible" class="btn btn-sm btn-danger" @click="deleteProject(props.item.id)"><font-awesome-icon icon="trash" ></font-awesome-icon></button>
+                <td class="justify-center layout px-0 smallbtn">
+                    <v-btn v-if="isEditVisible" @click="showEditProject(props.item)" color="primary" fab depressed small dark><v-icon>edit</v-icon></v-btn>
+                    <v-btn v-if="isDeleteVisible" @click="deleteProject(props.item.id)" color="error" fab depressed small dark><v-icon>delete</v-icon></v-btn>
                 </td>
             </template>
             <template v-slot:no-results>
@@ -67,6 +69,8 @@
                             { text: 'Name', align: 'center', value: 'project_name'
                             },
                             { text: 'Description', align: 'center', value: 'project_desc' },
+                            { text: 'Program', align: 'center', value: 'program.program_name' },
+
                             { text: 'Start Date', align: 'center', value: 'project_start_date' },
                             { text: 'End Date', align: 'center', value: 'project_end_date' },
                             { text: 'Status', align: 'center', value: 'status.status_name' },

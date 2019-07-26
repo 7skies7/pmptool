@@ -49,6 +49,7 @@ trait HasRoles
         // loop over user roles
         // 
         // $this->roles();
+        // dd($this->roles);
         foreach ($this->roles as $key => $role) {
             
             $access = Acl::where('role_id',$role->id)->where('module_id',$module->id)->where('action_id',$action->id)->pluck('access_status');

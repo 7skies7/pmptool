@@ -1,7 +1,7 @@
 class Scope{
 	
-	static all(then) {
-		return axios.get('/scope')
+	static all(then, projectid) {
+		return axios.get('/scope/'+projectid)
 			.then(({data}) => then(data))
 			.catch(error => {
 				if(error.response.status == 403)
@@ -59,6 +59,12 @@ class Scope{
 
 	static allScopeUserstories(then, scopeid) {
 		return axios.get('/scope/userstory/'+scopeid)
+			.then(({data}) => then(data));
+	}
+
+	static getProject(then, project_id)
+	{
+		return axios.get('/project/edit/'+project_id)
 			.then(({data}) => then(data));
 	}
 	

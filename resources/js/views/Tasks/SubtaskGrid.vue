@@ -36,8 +36,8 @@
                         <!-- </v-btn> -->
                     </td>
                     <td class="text-xs-center">
-                        <v-avatar color="#EF4667" size="35" v-if="(props.item.assignee).length > 0" v-for="user in props.item.assignee" v-bind:key="user.id">
-                            <span class="white--text headlinesmal" :title="user.first_name+' '+user.last_name">{{ user.first_name[0]}}{{ user.last_name[0]}}</span>
+                        <v-avatar color="#EF4667" size="35" v-if="props.item.assignee">
+                            <span class="white--text headlinesmal" :title="props.item.assignee.first_name+' '+props.item.assignee.last_name">{{ props.item.assignee.first_name[0]}}{{ props.item.assignee.last_name[0]}}</span>
                         </v-avatar>
                     </td>
                     <td class="text-xs-center"><strong>{{ props.item.task_point }}</strong></td>
@@ -50,7 +50,7 @@
                     </td>
                     <!-- <td class="text-xs-left">{{ props.item.project_budget }}</td> -->
                     <td class="justify-center layout px-0 smallbtn">
-                        <v-btn v-if="isEditVisible" @click="showEditTask(props.item.id)" color="primary" fab depressed small dark><v-icon>edit</v-icon></v-btn>
+                        <v-btn v-if="isEditVisible" @click="showEditTask(props.item)" color="primary" fab depressed small dark><v-icon>edit</v-icon></v-btn>
                         <v-btn v-if="isDeleteVisible" @click="deleteProject(props.item.id)" color="error" fab depressed small dark><v-icon>delete</v-icon></v-btn>
                     </td>
                 </tr>
@@ -108,8 +108,8 @@
             Task.deleteaccess(deleteaccess => this.isDeleteVisible = deleteaccess); 
         },
         methods: {
-            showEditTask(id) {
-                this.$emit('showedittask', id)
+            showEditTask(task) {
+                this.$emit('showedittask', task)
             },
             deleteProject(id) {
                 this.$emit('deleteproject', id)

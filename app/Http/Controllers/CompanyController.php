@@ -150,9 +150,9 @@ class CompanyController extends Controller
             $managerArr['user_id'] = $manager['id'];
             CompanyManager::create($managerArr);
             //Assign Organization Manager role to all the company managers selected
-            // $roleArr['user_id'] = $manager['id'];
-            // $roleArr['role_id'] = $this->company_role_id;
-            // UserRole::create($roleArr);
+            $roleArr['user_id'] = $manager['id'];
+            $roleArr['role_id'] = $this->company_role_id;
+            UserRole::firstOrCreate($roleArr,$roleArr);
         }
         return $company;
     }

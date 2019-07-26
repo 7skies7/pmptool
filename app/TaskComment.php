@@ -15,10 +15,15 @@ class TaskComment extends Model
      * @var array
      */
     protected $guarded = [];
-
+    protected $dates = ['created_at'];
 
     public function users()
     {
         return $this->hasMany(User::class, 'id','created_by')->select(['id','first_name', 'last_name']);
+    }
+
+    public function tasks()
+    {
+        return $this->belongsTo(Task::class, 'task_id','id')->select(['id','task_desc']);   
     }
 }

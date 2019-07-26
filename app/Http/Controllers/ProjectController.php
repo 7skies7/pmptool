@@ -9,9 +9,12 @@ use App\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
+use App\UserRole;
 
 class ProjectController extends Controller
 {
+    protected $project_role_id = 7;
+    protected $stakeholder_role_id = 3;
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +28,7 @@ class ProjectController extends Controller
             return abort('403');
         }
         // return Project::with('user')->latest()->get();
-        return Project::with('status')->where('is_deleted',0)->latest()->get();
+        return Project::with('status')->with('program')->with('managers')->with('stakeholders')->where('is_deleted',0)->latest()->get();
     }
 
     /**
@@ -54,20 +57,21 @@ class ProjectController extends Controller
 
         //validate
         $attributes = request()->validate(['project_name'=> 'required', 
-                                            'project_start_date' => 'required',
-                                            'project_end_date' => 'required',
+                                            'project_start_date' => 'required|date|before:project_end_date',
+                                            'project_end_date' => 'required|date|after:project_start_date',
                                             'project_desc' => 'required',
                                             'project_managers' => 'required',
                                             'project_status' => 'required',
                                             'project_stakeholders' => 'required',
+                                            'program' => 'required',
                                         ]);
         
         $attributes['created_by'] = auth()->user()->id;
         $attributes['modified_by'] = auth()->user()->id;
         $attributes['project_status'] = $attributes['project_status']['id'];
-        $attributes['project_budget'] = request('project_budget');
-        $attributes['project_start_date'] = Carbon::parse($attributes['project_start_date'])->format('Y-m-d');
-        $attributes['project_end_date'] = Carbon::parse($attributes['project_end_date'])->format('Y-m-d');
+        $attributes['program_id'] = $attributes['program']['id'];
+        $attributes['project_budget'] = 0;
+        
         // $managers = request('project_manager');
         // $attributes['project_manager'] = implode(', ', array_map(function ($manager) {
         //     return $manager['id'];
@@ -78,18 +82,28 @@ class ProjectController extends Controller
         unset($attributes['project_stakeholders']);
         
         $project = Project::create($attributes);
-        
+
         foreach(request('project_managers') as $manager)
         {
             $managerArr['project_id'] =  $project->id;
             $managerArr['user_id'] = $manager['id'];
             ProjectManager::create($managerArr);
+
+            //Assign Program Manager role to all the program managers selected
+            $roleArr['user_id'] = $manager['id'];
+            $roleArr['role_id'] = $this->project_role_id;
+            UserRole::firstOrCreate($roleArr,$roleArr);
         }
         foreach(request('project_stakeholders') as $stakeholder)
         {
             $stakeholderArr['project_id'] =  $project->id;
             $stakeholderArr['user_id'] = $stakeholder['id'];
             ProjectStakeholder::create($stakeholderArr);
+
+            //Assign Stakeholder role to all the stakeholders selected
+            $roleArr['user_id'] = $stakeholder['id'];
+            $roleArr['role_id'] = $this->stakeholder_role_id;
+            UserRole::firstOrCreate($roleArr,$roleArr);
         }
         //save in session
         return $project;
@@ -164,17 +178,18 @@ class ProjectController extends Controller
                                             'project_managers' => 'required',
                                             'project_status' => 'required',
                                             'project_stakeholders' => 'required',
+                                            'program' => 'required',
                                         ]);
 
         $attributes['project_status'] = $attributes['project_status']['id'];
-        $attributes['project_budget'] = request('project_budget');
-        $attributes['project_start_date'] = Carbon::parse($attributes['project_start_date'])->format('Y-m-d');
-        $attributes['project_end_date'] = Carbon::parse($attributes['project_end_date'])->format('Y-m-d');
+        $attributes['program_id'] = $attributes['program']['id'];
+        $attributes['project_budget'] = 0;
 
         
         $attributes['modified_by'] = auth()->user()->id;
             
-        //store in database
+        //store in database\
+        unset($attributes['program']);
         unset($attributes['project_managers']);
         unset($attributes['project_stakeholders']);
         $project = Project::where('id', $id)->update($attributes);
@@ -188,12 +203,22 @@ class ProjectController extends Controller
             $managerArr['project_id'] =  $id;
             $managerArr['user_id'] = $manager['id'];
             ProjectManager::create($managerArr);
+
+            //Assign Project Manager role to all the project managers selected
+            $roleArr['user_id'] = $manager['id'];
+            $roleArr['role_id'] = $this->project_role_id;
+            UserRole::firstOrCreate($roleArr,$roleArr);
         }
         foreach(request('project_stakeholders') as $stakeholder)
         {
             $stakeholderArr['project_id'] =  $id;
             $stakeholderArr['user_id'] = $stakeholder['id'];
             ProjectStakeholder::create($stakeholderArr);
+
+            //Assign Stakeholder role to all the stakeholder selected
+            $roleArr['user_id'] = $stakeholder['id'];
+            $roleArr['role_id'] = $this->stakeholder_role_id;
+            UserRole::firstOrCreate($roleArr,$roleArr);
         }
 
         //save in session

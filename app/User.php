@@ -28,9 +28,28 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function program()
+    public function roles()
     {
-        return $this->hasMany(Program::class, 'created_by');
+        return $this->hasManyThrough(
+            Role::class,          // The model to access to
+            Userrole::class, // The intermediate table that connects the Company with the User.
+            'user_id',                 // The column of the intermediate table that connects to this model by its ID.
+            'id',              // The column of the intermediate table that connects the Company by its ID.
+            'id',                      // The column that connects this model with the intermediate model table.
+            'role_id'               // The column of the user table that ties it to the Podcast.
+        )->select(['id','role_title','rank'])->orderBy('rank');
+    }
+
+    public function companies()
+    {
+        return $this->hasManyThrough(
+            Company::class,          // The model to access to
+            Usercompany::class, // The intermediate table that connects the Company with the User.
+            'user_id',                 // The column of the intermediate table that connects to this model by its ID.
+            'id',              // The column of the intermediate table that connects the Company by its ID.
+            'id',                      // The column that connects this model with the intermediate model table.
+            'company_id'               // The column of the user table that ties it to the Podcast.
+        )->select(['id','company_name']);
     }
 
     public function company()
@@ -53,5 +72,23 @@ class User extends Authenticatable
         return strtoupper($initials);
     }
 
-    
+    public function getFullnameAttribute()
+    {
+      return "{$this->first_name} {$this->last_name}";
+    }
+
+    public static function isRole($role)
+    {
+        $roles = auth()->user()->roles;
+        if(count($roles) >= 1)
+        {
+            if($roles->contains('id', $role))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }
