@@ -25,7 +25,15 @@ class ProgramController extends Controller
         {
             return abort('403');
         }
-        return Program::with('managers')->where('is_deleted',0)->latest()->get();
+        
+        if(User::isRole(1) || User::isRole(2) || User::isRole(3))
+        {
+            return Program::with('managers')->with('company')->where('is_deleted',0)->latest()->get();
+        }
+
+        $programs = ProgramManager::where('user_id', auth()->user()->id)->pluck('program_id');
+        return Program::with('managers')->with('company')->whereIn('id', $programs)->where('is_deleted',0)->latest()->get();
+
     }
 
     /**
@@ -58,16 +66,17 @@ class ProgramController extends Controller
                                             'program_end_date' => 'required',
                                             'program_desc' => 'required',
                                             'program_manager' => 'required',
+                                            'company' => 'required',
                                         ]);
         
         $attributes['created_by'] = auth()->user()->id;
         $attributes['modified_by'] = auth()->user()->id;
-        $attributes['program_start_date'] = Carbon::parse($attributes['program_start_date'])->format('Y-m-d');
-        $attributes['program_end_date'] = Carbon::parse($attributes['program_end_date'])->format('Y-m-d');
-       
+        $attributes['company_id'] = $attributes['company']['id'];
+               
         
         //store in database
         unset($attributes['program_manager']);
+        unset($attributes['company']);
         $program = Program::create($attributes);
 
         foreach(request('program_manager') as $manager)
@@ -130,21 +139,20 @@ class ProgramController extends Controller
                                             'program_end_date' => 'required',
                                             'program_desc' => 'required',
                                             'program_manager' => 'required',
+                                            'company' => 'required',
                                         ]);
 
-        $attributes['program_start_date'] = Carbon::parse($attributes['program_start_date'])->format('Y-m-d');
-        $attributes['program_end_date'] = Carbon::parse($attributes['program_end_date'])->format('Y-m-d');
+        $attributes['company_id'] = $attributes['company']['id'];
         $attributes['modified_by'] = auth()->user()->id;
             
         //store in database
         unset($attributes['program_manager']);
+        unset($attributes['company']);
         $program = Program::where('id', $id)->update($attributes);
 
         //Delete previous company records
         ProgramManager::where('program_id',$id)->delete();
-        //Delete previous company role for userrecords
-        //UserRole::where('role_id',$this->program_role_id)->delete();
-        
+
         foreach(request('program_manager') as $manager)
         {
             $managerArr['program_id'] =  $id;

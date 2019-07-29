@@ -34,9 +34,9 @@
                         <span class="white--text headlinesmal" :title="manager.first_name+' '+manager.last_name">{{ manager.first_name[0]}}{{ manager.last_name[0]}}</span>
                     </v-avatar>
                 </td>
-                <td class="justify-center layout px-0 tdaction" style="padding:7px 24px!important">
-                    <button v-if="isEditVisible" class="btn btn-sm btn-primary" @click="showEditProgram(props.item.id)"><font-awesome-icon icon="edit" ></font-awesome-icon></button>
-                    <button v-if="isDeleteVisible" class="btn btn-sm btn-danger" @click="deleteProgram(props.item.id)"><font-awesome-icon icon="trash" ></font-awesome-icon></button>
+                <td class="justify-center layout px-0 smallbtn" style="padding:7px 24px!important">
+                    <v-btn v-if="isEditVisible" @click="showEditProgram(props.item)" color="primary" fab depressed small dark><v-icon>edit</v-icon></v-btn>
+                    <v-btn v-if="isDeleteVisible" @click="deleteProgram(props.item.id)" color="error" fab depressed small dark><v-icon>delete</v-icon></v-btn>
                 </td>
             </template>
             <template v-slot:no-results>
@@ -85,8 +85,8 @@
             Program.deleteaccess(deleteaccess => this.isDeleteVisible = deleteaccess); 
         },
         methods: {
-            showEditProgram(id) {
-                this.$emit('showeditprogram', id)
+            showEditProgram(program) {
+                this.$emit('showeditprogram', program)
             },
             deleteProgram(id) {
                 this.$emit('deleteprogram', id)

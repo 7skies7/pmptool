@@ -33,9 +33,9 @@
                     </v-avatar>
 
                 </td>
-                <td class="justify-center layout px-0 tdaction" style="padding:7px 24px!important">
-                    <button v-if="isEditVisible" class="btn btn-sm btn-primary" @click="showEditCompany(props.item.id)"><font-awesome-icon icon="edit" ></font-awesome-icon></button>
-                    <button v-if="isDeleteVisible" class="btn btn-sm btn-danger" @click="deleteCompany(props.item.id)"><font-awesome-icon icon="trash" ></font-awesome-icon></button>
+                <td class="justify-center layout px-0 smallbtn" style="padding:7px 24px!important">
+                    <v-btn v-if="isEditVisible" @click="showEditCompany(props.item)" color="primary" fab depressed small dark><v-icon>edit</v-icon></v-btn>
+                    <v-btn v-if="isDeleteVisible" @click="deleteCompany(props.item.id)" color="error" fab depressed small dark><v-icon>delete</v-icon></v-btn>
                 </td>
             </template>
             <template v-slot:no-results>
@@ -83,8 +83,8 @@
 
         },
         methods: {
-            showEditCompany(id) {
-                this.$emit('showeditcompany', id)
+            showEditCompany(company) {
+                this.$emit('showeditcompany', company)
             },
             deleteCompany(id) {
                 this.$emit('deletecompany', id)

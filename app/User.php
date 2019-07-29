@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use DB;
 
 class User extends Authenticatable
 {
@@ -89,6 +90,17 @@ class User extends Authenticatable
         }
 
         return false;
+    }
+
+    public function timesheet()
+    {
+        return DB::select("select TIME_FORMAT(SEC_TO_TIME(SUM(TIME_TO_SEC(task_hours))), '%H:%i') as hours, date_format(tc.created_at, '%Y-%m-%d') as day, group_concat(concat(tk.task_desc,'!%',task_comment,'!%',TIME_FORMAT(task_hours, '%H:%i')) SEPARATOR '!;') as task_details from task_comments tc inner join tasks tk on tk.id = tc.task_id where tc.created_by = ".auth()->user()->id." group by date_format(tc.created_at, '%Y-%m-%d')
+            ");
+    }
+
+    public function timecard()
+    {
+        return DB::select("select log_in_date, DATE_FORMAT(log_in_time, '%H:%i') as log_in_time, DATE_FORMAT(log_out_time, '%H:%i') as log_out_time, TIME_FORMAT(TIMEDIFF(log_out_time, log_in_time), '%H:%i') as total_time from timecard where user_id = ".auth()->user()->id." group by log_in_date;");
     }
 
 }

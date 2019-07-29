@@ -58,7 +58,7 @@
                                             <template v-slot:activator="{ on }">
                                                 <v-text-field v-model="form.task_start_date" label="Select Start Date" prepend-icon="event" readonly v-on="on" :messages="form.errors.get('task_start_date')"></v-text-field>
                                           </template>
-                                          <v-date-picker v-model="form.start_date" @input="start_date = false"></v-date-picker>
+                                          <v-date-picker v-model="form.task_start_date" @input="start_date = false"></v-date-picker>
                                         </v-menu>
                                     </v-card>
                                 </v-flex>
@@ -68,7 +68,7 @@
                                             <template v-slot:activator="{ on }">
                                                 <v-text-field v-model="form.task_end_date" label="Select End Date" prepend-icon="event" readonly v-on="on" :messages="form.errors.get('task_end_date')"></v-text-field>
                                           </template>
-                                          <v-date-picker v-model="form.end_date" @input="end_date = false"></v-date-picker>
+                                          <v-date-picker v-model="form.task_end_date" @input="end_date = false"></v-date-picker>
                                         </v-menu>
                                         </v-card>
                                     </v-card>

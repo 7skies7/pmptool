@@ -29,13 +29,35 @@
                         </v-card>
                     </v-flex>
                     <v-flex xs12 sm12 md12>
-                        <v-card>
+                        <v-card class="userblockdiv">
                             <v-toolbar color="#28B5E7" dark style="box-shadow:unset"> 
-                                <v-toolbar-title>Welcome, <span>{{ user.first_name}}</span></v-toolbar-title>
+                                <v-toolbar-title>Welcome, <span>{{ user.first_name }}</span></v-toolbar-title>
                             </v-toolbar>
               
                             <v-list two-line>
                                 <!-- <v-divider inset></v-divider> -->
+                                <v-list-tile @click="">
+                                    <v-list-tile-action>
+                                        108
+                                    </v-list-tile-action>
+                  
+                                    <v-list-tile-content>
+                                        <v-list-tile-title>Hours Clocked</v-list-tile-title>
+                                        <v-list-tile-sub-title>Monthly</v-list-tile-sub-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                                <v-list-tile @click="">
+                                    <v-list-tile-action>
+                                        90%
+                                    </v-list-tile-action>
+                  
+                                    <v-list-tile-content>
+                                        <v-list-tile-title>Efficiency</v-list-tile-title>
+                                        <v-list-tile-sub-title>Statistics</v-list-tile-sub-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                                <v-divider inset></v-divider>
+
                                 <v-list-tile @click="">
                                     <v-list-tile-action>
                                         <v-icon color="indigo">mail</v-icon>
@@ -72,56 +94,49 @@
                     
                 </v-layout>
             </v-flex>
-            <v-flex xs12 sm6 md3>
+            <v-flex xs12 sm6 md5>
                 <v-layout row wrap>
-                    
-                    <v-flex xs12 sm12 md12>
-                        <v-card class="mx-auto" color="blue-grey darken-2" dark >
-                            <v-list two-line subheader color="blue-grey darken-2">
-                                <v-subheader inset>Statistics</v-subheader>
-                                <v-list-tile  avatar @click="">
-                                    <v-list-tile-avatar>
-                                        <v-icon class="blue white--text">call_to_action</v-icon>
-                                    </v-list-tile-avatar>
-              
-                                    <v-list-tile-content>
-                                        <v-list-tile-title>Overall Efficiency</v-list-tile-title>
-                                        <v-list-tile-sub-title><!-- {{ item.subtitle }} --></v-list-tile-sub-title>
-                                    </v-list-tile-content>
-              
-                                    <v-list-tile-action>
-                                        <v-btn icon ripple>
-                                            90%
-                                        </v-btn>
-                                    </v-list-tile-action>
-                                </v-list-tile>
-                                <v-list-tile  avatar @click="">
-                                    <v-list-tile-avatar>
-                                        <v-icon class="blue white--text">call_to_action</v-icon>
-                                    </v-list-tile-avatar>
-              
-                                    <v-list-tile-content>
-                                        <v-list-tile-title>Overall Efficiency</v-list-tile-title>
-                                        <v-list-tile-sub-title><!-- {{ item.subtitle }} --></v-list-tile-sub-title>
-                                    </v-list-tile-content>
-              
-                                    <v-list-tile-action>
-                                        <v-btn icon ripple>
-                                            90%
-                                        </v-btn>
-                                    </v-list-tile-action>
-                                </v-list-tile>
-                            </v-list>
+                    <v-flex xs12 sm6 md12>
+                        <v-card class="mx-auto" color="grey lighten-4" >
+                            <v-subheader inset>Task Deadline Passed (High Risk)</v-subheader>
+                            <v-data-table dense :height="400" :headers="headers_task_deadlin" :items="taskdeadlinepassed" class="elevation-1" dense>
+                                <template v-slot:items="props">
+                                    <v-btn class="text-xs-left" href="#/mytasks" flat small color="primary">{{ props.item.task_desc }}</v-btn>
+                                    <td class="text-xs-left">{{ props.item.project.project_name }}</td>
+                                    <td class="text-xs-left">{{ props.item.task_end_date }}</td>
+
+                                    <!-- <td class="text-xs-left">{{ props.item.status.status_name }}</td> -->
+                                    <td class="text-xs-center"><v-progress-linear v-model="props.item.task_completion" color="#ed4555" thumb-label="always"></v-progress-linear></td>
+                                </template>
+                            </v-data-table>
                         </v-card>
                     </v-flex>
-                    
+                    <v-flex xs12 sm6 md12>
+                        <v-card class="mx-auto" color="grey lighten-4" >
+                            <v-subheader inset>Upcoming Tasks</v-subheader>
+                            <v-data-table dense :height="400" :headers="headers_task_upcoming" :items="upcomingtasks" class="elevation-1" dense>
+                                <template v-slot:items="props">
+                                    <td class="text-xs-left">
+                                        <v-btn href="#/mytasks" flat small color="primary">{{ props.item.task_desc }}</v-btn>
+                                    </td>
+                                    <td class="text-xs-left">{{ props.item.project.project_name }}</td>
+                                    <td class="text-xs-left">{{ props.item.task_end_date }}</td>
+                                    <!-- <td class="text-xs-center">
+                                        <h5 v-if="props.item.status"><b-badge pill variant="info">{{ props.item.priority.priority_type }}</b-badge></h5>
+                                        <h5 v-else>-</h5>
+                                    </td> -->
+                                    <td class="text-xs-center"><v-progress-linear v-model="props.item.task_completion" thumb-label="always"></v-progress-linear></td>
+                                </template>
+                            </v-data-table>
+                        </v-card>
+                    </v-flex>
                 </v-layout>
             </v-flex>
-            <v-flex flex xs12 sm6 md6>
+            <v-flex flex xs12 sm6 md4>
                 <v-layout row wrap>
                     <v-flex flex xs12 sm6 md12>
                         <div class="card card-default shadow-sm">
-                            <div class="card-header" style="text-transform:unset">
+                            <div class="card-header activitycalendar">
                                 <v-list two-line subheader>
                                     <v-list-tile avatar>
                                         <v-list-tile-avatar>
@@ -135,7 +150,7 @@
                                 </v-list>
                             </div>
                             <div class="card-body white lighten-4">
-                            <FullCalendar defaultView="dayGridMonth" :key="calendarCount" :eventDurationEditable="true" :plugins="calendarPlugins"  :events="timesheets"/>
+                            <FullCalendar defaultView="dayGridMonth" :key="calendarCount" :eventDurationEditable="true" :plugins="calendarPlugins"  :events="timesheets" @eventClick="onEventClick"/>
                             </div>
                         </div>
                     </v-flex>
@@ -165,6 +180,19 @@
           </v-card-actions>
         </v-card>
     </v-dialog>
+    <v-dialog v-model="taskdialog" width="500">
+        <v-card>
+            <v-card-title class="headline grey lighten-2" primary-title>
+            Details
+            </v-card-title>
+            <v-card-text v-html="commenttable"></v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" flat @click="taskdialog = false">Close</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </div>
 </template>
 
@@ -177,9 +205,11 @@
     import dayGridPlugin from '@fullcalendar/daygrid';
     import Camera from '../../components/Camera.vue';
     import User from '../../models/User';
+    import Dashboard from '../../models/Dashboard';
+
     export default {
         components: {
-            Datepicker,Chart, FullCalendar, Camera, moment
+            Datepicker,Chart, FullCalendar, Camera, moment, Dashboard
         },
         data() {
             return{
@@ -194,6 +224,7 @@
                     message: "You are required to face log in, to track your timesheet"
                 },
                 dialog:false,
+                taskdialog:false,
                 isLoginVisible:true,
                 isLogoutVisible:false,
                 camcomponent:'',
@@ -207,6 +238,22 @@
                 },
                 timesheets: [],
                 calendarCount:0,
+                taskdeadlinepassed: [],
+                upcomingtasks:[],
+                commenttable:'',
+                headers_task_deadlin: [
+                    { text: 'Task Name ', align: 'left', sortable: false, value: 'task_desc' },
+                    { text: 'Project',  value: 'project.project_name' },
+                    { text: 'End Date', value: 'task_end_date' },
+                    { text: 'Progress', value: 'task_completion' },
+                ],
+                headers_task_upcoming: [
+                    { text: 'Task Name ', align: 'left', sortable: false, value: 'task_desc' },
+                    { text: 'Project',  value: 'project.project_name' },
+                    { text: 'End Date', value: 'task_end_date' },
+                    // { text: 'Priority', value: 'priority.priority_type' },
+                    { text: 'Progress', value: 'task_completion' },
+                ],
                 
             }
         },
@@ -214,6 +261,9 @@
             User.getTimecard(timecard => this.timecard = timecard); 
             User.fetchUserDetails(user => this.user = user); 
             User.fetchTimesheet(timesheets => this.timesheets = timesheets);
+            Dashboard.getTaskDeadlinePassed(records => this.taskdeadlinepassed = records);
+            Dashboard.getAllUpcomingTasks(records => this.upcomingtasks = records);
+
 
         },
         methods: {
@@ -244,6 +294,10 @@
             },
             getLogTime(){
                 User.getTimecard(timecard => this.timecard = timecard); 
+            },
+            onEventClick(e){
+                this.commenttable = e.event.extendedProps.comments;
+                this.taskdialog = true;
             }
 
         },
@@ -252,7 +306,6 @@
         },
         watch: {
             timecard() {
-                
                 if(this.timecard != '')
                 {
                     if(this.timecard[0].log_out_image !=  null && this.timecard[0].log_in_image !=  null){
@@ -274,10 +327,10 @@
             user() {
                 // console.log(this.user);
                 if(this.user != ''){
-                    user.first_name = this.user.first_name;
-                    user.email = this.user.email;
-                    user.alternate_email = this.user.alternate_email;
-                    user.roles = this.user.roles;
+                    this.user.first_name = this.user.first_name;
+                    this.user.email = this.user.email;
+                    this.user.alternate_email = this.user.alternate_email;
+                    this.user.roles = this.user.roles;
                 }
             },
             timesheets() {

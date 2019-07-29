@@ -6,7 +6,7 @@
             <div class="card-body">
                 <v-app id="inspire">
                     <v-container>
-                        <v-timeline dense clipped class="commentblock" v-if="isAddCommentForm">
+                        <v-timeline dense clipped class="commentblock" v-if="timeline">
                             <v-slide-x-transition group>
                                 <v-timeline-item v-for="event in timeline" :key="event.id" class="mb-3" color="grey" small>
                                 <v-layout justify-space-between>
@@ -34,9 +34,14 @@
                             <v-timeline-item fill-dot class="white--text mb-0" color="info" large>
                                 <template v-slot:icon> <span><v-icon medium dark>comment</v-icon></span> </template>
                                 <v-layout row wrap>
-                                    <v-flex xs6>
-                                        <v-text-field v-model="form.task_hours" label="Hours" placeholder="Add Hours" box :suffix="calcAvailableHours" :messages="form.errors.get('task_hours')"></v-text-field>
-                                        </v-card>
+                                    <v-flex xs2>
+                                        <v-text-field type="number" v-model="task_hrs" label="HH" placeholder="HH" box  :messages="form.errors.get('task_hours')" :rules="rules.hrsmax"></v-text-field>                                        
+                                    </v-flex>
+                                    <v-flex xs2>
+                                        <v-text-field type="number" v-model="task_mins" label="MM" placeholder="MM" box :messages="form.errors.get('task_hours')" :rules="rules.minsmax"></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs2>
+                                        <v-text-field v-model="calcAvailableHours" label="Hrs Remain" placeholder="Hrs Available" box readonly="readonly"></v-text-field>
                                     </v-flex>
                                     <v-flex xs6>
                                         <v-card flat class="customcard">
@@ -93,7 +98,7 @@
                 form: new Form({
                     task_hours: '',
                     task_comment: '',
-                    task_completion: '',
+                    task_completion: 0,
                     errors:'',
                     task_id: this.taskid,
                     availableHours: '',
@@ -104,6 +109,13 @@
                 isLoading:true,
                 isAddCommentForm:false,
                 dialog:false,
+                prevProg:'',
+                rules: {
+                    hrsmax: [val => val < 24  || `Hours should be between 0 to 24`,val => val >= 0  || `Hours should be between 0 to 24`],
+                    minsmax: [val => val < 59  || `Mins should be between 0 to 59`, val => val > 0  || `Mins should be between 0 to 59`],
+                },
+                task_hrs:'',
+                task_mins:'',
             }
         },
         created() {
@@ -116,23 +128,33 @@
         },
         methods: {
             onSubmit() {
+                if(this.form.task_completion <= this.prevProg)
+                {
+                    alert('You are required to update the progress percentage also.');
+                    return false;
+                }
                 this.form.post('/task/comments/'+this.taskid+'/store')
                .then((task) => {
                     this.$emit('commented');
-                });
+                })
+               .catch(error => this.form.task_completion = this.events[this.events.length - 1].task_completion);
                
             },                                         
             closeCommentForm() {
                 this.$emit('closeCommentForm');
             },
             onProgressChange (e) {
-                let previousProgress = this.events[this.events.length - 1].task_completion;
-                if(e < previousProgress)
-                {
-                    this.dialog = true;
-                    this.form.task_completion = previousProgress;
-                    
+                if(this.events.length > 0) {
+                    let previousProgress = this.events[this.events.length - 1].task_completion;
+                    if(e < previousProgress)
+                    {
+                        this.dialog = true;
+                        this.form.task_completion = previousProgress;
+                        this.prevProg = previousProgress;
+                    }
                 }
+
+                
             }       
         },
         computed: {
@@ -141,13 +163,24 @@
             },
             calcAvailableHours() {
                 Task.getAvailableHours(hours => this.form.availableHours = hours, this.taskpoint,this.taskid);
-                return "'Available Hours:" + this.form.availableHours + "'";
+                return this.form.availableHours;
             }
         },
         watch: {
             events() {
-                this.form.task_completion = this.events[this.events.length - 1].task_completion;
-            }           
+                if(this.events.length > 0)
+                {
+                    this.form.task_completion = this.events[this.events.length - 1].task_completion;
+                }
+                
+            },
+            task_hrs() {
+                this.form.task_hours = this.task_hrs + ':' + this.task_mins;
+            },
+            task_mins() {
+                this.form.task_hours = this.task_hrs + ':' + this.task_mins;
+            }
+
         }
     }
 </script>

@@ -2,66 +2,10 @@
 <div id="dashboard" style="margin-top:-24px!important">
     <v-app id="inspire">
         <v-container grid-list-md text-xs-center class="unsetWidth">
-          <v-layout row wrap>
-            <v-flex flex xs12 sm6 md2>
-                <v-card class="mx-auto" color="white" dark max-width="400">
-                    <v-card-title>
-                        <v-icon large left > mdi-twitter </v-icon>
-                        <span class="title font-weight-light black--text" style="font-size:16px; margin-top:10px">Overall Progress</span>
-                    </v-card-title>
-                    <v-card-text class="headline font-weight-bold">   
-                        <v-progress-circular :rotate="360" :size="100" :width="15" value="78%" color="#26c6da" >78%</v-progress-circular>     
-                    </v-card-text>
-                </v-card>
-            </v-flex>
-            <v-flex flex xs12 sm6 md8>
-                <v-card color="white lighten-2" dark>
-                    <!-- <v-flex flex xs12>
-                        
-                         <div class="text-xs-center" style="padding-left:20px;padding-right:20px">
-                            <v-progress-linear height="10" v-model="progressbar" color="#26c6da"></v-progress-linear>
-                        </div>
-                        
-                    </v-flex> -->
-                    <v-flex d-flex>
-                        <v-layout row wrap>
-                            <v-flex v-for="card in progresscards" :key="card" d-flex xs3>
-                                <v-card color="white lighten-2" dark style=" box-shadow:unset!important">
-                                    <v-card-title class="text-xs-center" style="margin-top:-8px!important;align-items:center">
-                        <span class="title font-weight-light black--text">{{ card.title }}</span>
-                    </v-card-title>
-                                <v-card-text><v-progress-circular :rotate="360" :size="100" :width="15" :value="card.value" :color="card.color" class="vprog"><v-icon :color="card.color">{{card.icon}}</v-icon></v-progress-circular></v-card-text>
-                                
-                                </v-card>
-                            </v-flex>
-                        </v-layout>
-                    </v-flex>
-                </v-card>
-            </v-flex>   
-            <v-flex flex xs12 sm6 md2>
-                <v-card class="mx-auto" color="#26c6da" dark max-width="400">
-                    <v-card-title>
-                        <v-icon large left > mdi-twitter </v-icon>
-                        <span class="title font-weight-light">ICM Deadline</span>
-                    </v-card-title>
-                    <v-card-text class="headline font-weight-bold">   
-                        120 Days     
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-list-tile class="grow">
-                            <v-list-tile-avatar color="#E34C6E">
-                                <v-icon>flag</v-icon>
-                            </v-list-tile-avatar>  
-                            <v-list-tile-content>
-                                <v-list-tile-title>Friday 21, 2019</v-list-tile-title>
-                            </v-list-tile-content>
-                            
-                        </v-list-tile>
-                    </v-card-actions>
-                </v-card>
-            </v-flex>
+          <!-- <v-layout row wrap> -->
             
-          </v-layout>
+            
+          <!-- </v-layout> -->
      
           <v-layout row wrap>
             

@@ -4,13 +4,12 @@
             <div :class="cardWidth">
                 <div class="card card-default shadow-sm border-0">
                     <div class="card-header">
-                        <div class="d-flex">
-                            <div class="flex-1">
-                                <img src="/svg/project.svg" class="header-svg"/>
+                        <div class="sflex spacebetween">
+                            <div class="childFlex">
                                 <span>Programs</span>
                             </div>
                             <div class="pb-11">
-                                <button v-if="isAddVisible" class="btn btn-add float-right" @click="showaddProgram">Add New</button>
+                                <v-btn color="info" v-if="isAddVisible" @click="showaddProgram">Add New</v-btn>
                             </div>
                         </div>
                     </div>
@@ -24,7 +23,7 @@
                 </div>
             </div>
             <add-program v-if="addProgram" :key="latestPrograms" @completed="addNewProgram" @closeAddForm="closeForm"></add-program>
-            <edit-program v-if="editProgram" :key="latestPrograms" :programid="programid" @updatecompleted="updateProgram" @closeEditForm="closeForm"></edit-program>
+            <edit-program v-if="editProgram" :key="latestPrograms" :program="program" @updatecompleted="updateProgram" @closeEditForm="closeForm"></edit-program>
         </div>
     </div>
     
@@ -45,7 +44,7 @@
             return{
                 addProgram: false,
                 editProgram: false,
-                programid:'',
+                program:'',
                 companies: [],
                 cardWidth: 'col-md-10',
                 form: new Form(),
@@ -68,7 +67,7 @@
            },
            showEditProgram(id) {
                 this.editProgram = false;
-                this.programid = id;
+                this.program = id;
                 this.addProgram = false;
                 this.editProgram = true;
                 this.cardWidth = 'col-md-6';
@@ -95,7 +94,7 @@
             closeForm() {
                 this.addProgram = false;
                 this.editProgram = false;
-                this.programid = '';
+                this.program = '';
                 this.cardWidth = 'col-md-10';
             }
         },

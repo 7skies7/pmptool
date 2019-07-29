@@ -29,6 +29,17 @@ class Dashboard{
 		return axios.get('/dashboard/commentfeed')
 			.then(({data}) => then(data))	
 	}
+
+	static getTaskDeadlinePassed(then) {
+		return axios.get('/dashboard/taskdeadlinepassed')
+			.then(({data}) => then(data))		
+	}
+
+	static getAllUpcomingTasks(then) {
+		return axios.get('/dashboard/upcomingtasks')
+			.then(({data}) => then(data))		
+	}
+	
 }
 
 export default Dashboard;

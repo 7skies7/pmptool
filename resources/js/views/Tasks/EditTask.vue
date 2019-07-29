@@ -41,7 +41,7 @@
                                             <template v-slot:activator="{ on }">
                                                 <v-text-field v-model="form.task_start_date" label="Select Start Date" prepend-icon="event" readonly v-on="on" :messages="form.errors.get('task_start_date')"></v-text-field>
                                           </template>
-                                          <v-date-picker v-model="form.start_date" @input="start_date = false"></v-date-picker>
+                                          <v-date-picker v-model="form.task_start_date" @input="start_date = false"></v-date-picker>
                                         </v-menu>
                                     </v-card>
                                 </v-flex>
@@ -51,7 +51,7 @@
                                             <template v-slot:activator="{ on }">
                                                 <v-text-field v-model="form.task_end_date" label="Select End Date" prepend-icon="event" readonly v-on="on" :messages="form.errors.get('task_end_date')"></v-text-field>
                                           </template>
-                                          <v-date-picker v-model="form.end_date" @input="end_date = false"></v-date-picker>
+                                          <v-date-picker v-model="form.task_end_date" @input="end_date = false"></v-date-picker>
                                         </v-menu>
                                         </v-card>
                                     </v-card>
@@ -120,8 +120,8 @@
             return {
                 form: new Form({
                     task_desc: this.task.task_desc,
-                    task_start_date: new Date().toISOString().substr(0, 10),
-                    task_end_date: new Date().toISOString().substr(0, 10),
+                    task_start_date: this.task.task_start_date,
+                    task_end_date: this.task.task_end_date,
                     errors:'',
                     project_id: this.$route.params.id,
                     task_assignee:{},
@@ -174,10 +174,7 @@
         },
         mounted() {
             console.log('Task mounted.');
-            if(this.task.assignee != 0)
-            {
-                this.form.task.task_assignee = {id: this.task.assignee.id, name:this.task.assignee.first_name + ' ' + this.task.assignee.last_name};
-            }
+            
             
         },
         computed: {
@@ -192,6 +189,9 @@
             }
         },
         watch: {
+            priority() {
+                this.form.task_assignee = {id: this.task.assignee.id, name:this.task.assignee.first_name + ' ' + this.task.assignee.last_name};
+            }
         }   
     }
 </script>

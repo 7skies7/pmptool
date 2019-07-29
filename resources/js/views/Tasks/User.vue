@@ -68,7 +68,7 @@
                                                     <h5 v-else>-</h5>
                                                 </td>
                                                 <td>
-                                                    <v-btn @click="onShowComments(props.item.id, props.item.task_point)" fab depressed small dark color="primary"><v-icon>add</v-icon></v-btn>
+                                                    <v-btn @click="onShowComments(props.item.id, props.item.task_point)"  depressed small dark color="primary">Add Hours</v-btn>
                                                 </td>
                                                
                                             </tr>

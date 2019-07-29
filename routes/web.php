@@ -145,7 +145,8 @@ Route::get('/dashboard/projectsdeadline', 'DashboardController@fetchProjectsDead
 Route::get('/dashboard/projects', 'DashboardController@fetchProjects');
 Route::get('/dashboard/projecttask', 'DashboardController@fetchProjectTask');
 Route::get('/dashboard/commentfeed', 'DashboardController@fetchUserComments');
-
+Route::get('/dashboard/taskdeadlinepassed', 'DashboardController@fetchTasksDeadlinePassed');
+Route::get('/dashboard/upcomingtasks', 'DashboardController@fetchUpcomingTasks');
 
 
 // Master Table Routes

@@ -330,7 +330,7 @@ class TaskController extends Controller
     {
         
         $attributes = request()->validate(['task_comment'=> 'required', 'task_hours'=> '
-            required|numeric','task_completion'=> 'required']);
+            required','task_completion'=> 'required']);
 
         //Commented: To valdiated hours with remainging hours for the task
         // if($attributes['task_hours'] > request('availableHours'))
@@ -339,6 +339,13 @@ class TaskController extends Controller
         //     $message['errors']['message'] = 'The given data was invalid';
         //     return response()->json($message, 422); 
         // }
+        $oldComment = TaskComment::where('task_id', $taskid)->latest()->limit(1)->first();
+        if(!empty($oldComment) && $oldComment->task_completion >= $attributes['task_completion'])
+        {
+            $message['errors']['task_completion'][] = "Please you are required to update the task progress."; 
+            $message['errors']['message'] = 'The given data was invalid';
+            return response()->json($message, 422); 
+        }
         $attributes['created_by'] = auth()->user()->id;
         $attributes['modified_by'] = auth()->user()->id;
         $attributes['task_id'] = $request->get('task_id');
@@ -378,7 +385,7 @@ class TaskController extends Controller
             $commentArr['task_hours'] = null;
             if(!empty($comment->task_hours) && isset($comment->task_hours))
             {
-                $commentArr['task_hours'] = $comment->task_hours;
+                $commentArr['task_hours'] = Carbon::parse($comment->task_hours)->format('H:i');
             }
             $commentsArr[] = $commentArr;
 
@@ -395,9 +402,13 @@ class TaskController extends Controller
      */
     public function fetchAvailableHours($point, $taskid)
     {
-        $userHours = TaskComment::where('task_id', $taskid)->sum('task_hours');
+        $userHours = TaskComment::where('task_id', $taskid)->selectRaw('time(sum(task_hours)) as hourstotal')->get();
+        $usedHours = Carbon::parse($userHours[0]->hourstotal);        
         $hours = StoryPointMaster::pointtohours($point);
-        return $hours - $userHours;
+        $totalHours = Carbon::parse($hours.':00:00');
+        $availableHours = $usedHours->diff($totalHours)->format("%H:%i");
+
+        return $availableHours;
     }
 
     /**
@@ -419,13 +430,10 @@ class TaskController extends Controller
 
             if($server == 1)
             {
-
                 $points = Task::where('is_deleted',0)->where('task_heirarchy',2)->where('parent_id',$childtask['parent_id'])->where('id', '!=', $id)->sum('task_point');    
-
             }else{
 
                 $points = Task::where('is_deleted',0)->where('task_heirarchy',2)->where('parent_id',$childtask['parent_id'])->sum('task_point');
-
             }
 
             // dd('asdasdasd');

@@ -7,9 +7,9 @@
 
                     <v-toolbar tabs>
                         <div>
-                            <v-avatar size="35">
+                           <!--  <v-avatar size="35">
                                 <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
-                            </v-avatar>
+                            </v-avatar> -->
                             <v-avatar color="teal" size="35">
                                 <span class="white--text headlinesmall">CM</span>
                             </v-avatar>

@@ -32,4 +32,10 @@ class Program extends Model
         )->select(['id','first_name','last_name']);
     }
 
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id','id')->select(['id','company_name']);
+    }
+
+
 }

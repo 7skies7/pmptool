@@ -11626,3 +11626,29 @@ a.v-btn {
   height: 300px !important;
 }
 
+.activitycalendar {
+  text-transform: unset;
+  padding: 0px !important;
+}
+
+.userblockdiv .v-toolbar__content {
+  height: 40px !important;
+}
+
+.userblockdiv .v-toolbar__title {
+  font-size: 15px !important;
+}
+
+.userblockdiv .v-list--two-line .v-list__tile {
+  height: 50px !important;
+}
+
+.userblockdiv .v-list__tile__title {
+  height: 14px !important;
+  line-height: 14px !important;
+}
+
+.userblockdiv .v-list__tile__sub-title {
+  font-size: 12px !important;
+}
+

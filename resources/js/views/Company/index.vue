@@ -3,14 +3,13 @@
         <div class="row justify-content-center">
             <div :class="cardWidth">
                 <div class="card card-default shadow-sm border-0">
-                    <div class="card-header">
-                        <div class="d-flex">
-                            <div class="flex-1">
-                                <img src="/svg/project.svg" class="header-svg"/>
+                    <div class="card-header">   
+                        <div class="sflex spacebetween">
+                            <div class="childFlex">
                                 <span>Organizations</span>
                             </div>
                             <div class="pb-11">
-                                <button v-if="isAddVisible" class="btn btn-add float-right" @click="showAddCompany">Add New</button>
+                                <v-btn color="info" v-if="isAddVisible" @click="showAddCompany">Add New</v-btn>
                             </div>
                         </div>
                     </div>
@@ -24,7 +23,7 @@
                 </div>
             </div>
             <add-company v-if="addCompany" :key="latestCompanies" @completed="addNewCompany" @closeAddForm="closeForm"></add-company>
-            <edit-company v-if="editCompany" :key="latestCompanies" :companyid="companyid" @updatecompleted="updateCompany" @closeEditForm="closeForm"></edit-company>
+            <edit-company v-if="editCompany" :key="latestCompanies" :company="company" @updatecompleted="updateCompany" @closeEditForm="closeForm"></edit-company>
         </div>
     </div>
     
@@ -45,7 +44,7 @@
             return{
                 addCompany: false,
                 editCompany: false,
-                companyid:'',
+                company:'',
                 companies: [],
                 cardWidth: 'col-md-10',
                 form: new Form(),
@@ -69,7 +68,7 @@
            },
            showEditCompany(id) {
                 this.editCompany = false;
-                this.companyid = id;
+                this.company = id;
                 this.addCompany = false;
                 this.editCompany = true;
                 this.cardWidth = 'col-md-6';
@@ -96,7 +95,7 @@
             closeForm() {
                 this.addCompany = false;
                 this.editCompany = false;
-                this.companyid = '';
+                this.company = '';
                 this.cardWidth = 'col-md-10';
             }
         },

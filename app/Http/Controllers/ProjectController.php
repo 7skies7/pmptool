@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Project;
 use App\ProjectStakeholder;
 use App\ProjectManager;
+use App\ProgramManager;
 use App\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -27,8 +28,19 @@ class ProjectController extends Controller
         {
             return abort('403');
         }
-        // return Project::with('user')->latest()->get();
-        return Project::with('status')->with('program')->with('managers')->with('stakeholders')->where('is_deleted',0)->latest()->get();
+        
+        //show all projects to Super Admin, Admin, Organization Manager
+        if(User::isRole(1) || User::isRole(2) || User::isRole(3))
+        {
+            return Project::with('status')->with('program')->with('managers')->with('stakeholders')->where('is_deleted',0)->latest()->get();
+        }
+
+        if(User::isRole(6))
+        {
+            return Project::with('status')->with('program')->with('managers')->with('stakeholders')->whereIn('program_id',ProgramManager::where('user_id', auth()->user()->id)->pluck('program_id'))->where('is_deleted',0)->latest()->get();
+        }
+
+        return Project::with('status')->with('program')->with('managers')->with('stakeholders')->whereIn('id',ProjectManager::where('user_id', auth()->user()->id)->pluck('project_id'))->where('is_deleted',0)->latest()->get();
     }
 
     /**
@@ -202,7 +214,7 @@ class ProjectController extends Controller
         {
             $managerArr['project_id'] =  $id;
             $managerArr['user_id'] = $manager['id'];
-            ProjectManager::create($managerArr);
+            ProjectManager::firstOrCreate($managerArr);
 
             //Assign Project Manager role to all the project managers selected
             $roleArr['user_id'] = $manager['id'];

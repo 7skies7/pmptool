@@ -4,77 +4,88 @@
             <div class="card-header">Add New Program</div>
 
             <div class="card-body">
-                <form @submit.prevent="onSubmit" @keydown="form.errors.clear()">
-                    <!-- <input type="hidden" > -->
-
-                    <div class="form-group row">
-                        <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
-
-                        <div class="col-md-6">
-                            <input id="program_name" type="text" class="form-control" placeholder="Enter program name" v-model="form.program_name" name="program_name" value="" >
-                            <span class="invalid-feedback" role="alert" v-if="form.errors.has('program_name')" v-text="form.errors.get('program_name')"></span>
-
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group row">
-                        <label for="program_desc" class="col-md-4 col-form-label text-md-right">Description</label>
-
-                        <div class="col-md-6">
-                            <textarea id="program_desc" class="form-control" placeholder="Enter program description" v-model="form.program_desc" name="form.program_desc" value="" ></textarea>
-                            <span class="invalid-feedback" role="alert" v-if="form.errors.has('program_name')" v-text="form.errors.get('program_name')"></span>
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group row">
-                        <label for="program_start_date" class="col-md-4 col-form-label text-md-right">Start Date</label>
-
-                        <div class="col-md-6">
-                            <Datepicker v-model="form.program_start_date" input-class="form-control" :format="customFormatter"></Datepicker>
-                            <span class="invalid-feedback" role="alert" v-if="form.errors.has('program_name')" v-text="form.errors.get('program_name')"></span>
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group row">
-                        <label for="program_end_date" class="col-md-4 col-form-label text-md-right">End Date</label>
-
-                        <div class="col-md-6">
-                            <Datepicker v-model="form.program_end_date" input-class="form-control" :format="customFormatter"></Datepicker>
-
-                            <!-- @if ($errors->has('program_name')) -->
-                                <span class="invalid-feedback" role="alert">
-                                    <!-- <strong>{{ $errors->first('program_name') }}</strong> -->
-                                </span>
-                            <!-- @endif -->
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group row">
-                        <label for="program_manager" class="col-md-4 col-form-label text-md-right">Program Manager</label>
-                        <div class="col-md-6">
-                            <multiselect v-model="form.program_manager" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select Manager" label="name" track-by="id" :preselect-first="false" >
-                                <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
-                            </multiselect>
-                            <h5><b-badge pill variant="info" v-for="manager in form.program_manager" v-bind:key="manager.id">{{ manager.name }} </b-badge></h5>
-                            <!-- @if ($errors->has('program_name')) -->
-                                <span class="invalid-feedback" role="alert">
-                                    <!-- <strong>{{ $errors->first('program_name') }}</strong> -->
-                                </span>
-                            <!-- @endif -->
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group row mb-0">
-                        <div class="col-md-8 offset-md-4">
-                            <button type="submit" class="btn btn-primary" :disabled="form.errors.any()">
-                                Save
-                            </button>
-                            <button type="button" class="btn btn-primary" @click="closeAddForm">
-                                Close
-                            </button>
-                        </div>
-                    </div>
-                </form>
+                <v-app id="editTask">
+                    <v-form @submit.prevent="onSubmit" @keydown="form.errors.clear()">
+                        <v-container grid-list-md text-xs-center>
+                            <v-layout row wrap>
+                                <v-flex xs12>
+                                    <v-card color="white">
+                                        <v-text-field v-model="form.program_name" label="Program Name" placeholder="Enter program name" :messages="form.errors.get('program_name')"></v-text-field>
+                                    </v-card>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-card color="white">
+                                        <v-textarea v-model="form.program_desc" label="Program Description" placeholder="Enter Program Description" :messages="form.errors.get('program_desc')"></v-textarea>
+                                    </v-card>
+                                </v-flex>
+                                <v-flex xs6>
+                                    <v-card color="white" >
+                                        <v-menu v-model="start_date" :close-on-content-click="false" :nudge-right="40" lazy transition="scale-transition" offset-y full-width min-width="290px">
+                                            <template v-slot:activator="{ on }">
+                                                <v-text-field v-model="form.program_start_date" label="Select Start Date" prepend-icon="event" readonly v-on="on" :messages="form.errors.get('program_start_date')"></v-text-field>
+                                          </template>
+                                          <v-date-picker v-model="form.program_start_date" @input="start_date = false"></v-date-picker>
+                                        </v-menu>
+                                    </v-card>
+                                </v-flex>
+                                <v-flex xs6>
+                                    <v-card color="white">
+                                        <v-menu v-model="end_date" :close-on-content-click="false" :nudge-right="40" lazy transition="scale-transition" offset-y full-width min-width="290px">
+                                            <template v-slot:activator="{ on }">
+                                                <v-text-field v-model="form.program_end_date" label="Select End Date" prepend-icon="event" readonly v-on="on" :messages="form.errors.get('program_end_date')"></v-text-field>
+                                          </template>
+                                          <v-date-picker v-model="form.program_end_date" @input="end_date = false"></v-date-picker>
+                                        </v-menu>
+                                        </v-card>
+                                    </v-card>
+                                </v-flex>
+                                <v-flex xs6>
+                                    <v-card color="white">
+                                        <div class="v-input v-text-field v-input--is-label-active theme--light">
+                                            <div class="v-input__control">
+                                                <div class="v-input__slot">
+                                                    <div class="v-text-field__slot multiselectwps">
+                                                        <label aria-hidden="true" class="v-label v-label--active theme--light" style="left: 0px; right: auto; position: absolute;">Organization</label>
+                                                        <multiselect v-model="form.company" :options="companies" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select Organization" label="company_name" track-by="id" :preselect-first="false" >
+                                                            <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
+                                                        </multiselect>
+                                                    </div>                                   
+                                                </div>
+                                                <div class="v-text-field__details"><div class="v-messages theme--light"><div class="v-messages__wrapper">{{form.errors.get('company')}}</div></div></div>
+                                            </div>
+                                        </div>
+                                    </v-card>
+                                </v-flex>
+                                <v-flex xs6>
+                                    <v-card color="white">
+                                        <div class="v-input v-text-field v-input--is-label-active theme--light">
+                                            <div class="v-input__control">
+                                                <div class="v-input__slot">
+                                                    <div class="v-text-field__slot multiselectwps">
+                                                        <label aria-hidden="true" class="v-label v-label--active theme--light" style="left: 0px; right: auto; position: absolute;">Managers</label>
+                                                        <multiselect v-model="form.program_manager" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select Program Manager" label="name" track-by="id" :preselect-first="false" >
+                                                            <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
+                                                        </multiselect>
+                                                        <h5><b-badge pill variant="info" v-for="manager in form.program_manager" v-bind:key="manager.id">{{ manager.name }} </b-badge></h5>
+                                                    </div>                        
+                                                </div>
+                                                <div class="v-text-field__details"><div class="v-messages theme--light"><div class="v-messages__wrapper">{{form.errors.get('program_manager')}}</div></div></div>
+                                            </div>
+                                        </div>
+                                    </v-card>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-card color="white">
+                                        <v-progress-circular indeterminate v-show="isLoading" color="primary"></v-progress-circular>
+                                        <v-btn type="submit" color="info" > Save</v-btn>
+                                        <v-btn @click="closeForm"> Close</v-btn>
+                                    </v-card>
+                                </v-flex>
+                                                      
+                            </v-layout>
+                        </v-container> 
+                    </v-form>
+                </v-app>
             </div>
         </div>
     </div>
@@ -84,9 +95,12 @@
     import Datepicker from 'vuejs-datepicker';
     import moment from 'moment';
     import Multiselect from 'vue-multiselect';
+    import Project from '../../models/Project';
+    import Program from '../../models/Program';
+
     export default {
         components: {
-            Datepicker,Multiselect
+            Datepicker,Multiselect, Project, Program
         },
         props: ['programid'],
         data() {
@@ -94,11 +108,17 @@
                 form: new Form({
                     program_name: '',
                     program_desc: '',
-                    program_start_date: '',
-                    program_end_date: '',
+                    program_start_date: new Date().toISOString().substr(0, 10),
+                    program_end_date: new Date().toISOString().substr(0, 10),
                     program_manager: '',
+                    company: '',
+                    errors:'',
                 }),
-                options: []
+                options: [],
+                companies:[],
+                start_date: false,
+                end_date: false,
+                isLoading: false,
             }
         },
         methods: {
@@ -106,21 +126,15 @@
                 this.form.post('/program/store')
                .then(program => this.$emit('completed', program));
             },                                                  
-            closeAddForm() {
+            closeForm() {
                 this.$emit('closeAddForm');
-            },
-            customFormatter(date) {
-                return moment(date).format('YYYY-MM-DD');
             },
         },
         mounted() {
             // console.log('this is add company comp');
-            $.ajax({
-                url:"/company/getResources",
-                method:"GET",
-                dataType: "JSON",
-                success: results => this.options = results
-            });
+            Project.getResources(results => this.options = results);
+            Program.getCompanies(results => this.companies = results);
+
         }
     }
 </script>

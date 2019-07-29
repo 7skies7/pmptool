@@ -33,7 +33,10 @@
                 <td class="text-xs-left" v-else>-</td>          
                 <td class="text-xs-left">{{ props.item.project_start_date }}</td>
                 <td class="text-xs-left">{{ props.item.project_end_date }}</td>
-                <td class="text-xs-center"><h5><b-badge pill variant="info">{{ props.item.status.status_name }}</b-badge></h5></td>
+                <td class="text-xs-center">
+                    <h5 v-if="props.item.status"><b-badge pill variant="info">{{ props.item.status.status_name }}</b-badge></h5>
+                    <h5 v-else>-</h5>
+                </td>
                 <!-- <td class="text-xs-left">{{ props.item.project_budget }}</td> -->
                 <td class="justify-center layout px-0 smallbtn">
                     <v-btn v-if="isEditVisible" @click="showEditProject(props.item)" color="primary" fab depressed small dark><v-icon>edit</v-icon></v-btn>

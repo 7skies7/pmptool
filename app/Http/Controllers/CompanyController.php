@@ -13,7 +13,7 @@ use App\UserRole;
 
 class CompanyController extends Controller
 {
-    protected $company_role_id = 4;
+    protected $company_role_id = 1;
 
     public function __construct()
     {

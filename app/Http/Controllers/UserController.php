@@ -311,31 +311,52 @@ class UserController extends Controller
      */
     public function fetchUserTimesheet()
     {
-        $taskdates = TaskComment::where('created_by', auth()->user()->id)->latest()->get()->groupBy(function($item){
-                          return $item->created_at->format('Y-m-d');
-                    });
-        // ="[
-        //     { title: 'Check Date asjd asjdh akjsdh ajks hdajksjhd aShd', date: '2019-07-01' },
-        //     { title: 'event 2', date: '2019-07-01' },
-        //     { title: 'event 3', date: '2019-07-01' },
-        //     { title: 'event 2', date: '2019-07-01' }
-        //   ]
-        foreach($taskdates as $taskdate => $taskcomments)
+        $comments = (new User)->timesheet();
+
+        $finalArr = [];
+        if(!empty($comments))
         {
-            $recordArr['date'] = $taskdate;
-            $sum = 0;
-            
-            foreach ($taskcomments as $comment) {
-                $commentArr['comment'] = $comment->task_comment;
-                $commentArr['hours'] = $comment->task_hours;
-                $recordArr['allcomments'][] = $commentArr;
-                $sum += $comment->task_hours;
+            foreach($comments as $comment)
+            {   
+                $tableContent = '';
+                $recordArr['date'] = $comment->day;
+                $recordArr['title'] = $comment->hours;
+
+                $tableContent = '<table class="table table-bordered"><thead><th>Task Name</th><th>Comment</th><th>Task Hours</th><tbody>';
+                $explodeComments = explode('!;', $comment->task_details);
+                foreach($explodeComments as $singlecomment)
+                {
+                    $tableContent .= '<tr>';
+                    $explodesingle = explode('!%', $singlecomment);
+                    $tableContent .= '<td>'.$explodesingle[0].'</td>';
+                    $tableContent .= '<td>'.$explodesingle[1].'</td>';
+                    $tableContent .= '<td>'.$explodesingle[2].'</td></tr>';
+
+                }
+                $tableContent .= '</tbody></table>'; 
+                $recordArr['comments'] = $tableContent;
+                $recordArr['color'] = '#52c43d';
+
+                            
+                $finalArr[] = $recordArr;  
             }
-            // dd(array$taskcomments);
-            $recordArr['title'] = $sum;
-            
-            $finalArr[] = $recordArr;
         }
+        
+        $records = (new User)->timecard();
+        foreach ($records as $timecard) {
+            $recordArr['date'] = $timecard->log_in_date;
+            $recordArr['title'] = $timecard->total_time != null ? $timecard->total_time : '00:00';
+            $tableContent = '<table class="table table-bordered"><thead><th>Date</th><th>Log In</th><th>Log Out</th><th>Total</th><tbody>';
+            $tableContent .= '<tr><td>'.$timecard->log_in_date.'</td><td>'.$timecard->log_in_time.'</td><td>'.$timecard->log_out_time.'</td><td>'.$recordArr['title'].'</td></tr>';
+            $recordArr['comments'] = $tableContent;
+            $recordArr['color'] = '#29B4E6';
+
+
+            $finalArr[] = $recordArr;  
+
+        }
+        
+        // dd($finalArr);
         return json_encode($finalArr);
     }
 }

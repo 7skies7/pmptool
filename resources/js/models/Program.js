@@ -25,6 +25,12 @@ class Program{
 		return axios.get('/access/Program/Delete')
 			.then(({data}) => then(data));
 	}
+
+	static getCompanies(then) {
+		return axios.get('/company')
+			.then(({data}) => then(data));	
+	}
+
 }
 
 export default Program;
