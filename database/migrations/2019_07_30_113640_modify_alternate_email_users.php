@@ -14,7 +14,7 @@ class ModifyAlternateEmailUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('alternate_email')->nullable();
+            $table->string('alternate_email')->nullable()->change();
         });
     }
 
@@ -26,7 +26,7 @@ class ModifyAlternateEmailUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('alternate_email');
+            $table->string('alternate_email')->change();
         });
     }
 }

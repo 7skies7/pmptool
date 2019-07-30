@@ -33,7 +33,7 @@ class CompanyController extends Controller
             return abort('403');
         }
 
-        $this->fetchAllCompanies();
+        return $this->fetchAllCompanies();
         
     }
 

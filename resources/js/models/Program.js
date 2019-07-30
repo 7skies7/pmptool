@@ -27,7 +27,7 @@ class Program{
 	}
 
 	static getCompanies(then) {
-		return axios.get('/company')
+		return axios.get('/company/fetchAllCompanies')
 			.then(({data}) => then(data));	
 	}
 

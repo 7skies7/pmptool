@@ -149,4 +149,4 @@ Route::get('/roles', function(){
 Route::get('/project/getStatus', 'CommonController@getStatus');
 Route::get('/project/getPriority', 'CommonController@getPriority');
 Route::get('/company/getResources', 'CommonController@getResources');
-Route::get('/company/getPrograms', 'CommonController@getPrograms');
+Route::get('/project/getPrograms', 'CommonController@getPrograms');
