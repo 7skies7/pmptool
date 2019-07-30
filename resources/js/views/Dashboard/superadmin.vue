@@ -31,7 +31,7 @@
                     <v-layout row wrap>
                         <v-flex flex xs12 sm6 md12>
                             <v-card class="mx-auto minh500" color="grey lighten-4" >
-                                <v-subheader inset>Projects Deadline Passed (High Risk)</v-subheader>
+                                <v-subheader inset>Missed Project Deadlines</v-subheader>
                                 <v-data-table dense :height="400" :headers="headers_proj_dead" :items="projects_deadline" class="elevation-1" dense>
                                     <template v-slot:items="props">
                                         <td class="text-xs-left">{{ props.item.project_name }}</td>
@@ -46,7 +46,7 @@
                         </v-flex>
                         <v-flex flex xs12 sm6 md12>
                             <v-card class="mx-auto minh500" color="grey lighten-4" >
-                                <v-subheader inset>User Story Progress</v-subheader>
+                                <v-subheader inset>My User Stories</v-subheader>
                                 <v-data-table :height="400" :headers="headers" :items="userstories" class="elevation-1" dense>
                                     <template v-slot:items="props">
                                         <td class="text-xs-left">
@@ -55,7 +55,7 @@
                                         </td>
                                         <td class="text-xs-center">{{ props.item.userstory_project }}</td>
                                         <td class="text-xs-center">{{ props.item.userstory_point }}</td>
-                                        <td class="text-xs-center">{{ props.item.userstory_priority }}</td>
+                                        <!-- <td class="text-xs-center">{{ props.item.userstory_priority }}</td> -->
                                         <td class="text-xs-center"><v-progress-linear v-model="props.item.userstory_progress" thumb-label="always"></v-progress-linear></td>
                                     </template>
                                 </v-data-table>
@@ -73,7 +73,7 @@
                     <v-layout row wrap>
                         <v-flex flex xs12 sm6 md12>
                             <v-card class="mx-auto minh500" color="grey lighten-4" >
-                                <v-subheader inset>List of All Projects</v-subheader>
+                                <v-subheader inset>My Projects</v-subheader>
                                 <v-data-table dense :height="400" :headers="headers_projects" :items="projects" class="elevation-1" dense>
                                     <template v-slot:items="props">
                                         <td class="text-xs-left">{{ props.item.project_name }}</td>
@@ -90,7 +90,7 @@
                         </v-flex>
                         <v-flex flex xs12 sm6 md12>
                             <v-card class="mx-auto minh500" color="grey lighten-4" >
-                                <v-subheader inset>User Story Approval Pending</v-subheader>
+                                <v-subheader inset>User Story - Pending for Approval</v-subheader>
                                 <v-data-table dense :height="400" :headers="headers_approval" :items="userstories_pending" class="elevation-1" dense>
                                     <template v-slot:items="props">
                                         <td class="text-xs-left">{{ props.item.userstory_desc }}</td>
@@ -99,14 +99,14 @@
                                         <td class="text-xs-left" v-if="props.item.priority">{{ props.item.priority.priority_type }}</td>
                                         <td class="text-xs-left" v-else>-</td>
 
-                                        <td class="text-xs-left"><v-btn :href="'#/project/'+props.item.project_id+'/detail'" flat color="info" >Approve</v-btn></td>
+                                        <td class="text-xs-left"><v-btn flat color="info" >PENDING</v-btn></td>
                                     </template>
                                 </v-data-table>
                             </v-card>
                         </v-flex>
                         <v-flex flex xs12 sm6 md12>
                             <v-card class="mx-auto minh500" color="grey lighten-4" >
-                                <v-subheader inset>List of Tasks</v-subheader>
+                                <v-subheader inset>All Current Tasks</v-subheader>
                                 <v-data-table dense :height="400" :headers="headers_tasks" :items="tasks" class="elevation-1" dense>
                                     <template v-slot:items="props">
                                         <td class="text-xs-left">{{ props.item.task_desc }}</td>
@@ -128,7 +128,7 @@
                         <v-flex flex xs12 sm6 md12 class="commentfeed">
                             <v-card>
                                 <v-list three-line>
-                                    <v-subheader> User Comment Feed</v-subheader> 
+                                    <v-subheader>Review Daily Progress</v-subheader> 
                                     <template v-for="(item, index) in comments">
                                     
                                     <v-list-tile :key="item.id" avatar @click="">

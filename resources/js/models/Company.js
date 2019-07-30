@@ -25,6 +25,11 @@ class Company{
 		return axios.get('/access/Organization/Delete')
 			.then(({data}) => then(data));
 	}
+
+	static fetchCompanies(then) {
+		return axios.get('/company/fetchAllCompanies')
+			.then(({data}) => then(data));	
+	}
 }
 
 export default Company;

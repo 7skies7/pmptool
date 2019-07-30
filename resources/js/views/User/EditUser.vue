@@ -109,7 +109,7 @@
         },
         created() {
             Role.all(roles => this.roles = roles);
-            Company.all(companies => this.companies = companies);
+            Company.fetchCompanies(companies => this.companies = companies);
         },
         methods: {
             onSubmit() {

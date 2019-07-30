@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'role_id', 'designation_id',
+        'first_name', 'last_name', 'email', 'password', 'role_id', 'designation_id', 'alternate_email'
     ];
 
     /**
@@ -101,6 +101,14 @@ class User extends Authenticatable
     public function timecard()
     {
         return DB::select("select log_in_date, DATE_FORMAT(log_in_time, '%H:%i') as log_in_time, DATE_FORMAT(log_out_time, '%H:%i') as log_out_time, TIME_FORMAT(TIMEDIFF(log_out_time, log_in_time), '%H:%i') as total_time from timecard where user_id = ".auth()->user()->id." group by log_in_date;");
+    }
+
+    public static function fetchCompanyUsers()
+    {
+        $companies = UserCompany::where('user_id', auth()->user()->id)->pluck('company_id');
+        $userid = Usercompany::whereIn('company_id', $companies)->pluck('user_id');
+        return User::with('roles')->with('companies')->whereIn('id', $userid)->where('is_deleted',0)->get();
+
     }
 
 }

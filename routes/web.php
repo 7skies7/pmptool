@@ -31,18 +31,7 @@ Route::get('/project/edit/{id}', 'ProjectController@edit');
 Route::post('/project/update/{id}', 'ProjectController@update');
 Route::post('/project/delete/{id}', 'ProjectController@destroy');
 Route::post('/project/{id}/detail', 'ProjectController@detail');
-Route::get('/project/getPrograms', function(){
-	$arr = App\Program::select('id',"program_name")->get();
-	return $arr;
-});
-Route::get('/project/getStatus', function(){
-	$arr = App\Status::select('id',"status_name")->get();
-	return $arr;
-});
-Route::get('/project/getPriority', function(){
-	$arr = App\Priority::select('id',"priority_type")->get();
-	return $arr;
-});
+
 
 
 Route::get('/company', 'CompanyController@index');
@@ -50,10 +39,10 @@ Route::post('/company/store', 'CompanyController@store');
 Route::get('/company/edit/{id}', 'CompanyController@edit');
 Route::post('/company/update/{id}', 'CompanyController@update');
 Route::post('/company/delete/{id}', 'CompanyController@destroy');
-Route::get('/company/getResources', function(){
-	$arr = App\User::select('id',DB::raw("CONCAT(users.first_name,' ',users.last_name) as name", "email"))->get();
-	return $arr;
-});
+Route::get('/company/fetchAllCompanies', 'CompanyController@fetchAllCompanies');
+
+
+
 Route::get('/access/{module_name}/{access_name}', function($module_name, $access_name){
 
     return json_encode(Gate::allows($access_name.'_'.$module_name));
@@ -155,3 +144,9 @@ Route::get('/roles', function(){
 	$arr = App\Role::select('id',"role_title")->get();
 	return $arr;
 });
+
+// Common / Master Table Data
+Route::get('/project/getStatus', 'CommonController@getStatus');
+Route::get('/project/getPriority', 'CommonController@getPriority');
+Route::get('/company/getResources', 'CommonController@getResources');
+Route::get('/company/getResources', 'CommonController@getPrograms');

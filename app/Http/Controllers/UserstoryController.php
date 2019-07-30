@@ -35,7 +35,7 @@ class UserstoryController extends Controller
 
         //validate
         $attributes = request()->validate(['userstory_desc'=> 'required', 
-                                            'userstory_point' => 'required',
+                                            'userstory_point' => 'required|digits_between:1,200',
                                             'userstory_status' => 'required',
                                             'userstory_priority' => 'required',
                                         ]);

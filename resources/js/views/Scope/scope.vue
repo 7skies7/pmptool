@@ -4,11 +4,11 @@
             <div class="card card-default shadow-sm border-0">
                 <div class="card-header">
                     <div class="sflex spacebetween">
-                        <div>
+                        <div class="childFlex">
                             <span>Scope</span>
                         </div>
                         <div class="pb-11">
-                            <button v-if="isAddVisible" class="btn btn-add float-right" @click="showaddScope">Add New</button>
+                            <v-btn color="info" v-if="isAddVisible" @click="showaddScope">Add New</v-btn>
                         </div>
                     </div>
                 </div>

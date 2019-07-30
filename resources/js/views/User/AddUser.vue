@@ -1,7 +1,7 @@
 <template>
     <div class="col-md-6">
         <div class="card card-default shadow-sm">
-            <div class="card-header">Add New Program</div>
+            <div class="card-header">Add New User</div>
 
             <div class="card-body">
                 <v-app id="editTask">
@@ -109,7 +109,7 @@
         },
         created() {
             Role.all(roles => this.roles = roles);
-            Company.all(companies => this.companies = companies);
+            Company.fetchCompanies(companies => this.companies = companies);
         },
         methods: {
             onSubmit() {
@@ -117,7 +117,7 @@
                .then(user => this.$emit('completed', user));
             },                                                  
             closeForm() {
-                this.$emit('closeAddForm');
+                this.$emit('closeForm');
             },
             customFormatter(date) {
                 return moment(date).format('YYYY-MM-DD');

@@ -41,7 +41,7 @@
                     <v-layout row wrap>
                         <v-flex flex xs12 sm6 md12>
                             <v-card class="mx-auto minh500" color="grey lighten-4" >
-                                <v-subheader inset>Projects Deadline Passed (High Risk)</v-subheader>
+                                <v-subheader inset>Missed Project Deadlines</v-subheader>
                                 <v-data-table dense :height="400" :headers="headers_proj_dead" :items="projects_deadline" class="elevation-1" dense>
                                     <template v-slot:items="props">
                                         <td class="text-xs-left">{{ props.item.project_name }}</td>
@@ -56,7 +56,7 @@
                         </v-flex>
                         <v-flex flex xs12 sm6 md12>
                             <v-card class="mx-auto minh500" color="grey lighten-4" >
-                                <v-subheader inset>List of All Projects</v-subheader>
+                                <v-subheader inset>My Projects</v-subheader>
                                 <v-data-table dense :height="400" :headers="headers_projects" :items="projects" class="elevation-1" dense>
                                     <template v-slot:items="props">
                                         <td class="text-xs-left">{{ props.item.project_name }}</td>
@@ -78,7 +78,7 @@
                     <v-layout row wrap>
                         <v-flex flex xs12 sm6 md12>
                             <v-card class="mx-auto minh500" color="grey lighten-4" >
-                                <v-subheader inset>User Story Approval Pending</v-subheader>
+                                <v-subheader inset>User Story - Pending for Approval</v-subheader>
                                 <v-data-table dense :height="400" :headers="headers_approval" :items="userstories_pending" class="elevation-1" dense>
                                     <template v-slot:items="props">
                                         <td class="text-xs-left">{{ props.item.userstory_desc }}</td>

@@ -29,7 +29,19 @@ class UserController extends Controller
         {
             return abort('403');
         }
-        return User::with('roles')->with('companies')->where('is_deleted',0)->get();
+
+        // If role is Super Admin / Admin, show list of all users
+        if(User::isRole(1) || User::isRole(2))
+        {
+            return User::with('roles')->with('companies')->where('is_deleted',0)->get();
+        }
+
+        //Once authorized return all users associated to the program
+        if(User::isRole(6) || User::isRole(7))
+        {
+            return User::fetchCompanyUsers();
+        }
+        
     }
 
     /**
@@ -60,14 +72,13 @@ class UserController extends Controller
         $attributes = request()->validate(['first_name'=> 'required', 
                                             'last_name' => 'required',
                                             'email' => 'required|email',
-                                            'alternate_email' => 'email',
                                             'roles' => 'required',
-                                            'companies' => 'required',
+                                            // 'companies' => 'required',
                                         ]);
         
         $attributes['created_by'] = auth()->user()->id;
         $attributes['modified_by'] = auth()->user()->id;
-       
+        $attributes['alternate_email'] = request('alternate_email');
         
         //store in database
         unset($attributes['roles']);
@@ -137,13 +148,13 @@ class UserController extends Controller
         $attributes = request()->validate(['first_name'=> 'required', 
                                             'last_name' => 'required',
                                             'email' => 'required|email',
-                                            'alternate_email' => 'email',
                                             'roles' => 'required',
-                                            'companies' => 'required',
+                                            // 'companies' => 'required',
                                         ]);
 
         $attributes['modified_by'] = auth()->user()->id;
-            
+        $attributes['alternate_email'] = request('alternate_email');
+        
         //store in database
         unset($attributes['roles']);
         unset($attributes['companies']);

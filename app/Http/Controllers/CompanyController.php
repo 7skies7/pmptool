@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use App\CompanyManager;
 use App\UserRole;
+use App\UserCompany;
 
 class CompanyController extends Controller
 {
@@ -17,7 +18,7 @@ class CompanyController extends Controller
 
     public function __construct()
     {
-       $this->middleware('can:View_Organization');
+       // $this->middleware('can:View_Organization');
     }
     /**
      * Display a listing of the resource.
@@ -26,14 +27,13 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        // Authorize user requests to view all companies
+        // Authorize user's request to view all companies
         if(Gate::allows('View_Organization') != true)
         {
             return abort('403');
         }
 
-        //Once authorized return all user created companies
-        return Company::with('managers')->where('is_deleted',0)->latest()->get();
+        $this->fetchAllCompanies();
         
     }
 
@@ -135,7 +135,7 @@ class CompanyController extends Controller
         $attributes['modified_by'] = auth()->user()->id;
             
         //store in database
-         unset($attributes['company_manager']);
+        unset($attributes['company_manager']);
         $company = Company::where('id', $id)->update($attributes);
         //save in session
 
@@ -177,5 +177,21 @@ class CompanyController extends Controller
         
         $company = Company::where('id', $companyid)->update($attributes);
         return $company;   
+    }
+
+    public function fetchAllCompanies()
+    {
+        if(User::isRole(1) || User::isRole(2))
+        {
+            return Company::with('managers')->where('is_deleted',0)->latest()->get();
+        }
+
+        //Once authorized return all user created companies
+        if(User::isRole(6) || User::isRole(7))
+        {
+            $companies = UserCompany::where('user_id', auth()->user()->id)->pluck('company_id');
+            return Company::with('managers')->whereIn('id', $companies)->where('is_deleted',0)->latest()->get();
+            
+        }
     }
 }

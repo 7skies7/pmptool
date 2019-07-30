@@ -30,9 +30,9 @@
                 <td class="text-xs-center"><b>{{ props.item.userstory_point }}</b></td>
                 <td class="text-xs-center"><h5 v-if="props.item.status"><b-badge pill variant="info">{{ props.item.status.status_name }}</b-badge></h5><h5 v-else="-"></h5></td>
                 <td class="text-xs-center"><h5 v-if="props.item.priority"><b-badge pill variant="info" :class="props.item.priority.priority_type">{{ props.item.priority.priority_type }}</b-badge></h5><h5 v-else="-"></h5></td>
-                <td class="justify-center layout px-0 tdaction" style="padding:7px 24px!important">
-                    <button v-if="isEditVisible" class="btn btn-sm btn-primary" @click="showEditUserstory(props.item.id)"><font-awesome-icon icon="edit" ></font-awesome-icon></button>
-                    <button v-if="isDeleteVisible" class="btn btn-sm btn-danger" @click="deleteUserstory(props.item.id)"><font-awesome-icon icon="trash" ></font-awesome-icon></button>
+                <td class="justify-center layout px-0 smallbtn" style="padding:7px 24px!important">
+                    <v-btn v-if="isEditVisible" @click="showEditUserstory(props.item.id)" color="primary" fab depressed small dark><v-icon>edit</v-icon></v-btn>
+                    <v-btn v-if="isDeleteVisible" @click="deleteUserstory(props.item.id)" color="error" fab depressed small dark><v-icon>delete</v-icon></v-btn>
                 </td>
             </template>
             <template v-slot:no-results>
