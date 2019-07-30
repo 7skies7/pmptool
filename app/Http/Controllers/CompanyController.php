@@ -187,7 +187,7 @@ class CompanyController extends Controller
         }
 
         //Once authorized return all user created companies
-        if(User::isRole(6) || User::isRole(7))
+        if(User::isRole(6) || User::isRole(7) || User::isRole(5))
         {
             $companies = UserCompany::where('user_id', auth()->user()->id)->pluck('company_id');
             return Company::with('managers')->whereIn('id', $companies)->where('is_deleted',0)->latest()->get();

@@ -13,6 +13,7 @@ use App\UserCompany;
 use App\Timecard;
 use App\TaskComment;
 use DB;
+use Hash;
 
 class UserController extends Controller
 {
@@ -37,7 +38,7 @@ class UserController extends Controller
         }
 
         //Once authorized return all users associated to the program
-        if(User::isRole(6) || User::isRole(7))
+        if(User::isRole(6) || User::isRole(7) || User::isRole(5))
         {
             return User::fetchCompanyUsers();
         }
@@ -80,6 +81,7 @@ class UserController extends Controller
         $attributes['created_by'] = auth()->user()->id;
         $attributes['modified_by'] = auth()->user()->id;
         $attributes['alternate_email'] = request('alternate_email');
+        $attributes['password'] = Hash::make($attributes['password']); 
         
         //store in database
         unset($attributes['roles']);
@@ -150,11 +152,18 @@ class UserController extends Controller
                                             'last_name' => 'required',
                                             'email' => 'required|email',
                                             'roles' => 'required',
+                                            'password' => 'confirmed'
+
                                             // 'companies' => 'required',
                                         ]);
 
         $attributes['modified_by'] = auth()->user()->id;
         $attributes['alternate_email'] = request('alternate_email');
+        if(!empty(request('password')))
+        {
+            $attributes['password'] = Hash::make('password');    
+        }
+        
         
         //store in database
         unset($attributes['roles']);
