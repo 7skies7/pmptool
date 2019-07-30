@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use App\ProgramManager;
 use App\UserRole;
+use App\CompanyManager;
 
 class ProgramController extends Controller
 {
@@ -29,6 +30,12 @@ class ProgramController extends Controller
         if(User::isRole(1) || User::isRole(2) || User::isRole(3))
         {
             return Program::with('managers')->with('company')->where('is_deleted',0)->latest()->get();
+        }
+
+        if(User::isRole(5))
+        {            
+            $companies = CompanyManager::where('user_id', auth()->user()->id)->pluck('company_id');
+            return Program::with('managers')->with('company')->whereIn('company_id', $companies)->where('is_deleted',0)->latest()->get();
         }
 
         $programs = ProgramManager::where('user_id', auth()->user()->id)->pluck('program_id');

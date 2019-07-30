@@ -153,15 +153,15 @@ class UserController extends Controller
                                             'email' => 'required|email',
                                             'roles' => 'required',
                                             'password' => 'confirmed'
-
-                                            // 'companies' => 'required',
                                         ]);
 
         $attributes['modified_by'] = auth()->user()->id;
         $attributes['alternate_email'] = request('alternate_email');
-        if(!empty(request('password')))
+        
+        unset($attributes['password']);
+        if(!empty(request('password')) && request('password') != null)
         {
-            $attributes['password'] = Hash::make('password');    
+            $attributes['password'] = Hash::make(request('password'));    
         }
         
         

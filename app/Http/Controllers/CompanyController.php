@@ -14,7 +14,7 @@ use App\UserCompany;
 
 class CompanyController extends Controller
 {
-    protected $company_role_id = 1;
+    protected $company_role_id = 5;
 
     public function __construct()
     {
@@ -77,7 +77,11 @@ class CompanyController extends Controller
         {
             $managerArr['company_id'] =  $company->id;
             $managerArr['user_id'] = $manager['id'];
-            CompanyManager::create($managerArr);
+            CompanyManager::firstOrCreate($managerArr);
+
+            $managerArr['company_id'] =  $company->id;
+            $managerArr['user_id'] = $manager['id'];
+            UserCompany::firstOrCreate($managerArr);
             //Assign Organization Manager role to all the company managers selected
             $roleArr['user_id'] = $manager['id'];
             $roleArr['role_id'] = $this->company_role_id;
@@ -149,6 +153,10 @@ class CompanyController extends Controller
             $managerArr['company_id'] =  $id;
             $managerArr['user_id'] = $manager['id'];
             CompanyManager::create($managerArr);
+
+            $managerArr['company_id'] =  $id;
+            $managerArr['user_id'] = $manager['id'];
+            UserCompany::firstOrCreate($managerArr);
             //Assign Organization Manager role to all the company managers selected
             $roleArr['user_id'] = $manager['id'];
             $roleArr['role_id'] = $this->company_role_id;
