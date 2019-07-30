@@ -23,9 +23,19 @@
                                         <v-text-field v-model="form.email" label="Email" placeholder="Email" :messages="form.errors.get('email')"></v-text-field>
                                     </v-card>
                                 </v-flex>
+                                <v-flex xs6>
+                                    <v-card color="white">
+                                        <v-text-field v-model="form.password" label="Password" placeholder="Password" :messages="form.errors.get('password')"></v-text-field>
+                                    </v-card>
+                                </v-flex>
+                                <v-flex xs6>
+                                    <v-card color="white">
+                                        <v-text-field type="password" v-model="form.password_confirmation" label="Password Confirmation" placeholder="Password Confirmation" :messages="form.errors.get('password')"></v-text-field>
+                                    </v-card>
+                                </v-flex>
                                 <v-flex xs12>
                                     <v-card color="white">
-                                        <v-text-field v-model="form.alternate_email" label="Alternate Email" placeholder="Alternate Email" :messages="form.errors.get('alternate_email')"></v-text-field>
+                                        <v-text-field type="password" v-model="form.alternate_email" label="Alternate Email" placeholder="Alternate Email" :messages="form.errors.get('alternate_email')"></v-text-field>
                                     </v-card>
                                 </v-flex>
                                 <v-flex xs12>
@@ -101,6 +111,8 @@
                     alternate_email: '',
                     roles: '',
                     companies: '',
+                    password: '',
+                    password_confirmation: '',
                     errors:'',
                 }),
                 roles: [],
