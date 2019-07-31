@@ -55,7 +55,7 @@
                                         </td>
                                         <!-- <td class="text-xs-center">{{ props.item.userstory_project }}</td> -->
                                         <td class="text-xs-center">{{ props.item.userstory_point }}</td>
-                                        <td class="text-xs-left" v-if="props.item.priority">{{ props.item.priority.priority_type }}</td>
+                                        <td class="text-xs-left" v-if="props.item.userstory_priority">{{ props.item.userstory_priority }}</td>
                                         <td class="text-xs-left" v-else>-</td>
                                         <td class="text-xs-center"><v-progress-linear v-model="props.item.userstory_progress" thumb-label="always"></v-progress-linear></td>
                                     </template>
@@ -83,7 +83,7 @@
                                         <!-- <td class="text-xs-left">{{ props.item.project_end_date }}</td> -->
                                         <!-- <td class="text-xs-left">{{ props.item.status.status_name }}</td> -->
                                         <td class="text-xs-center"><v-progress-linear v-model="props.item.project_progress" thumb-label="always"></v-progress-linear></td>
-                                        <td class="text-xs-center"><v-btn :href="'#/project/'+props.item.id+'/detail'" flat color="info" >CR List</v-btn></td>
+                                        <td class="text-xs-center"><v-btn :href="'#/project/'+props.item.id+'/scope'" flat color="info" >CR List</v-btn></td>
 
                                     </template>
                                 </v-data-table>
