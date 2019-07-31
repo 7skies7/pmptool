@@ -1,35 +1,38 @@
 <template>
-<v-app id="tasksScreen">
-    <div class="row justify-content-center">
-        <div :class="cardWidth">
-            <div class="card card-default shadow-sm border-0">
-                <div class="card-header">
-                    <div class="sflex spacebetween">
-                        <div class="childFlex">
-                            <span>Tasks</span>
-                        </div>
-                        <div class="pb-11">
-                            <!-- <button v-if="isAddVisible" class="btn btn-add float-right" @click="showUploadWbs">Add Tasks</button> -->
-                            <v-btn color="info" v-if="isAddVisible" @click="showUploadWbs"> Add Tasks</v-btn>
+ <div class="container-fluid">
+    <project-menus selected="3"></project-menus>
+    <v-app id="tasksScreen">
+        <div class="row justify-content-center">
+            <div :class="cardWidth">
+                <div class="card card-default shadow-sm border-0">
+                    <div class="card-header">
+                        <div class="sflex spacebetween">
+                            <div class="childFlex">
+                                <span>Tasks</span>
+                            </div>
+                            <div class="pb-11">
+                                <!-- <button v-if="isAddVisible" class="btn btn-add float-right" @click="showUploadWbs">Add Tasks</button> -->
+                                <v-btn color="info" v-if="isAddVisible" @click="showUploadWbs"> Add Tasks</v-btn>
 
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-body p-0">
-                    <div class="d-flex flex-column">
-                        <div class="flex-1">
-                            <task-grid :addAccess="isAddVisible" :key="latestTasks" @showaddtask="showAddTask" @showedittask="showEditTask" @closeForm="closeForm"></task-grid>
+                    <div class="card-body p-0">
+                        <div class="d-flex flex-column">
+                            <div class="flex-1">
+                                <task-grid :addAccess="isAddVisible" :key="latestTasks" @showaddtask="showAddTask" @showedittask="showEditTask" @closeForm="closeForm"></task-grid>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <add-task v-if="isAddTaskVisible" :taskid="taskid" :point="point" @closeForm="closeForm" @completed="onTaskAdd"></add-task>
+            <edit-task v-if="isEditTaskVisible" :task="task" @completed="onTaskUpdate" @closeForm="closeForm"></edit-task>
+            <upload-wbs v-if="isUploadWbsVisible" :key="latestTasks" @wbsuploaded="onWbsUpload" @closeWBSForm="closeWBSForm"></upload-wbs>
+        
         </div>
-        <add-task v-if="isAddTaskVisible" :taskid="taskid" :point="point" @closeForm="closeForm" @completed="onTaskAdd"></add-task>
-        <edit-task v-if="isEditTaskVisible" :task="task" @completed="onTaskUpdate" @closeForm="closeForm"></edit-task>
-        <upload-wbs v-if="isUploadWbsVisible" :key="latestTasks" @wbsuploaded="onWbsUpload" @closeWBSForm="closeWBSForm"></upload-wbs>
-    
-    </div>
-</v-app>
+    </v-app>
+</div>
 </template>
 
 <script>
@@ -39,9 +42,10 @@
     import UploadWbs from './UploadWbs.vue';
     import EditTask from './EditTask.vue';
     import AddTask from './AddTask.vue';
+    import ProjectMenus from '../Scope/ProjectMenus.vue';
     export default {
         components: {
-            Multiselect, TaskGrid, UploadWbs, EditTask, AddTask
+            Multiselect, TaskGrid, UploadWbs, EditTask, AddTask, ProjectMenus
         },
         data() {
             return {

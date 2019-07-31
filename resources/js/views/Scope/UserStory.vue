@@ -1,115 +1,77 @@
 <template>
-
+<div class="container-fluid">
+    <project-menus selected="2"></project-menus>
 	<div class="row justify-content-center">
         <div :class="cardWidth">
             <div class="card card-default shadow-sm border-0">
                 <div class="card-header">
                     <div class="sflex spacebetween">
                         <div>
-                            <span>User Story</span>
+                            <span>{{ this.userstory.userstory_desc}}</span>
                         </div>
-                        <div class="pb-11">
+                        <!-- <div class="pb-11">
                             <button v-if="isAddVisible" class="btn btn-add float-right" @click="showaddScope">Add New</button>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
-            <div class="card-body p-0">
-                    <div class="d-flex flex-column">
-                        <div class="flex-1">
-                            <userstory-grid :key="latestUserstory" @showedituserstory="showEditUserstory" @deleteuserstory="deleteUserstory" @showuserstorycomments="showUserstoryComments"></userstory-grid>
-                        </div>
-                    </div>
+                <div class="card-body p-0">
+                    <v-app id="dev">
+                        <v-container grid-list-md text-xs-center class="unsetWidth">
+                            <v-layout row wrap>
+                                <v-flex xs12 sm12 md5>
+                                    <v-layout row wrap>
+                                        <v-flex xs12>
+                                            <v-card dark>
+                                                <v-list>
+                                                    <v-list-tile avatar>
+                                                        <v-list-tile-content>
+                                                            <v-list-tile-title>Userstory Description</v-list-tile-title>
+                                                            <v-list-tile-sub-title v-if="">{{ userstory.userstory_desc}}</v-list-tile-sub-title>
+                                                        </v-list-tile-content>
+                                                    </v-list-tile>
+                                                </v-list>
+                                            </v-card>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-flex>
+                                <v-flex xs12 sm12 md7>
+                                    <userstory-comments :userstoryid="userstory_id"></userstory-comments>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                    </v-app>
                 </div>
             </div>
         </div>
-        <add-userstory v-if="addUserstory" :key="latestUserstory" @completed="addNewUserstory" @closeAddForm="closeForm"></add-userstory>
-       <!--  <edit-scope v-if="editUserstory" :key="latestUserstory" :scopeid="userstoryid" @updatecompleted="updateUserstory" @closeEditForm="closeForm"></edit-scope> -->
-        <!-- <userstory-comments v-if="userstoryComments" :key="latestUserstoryCommented" :crdid="crdid" @completed="commentAdded" @closeCommentForm="closeForm"></userstory-comments> -->
+        
     </div>
+</div>
 </template>
 
 <script>
     import UserstoryGrid from './UserstoryGrid.vue';
     import Userstory from '../../models/Userstory';
-    import AddScope from './AddScope.vue';
-    import EditScope from './EditScope.vue';
+    import ProjectMenus from  './ProjectMenus';
     import UserstoryComments from './UserstoryComments.vue';
-    import index from './index.vue';
+
     export default {
         components: {
-            UserstoryGrid, Userstory, AddScope, EditScope, UserstoryComments, index
+            UserstoryGrid, Userstory, ProjectMenus, UserstoryComments
         },
         data() {
             return {
                 cardWidth: 'col-md-10',
-                isAddVisible: false,
-                latestUserstory: 0,
-                addUserstory: false,
-                editUserstory: false,
-                userstoryid:'',
-                crdid:'',
                 form: new Form(),
-                userstoryComments: false,
-                latestUserstoryCommented:0,
+                project_id: this.$route.params.id,
+                userstory_id: this.$route.params.userstoryid,
+                userstory: [],
             }
         },
+        created() {
+            Userstory.fetchUserstory(userstory => this.userstory = userstory, this.userstory_id)
+        },
         methods: {
-            showaddUserstory() {
-                if(this.isAddVisible == false)
-                {
-                    window.location.href = "/403";
-                }
-                this.addUserstory = true;
-                this.editUserstory = false;
-                this.userstoryComments = false;
-                this.cardWidth = 'col-md-6';
-           },
-           showEditUserstory(id) {
-                this.editUserstory = false;
-                this.userstoryid = id;
-                this.addUserstory = false;
-                this.editUserstory = true;
-                this.userstoryComments = false;
-                this.cardWidth = 'col-md-6';
-           },
-           showUserstoryComments(id) {
-                this.editUserstory = false;
-                this.addUserstory = false;
-                this.editUserstory = false;
-                this.userstoryComments = true;
-                this.cardWidth = 'col-md-6';
-                this.crdid = id;
-           },
-           addNewUserstory(userstory) {
-                
-                this.$toasted.success('Congratulations! Your new CRD has been added successfully.');
-                this.latestUserstory += 1;
-                this.closeForm();
-            },
-            updateUserstory(scopes) {
-                // this.companies = companies;
-                this.$toasted.success('Congratulations! Scope has been updated successfully.');
-                this.latestUserstory += 1;
-                this.closeForm();
-            },
-            deleteUserstory(scopeid) {
-                this.form.post('/scope/delete/'+scopeid)
-                    .then(scope => this.latestScope += 1);
-                    this.$toasted.success('Congratulations! Scope has been deleted successfully.');  
-                    this.latestScope += 1;
-
-            },
-            closeForm() {
-                this.addUserstory = false;
-                this.editUserstory = false;
-                this.userstoryComments = false;
-                this.userstoryid = '';
-                this.cardWidth = 'col-md-10';
-            },
-            commentAdded() {
-                this.$toasted.success('Congratulations! Comment has been added successfully.');
-                this.latestUserstoryCommented += 1;
-            }
+            
         },
        	mounted() {
             //Scope.addaccess(addaccess => this.isAddVisible = addaccess); 

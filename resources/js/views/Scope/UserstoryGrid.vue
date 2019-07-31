@@ -25,6 +25,7 @@
             <template v-slot:items="props">
                 <td>
                     <v-btn flat small color="primary"  @click="showUserstoryComments(props.item.id, props.item.cr_id)">{{ props.item.userstory_id }}</v-btn>
+                    <!-- <v-btn flat small color="primary" :href="'home#/project/'+project_id+'/scope/'+props.item.id">{{ props.item.userstory_id }}</v-btn> -->
                 </td>
                 <td class="text-xs-left">{{ props.item.userstory_desc }}</td>
                 <td class="text-xs-center"><b>{{ props.item.userstory_point }}</b></td>
@@ -69,6 +70,7 @@
                         ],
                 scope: [],
                 isLoading: true,
+                project_id: this.$route.params.id,
             }
         },
         created() {

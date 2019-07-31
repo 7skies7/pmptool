@@ -22,7 +22,19 @@ var routes = [
 		component: require('./views/Scope/index').default		
 	},
 	{
-		path: '/project/:id/scope/:crid',
+		path: '/project/:id/scope',
+		component: require('./views/Scope/scope').default		
+	},
+	{
+		path: '/project/:id/tasks',
+		component: require('./views/Tasks/index').default		
+	},
+	{
+		path: '/project/:id/dashboard',
+		component: require('./views/Scope/dashboard').default		
+	},
+	{
+		path: '/project/:id/scope/:userstoryid',
 		component: require('./views/Scope/UserStory').default		
 	},
 	{
