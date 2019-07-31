@@ -35,7 +35,7 @@ class UserstoryController extends Controller
 
         //validate
         $attributes = request()->validate(['userstory_desc'=> 'required', 
-                                            'userstory_point' => 'required|digits_between:1,200',
+                                            // 'userstory_point' => 'required|digits_between:1,200',
                                             'userstory_status' => 'required',
                                             'userstory_priority' => 'required',
                                         ]);
@@ -45,7 +45,8 @@ class UserstoryController extends Controller
         $attributes['userstory_status'] = $attributes['userstory_status']['id'];
         $attributes['userstory_priority'] = $attributes['userstory_priority']['id'];
         $attributes['project_id'] = request('project_id');
-        $attributes['initial_story_point'] = request('userstory_point');
+        // $attributes['userstory_point'] = 0;
+        // $attributes['initial_story_point'] = 0;
         $attributes['cr_id'] = request('cr_id');
         $userrecord = Userstory::orderBy('id', 'desc')->limit(1)->pluck('id');
         $lastStoryId = isset($userrecord[0]) ? $userrecord[0] : 0;
@@ -88,13 +89,14 @@ class UserstoryController extends Controller
 
         //validate
         $attributes = request()->validate(['userstory_desc'=> 'required', 
-                                            'userstory_point' => 'required',
+                                            // 'userstory_point' => 'required',
                                             'userstory_status' => 'required',
                                             'userstory_priority' => 'required',
                                         ]);
 
 		$attributes['created_by'] = auth()->user()->id;
         $attributes['modified_by'] = auth()->user()->id;
+        // $attributes['userstory_point'] = 0;
         $attributes['userstory_status'] = $attributes['userstory_status']['id'];
         $attributes['userstory_priority'] = $attributes['userstory_priority']['id'];
             
@@ -136,7 +138,7 @@ class UserstoryController extends Controller
         $attributes['created_by'] = auth()->user()->id;
         $attributes['modified_by'] = auth()->user()->id;
         $attributes['project_id'] = $request->get('project_id');
-        $attributes['crd_id'] = $request->get('cr_id');
+        $attributes['crd_id'] = Userstory::find($request->get('userstory_id'))->cr_id;
         $attributes['userstory_id'] = $request->get('userstory_id');
 
         //check if file is attachment then save it to the directory and return filename
@@ -187,8 +189,7 @@ class UserstoryController extends Controller
         $commentsArr = [];
         $comments = ScopeComment::with('documents')->with('users')->where('userstory_id', $userstoryid)->get();
         
-        $approved_comment = Userstory::find($userstoryid)->pluck('approved_comment');
-        
+        $approved_comment = Userstory::where('id',$userstoryid)->pluck('approved_comment');
         foreach($comments as $comment)
         {
             $commentArr['id'] = $comment->id;
@@ -213,7 +214,10 @@ class UserstoryController extends Controller
             $commentsArr[] = $commentArr;
 
         }
-        return $commentsArr;
+        $final = [];
+        $final['comments'] = $commentsArr;
+        $final['approve'] = User::isRole(6);
+        return $final;
 
     }
 
@@ -242,5 +246,10 @@ class UserstoryController extends Controller
     public function getStory($crdid)
     {
         return Scope::find($crdid);
+    }
+
+    public function fetchApproveAccess()
+    {   
+        return Userstory::find($userstoryid)->approveddocument;
     }
 }

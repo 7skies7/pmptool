@@ -12,11 +12,11 @@
                                         <v-text-field v-model="form.userstory_desc" label="Userstory Description" placeholder="Userstory Description" :messages="form.errors.get('userstory_desc')"></v-text-field>
                                     </v-card>
                                 </v-flex>
-                                <v-flex xs12>
+                               <!--  <v-flex xs12>
                                     <v-card color="white">
                                         <v-text-field type="number" :rules="rules.userstory_point" v-model="form.userstory_point" label="Userstory Point" placeholder="Userstory Point" :messages="form.errors.get('userstory_point')"></v-text-field>
                                     </v-card>
-                                </v-flex>
+                                </v-flex> -->
                                 <v-flex xs6>
                                     <v-card color="white">
                                         <div class="v-input v-text-field v-input--is-label-active theme--light">
@@ -117,8 +117,15 @@
         },
         methods: {
             onSubmit() {
+                var self = this;
                 this.form.post('/userstory/update/'+this.userstoryid)
-               .then(userstory => this.$emit('updatecompleted', userstory));
+               .then((userstory) => {
+                
+                    this.$toasted.success('Congratulations! Your new User Story has been added successfully.');
+                    this.$router.push({ name: 'userstory', params: { id: this.form.project_id, userstoryid: this.form.userstory_id }})
+
+
+                });
             },                                                  
             closeForm() {
                 this.$emit('closeEditForm');

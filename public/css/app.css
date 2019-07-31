@@ -11652,3 +11652,7 @@ a.v-btn {
   font-size: 12px !important;
 }
 
+#dev .v-card {
+  box-shadow: unset !important;
+}
+

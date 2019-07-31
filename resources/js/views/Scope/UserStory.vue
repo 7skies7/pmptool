@@ -18,10 +18,10 @@
                     <v-app id="dev">
                         <v-container grid-list-md text-xs-center class="unsetWidth">
                             <v-layout row wrap>
-                                <v-flex xs12 sm12 md5>
+                                <v-flex xs12 sm12 md5 :key="latestStatus">
                                     <v-layout row wrap>
                                         <v-flex xs12>
-                                            <v-card dark>
+                                            <v-card>
                                                 <v-list>
                                                     <v-list-tile avatar>
                                                         <v-list-tile-content>
@@ -32,10 +32,47 @@
                                                 </v-list>
                                             </v-card>
                                         </v-flex>
+                                       
+                                        <v-flex xs6>
+                                            <v-card>
+                                                <v-list>
+                                                    <v-list-tile avatar>
+                                                        <v-list-tile-content>
+                                                            <v-list-tile-title>Userstory Point</v-list-tile-title>
+                                                            <v-list-tile-sub-title v-if="">{{ userstory.userstory_point}}</v-list-tile-sub-title>
+                                                        </v-list-tile-content>
+                                                    </v-list-tile>
+                                                </v-list>
+                                            </v-card>
+                                        </v-flex>
+                                        <v-flex xs6>
+                                            <v-card>
+                                                <v-list>
+                                                    <v-list-tile avatar>
+                                                        <v-list-tile-content>
+                                                            <v-list-tile-title>Status</v-list-tile-title>
+                                                            <v-list-tile-sub-title v-if="userstory.status">{{ userstory.status.status_name}}</v-list-tile-sub-title>
+                                                        </v-list-tile-content>
+                                                    </v-list-tile>
+                                                </v-list>
+                                            </v-card>
+                                        </v-flex>
+                                        <v-flex xs6>
+                                            <v-card>
+                                                <v-list>
+                                                    <v-list-tile avatar>
+                                                        <v-list-tile-content>
+                                                            <v-list-tile-title>Priority</v-list-tile-title>
+                                                            <v-list-tile-sub-title v-if="userstory.priority">{{ userstory.priority.priority_type}}</v-list-tile-sub-title>
+                                                        </v-list-tile-content>
+                                                    </v-list-tile>
+                                                </v-list>
+                                            </v-card>
+                                        </v-flex>
                                     </v-layout>
                                 </v-flex>
                                 <v-flex xs12 sm12 md7>
-                                    <userstory-comments :userstoryid="userstory_id"></userstory-comments>
+                                    <userstory-comments :key="latestUserstoryCommented" :userstoryid="userstory_id" @completed="onCommentAdded" @approvecompleted="onCommentApprove"></userstory-comments>
                                 </v-flex>
                             </v-layout>
                         </v-container>
@@ -65,13 +102,26 @@
                 project_id: this.$route.params.id,
                 userstory_id: this.$route.params.userstoryid,
                 userstory: [],
+                latestUserstoryCommented: 0,
+                latestStatus:0,
             }
         },
         created() {
             Userstory.fetchUserstory(userstory => this.userstory = userstory, this.userstory_id)
         },
         methods: {
-            
+            onCommentAdded(){
+                this.latestUserstoryCommented += 1;
+                this.latestStatus += 1;
+                this.$toasted.success('Congratulations! Comment has been added successfully.');
+
+            },
+            onCommentApprove()
+            {   
+                this.latestUserstoryCommented += 1;
+                this.$toasted.success('Congratulations! Comment has been approved successfully.');
+            }
+
         },
        	mounted() {
             //Scope.addaccess(addaccess => this.isAddVisible = addaccess); 

@@ -38,6 +38,6 @@ class Userstory extends Model
 
     public function project()
     {
-        return $this->belongsTo(Project::class, 'project_id','id')->select(['project_name']);
+        return $this->belongsToMany(Project::class, 'id','project_id')->select(['project_name']);
     }
 }

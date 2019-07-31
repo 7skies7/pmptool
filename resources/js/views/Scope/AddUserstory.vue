@@ -13,11 +13,11 @@
                                         <v-text-field v-model="form.userstory_desc" label="Userstory Description" placeholder="Userstory Description" :messages="form.errors.get('userstory_desc')"></v-text-field>
                                     </v-card>
                                 </v-flex>
-                                <v-flex xs12>
+                              <!--   <v-flex xs12>
                                     <v-card color="white">
                                         <v-text-field type="number" :rules="rules.userstory_point" v-model="form.userstory_point" label="Userstory Point" placeholder="Userstory Point" :messages="form.errors.get('userstory_point')"></v-text-field>
                                     </v-card>
-                                </v-flex>
+                                </v-flex> -->
                                 <v-flex xs6>
                                     <v-card color="white">
                                         <div class="v-input v-text-field v-input--is-label-active theme--light">
@@ -82,7 +82,7 @@
             return {
                 form: new Form({
                     userstory_desc: '',
-                    userstory_point: '',
+                    // userstory_point: '',
                     userstory_status: '',
                     userstory_priority: '',
                     project_id: this.$route.params.id,
@@ -99,8 +99,15 @@
         },
         methods: {
             onSubmit() {
+                var self = this;
                 this.form.post('/userstory/store')
-               .then(scope => this.$emit('completed', scope));
+               .then((scope) => {
+                
+                    this.$toasted.success('Congratulations! Your new User Story has been added successfully.');
+                    this.$router.push({ name: 'userstory', params: { id: this.form.project_id, userstoryid: scope.id }})
+
+
+                });
             },                                                  
             closeForm() {
                 this.$emit('closeAddForm');

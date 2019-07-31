@@ -35,6 +35,7 @@ var routes = [
 	},
 	{
 		path: '/project/:id/scope/:userstoryid',
+		name: 'userstory',
 		component: require('./views/Scope/UserStory').default		
 	},
 	{

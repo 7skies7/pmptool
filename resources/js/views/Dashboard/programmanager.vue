@@ -87,7 +87,7 @@
                                         <td class="text-xs-left" v-if="props.item.priority">{{ props.item.priority.priority_type }}</td>
                                         <td class="text-xs-left" v-else>-</td>
 
-                                        <td class="text-xs-left"><v-btn :href="'#/project/'+props.item.project_id+'/detail'" flat color="info" >Approve</v-btn></td>
+                                        <td class="text-xs-left"><v-btn :href="'#/project/'+props.item.project_id+'/scope/'+props.item.id" flat color="info" >Approve</v-btn></td>
                                     </template>
                                 </v-data-table>
                             </v-card>

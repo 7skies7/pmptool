@@ -51,6 +51,12 @@ class Userstory{
 		return axios.get('/userstory/document/'+userstoryid)
 			.then(({data}) => then(data));
 	}
+
+	static fetchApproveCom(then){
+		// alert('asdasd');
+		return axios.get('/userstory/isprogram')
+			.then(({data}) => then(data));
+	}
 	
 }
 

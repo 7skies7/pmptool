@@ -4,7 +4,7 @@
             <!-- <div class="card-header">{{ story.userstory_desc }}</div> -->
             <v-progress-linear v-show="isLoading" v-slot:progress color="blue" indeterminate class="nomarginprogress" height="4px"></v-progress-linear>
             <div class="card-body">
-                <v-app id="inspire">
+                <v-app id="editTask">
                     <v-container style="max-width: 600px;">
                         <v-timeline dense clipped>
                             <v-timeline-item class="mb-4" hide-dot>
@@ -32,7 +32,7 @@
                                     </v-flex>
                                     <v-flex xs5 text-xs-right>
                                         {{ event.time}}
-                                        <div v-if="event.userstory_point">
+                                        <div v-if="event.userstory_point && approve">
                                         <v-icon v-if="event.approved" color="#009688" class="approveicon" @click="onApprove(event.id)">check_circle</v-icon>
                                         <v-icon v-else class="approveicon" @click="onApprove(event.id)">check_circle</v-icon>
                                         </div>
@@ -40,21 +40,24 @@
                                 </v-layout>
                               </v-timeline-item>
                             </v-slide-x-transition> 
-                            <form @submit.prevent="onSubmit" @keydown="form.errors.clear()" enctype="multipart/form-data">
+                            <form v-if="story.userstory_status != 2" @submit.prevent="onSubmit" @keydown="form.errors.clear()" enctype="multipart/form-data">
                             <v-timeline-item fill-dot class="white--text mb-0" color="#EF4667" large>
                                 <template v-slot:icon> <span><v-icon medium dark>attach_file</v-icon></span> </template>
                                 <div class="v-input inputupload v-input__control">
                                     <div class="v-input__slot">
                                         <input type="file" id="file" ref="file" class="hidden" @change="onFileChange" />
-                                        <input type="number" v-model="form.userstory_point" id="storypoint" placeholder="Story Point" />
+<!--                                         <input type="number" v-model="form.userstory_point" id="storypoint" placeholder="Story Point" /> -->
                                          <span class="invalid-feedback" role="alert" v-if="formApprove.errors.has('file')" v-text="formApprove.errors.get('file')"></span>
                                     </div>
                                 </div>
-                                <v-text-field v-model="form.comment" hide-details flat label="Leave a comment..." solo @keydown.enter="comment" >
+                                <v-card color="white">
+                                    <v-text-field type="number" v-model="form.userstory_point" label="Task Point" placeholder="Task Point" :rules="rules.userstory_point" :messages="form.errors.get('userstory_point')"></v-text-field>
+                                </v-card>
+                                <v-textarea rows="3" v-model="form.comment" hide-details flat label="Leave a comment..." solo @keydown.enter="comment" >
                                     <template v-slot:append>
                                         <v-btn class="mx-0" depressed type="submit">Post</v-btn>
                                     </template>
-                                </v-text-field>
+                                </v-textarea>
                             </v-timeline-item>
                             </form>
 <!--                             <form @submit.prevent="onApprove" @keydown="form.errors.clear()" enctype="multipart/form-data"> 
@@ -108,12 +111,19 @@
                 isLoading:true,
                 documents: [],
                 story:[],
+                rules: {
+                    userstory_point: [val => val < 21  || `Userstory point should be between 1 to 20`,val => val >= 1  || `Userstory point should be between 1 to 20`],
+                },
+                approve:'',
             }
         },
         created() {
 
             Userstory.fetchUserstory(userstory => this.story = userstory, this.userstoryid);
-            Userstory.allComments(events => this.events = events, this.userstoryid);
+            Userstory.allComments((events) => {
+                this.events = events.comments;
+                this.approve = events.approve;  
+            }, this.userstoryid);
             // Userstory.fetchDocuments(documents => this.documents = documents, this.userstoryid);
             // Userstory.fetchApprovedDocument(document => this.formApprove.approved_document = document, this.userstoryid);
             this.isLoading = false;

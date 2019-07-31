@@ -88,6 +88,11 @@ Route::get('/userstory/comments/{crdid}', 'UserstoryController@fetchCommments');
 Route::get('/userstory/documents/{crdid}', 'UserstoryController@fetchDocuments');
 Route::get('/userstory/document/{crdid}', 'UserstoryController@fetchApprovedDocument');
 Route::get('/user/role', 'DashboardController@fetchRoleScreen');
+// Route::get('/userstory/approveccomment', 'UserstoryController@fetchApproveAccess');
+Route::get('/userstory/isprogram', function(){
+	return json_encode(App\User::isRole(6));
+});
+
 Route::get('/403', function(){
 	abort(403, "Permission Denied");
 });
