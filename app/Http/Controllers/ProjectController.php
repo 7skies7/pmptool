@@ -40,7 +40,7 @@ class ProjectController extends Controller
         if(User::isRole(5))
         {            
             $companies = CompanyManager::where('user_id', auth()->user()->id)->pluck('company_id');
-            $programs = Program::whereIn('company_id', $companies)->where('is_deleted',0)->pluck('program_id');
+            $programs = Program::whereIn('company_id', $companies)->where('is_deleted',0)->pluck('id');
             return Project::with('status')->with('program')->with('managers')->with('stakeholders')->whereIn('program_id', $programs)->where('is_deleted',0)->latest()->get();   
         }
 
