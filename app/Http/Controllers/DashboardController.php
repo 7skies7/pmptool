@@ -61,7 +61,7 @@ class DashboardController extends Controller
             $projects = $this->getProjectsBasedOnRole();
             if(count($projects) > 0)
             {
-                $userstory = Userstory::with('priority')->whereIn('project_id', $projects)->where('userstory_status',1)->where('is_deleted',0)->get();
+                $userstory = Userstory::with('priority')->whereIn('project_id', $projects)->where('userstory_status',1)->where('is_deleted',0)->where('userstory_point', '!=', null)->get();
                 return $userstory;
             }
         }

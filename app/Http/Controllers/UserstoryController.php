@@ -157,8 +157,15 @@ class UserstoryController extends Controller
 
         $attributes['comment'] = $request->get('comment');
         $attributes['userstory_point'] = $request->get('userstory_point');
+
+
         unset($attributes['file_name']);
         $scope = ScopeComment::create($attributes);
+
+        if(!empty($attributes['userstory_point']))
+        {
+            Userstory::where('id', $userstoryid)->update(['userstory_point' => $attributes['userstory_point']]);
+        }
         return $scope;
     }
 
