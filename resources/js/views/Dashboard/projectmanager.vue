@@ -53,9 +53,11 @@
                                             <span>{{props.item.userstory_project}}/<br></span>
                                             {{ props.item.userstory_name }}
                                         </td>
-                                        <td class="text-xs-center">{{ props.item.userstory_project }}</td>
+                                        <!-- <td class="text-xs-center">{{ props.item.userstory_project }}</td> -->
                                         <td class="text-xs-center">{{ props.item.userstory_point }}</td>
-                                        <!-- <td class="text-xs-center">{{ props.item.userstory_priority }}</td> -->
+                                        <td class="text-xs-center" v-if="props.item.priority">{{ props.item.priority.priority_type }}</td>
+                                        <td class="text-xs-center" v-else>-</td>
+
                                         <td class="text-xs-center"><v-progress-linear v-model="props.item.userstory_progress" thumb-label="always"></v-progress-linear></td>
                                     </template>
                                 </v-data-table>
