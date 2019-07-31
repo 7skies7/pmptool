@@ -49,7 +49,7 @@
                                         </v-card>
                                     </v-flex>
                                     <v-flex xs10>
-                                        <v-text-field v-model="form.task_comment" box label="Message" type="text" :messages="form.errors.get('task_comment')"></v-text-field>
+                                        <v-textarea rows="3" v-model="form.task_comment" box label="Message" type="text" :messages="form.errors.get('task_comment')"></v-textarea>
                                     </v-flex>
                                     <v-flex xs2><v-btn class="mx-0" dark depressed type="submit">Post</v-btn></v-flex>
                                 </v-layout>
@@ -112,10 +112,10 @@
                 prevProg:'',
                 rules: {
                     hrsmax: [val => val < 24  || `Hours should be between 0 to 24`,val => val >= 0  || `Hours should be between 0 to 24`],
-                    minsmax: [val => val < 59  || `Mins should be between 0 to 59`, val => val > 0  || `Mins should be between 0 to 59`],
+                    minsmax: [val => val < 59  || `Mins should be between 0 to 59`, val => val > -1  || `Mins should be between 0 to 59`],
                 },
-                task_hrs:'',
-                task_mins:'',
+                task_hrs:'0',
+                task_mins:'0',
             }
         },
         created() {

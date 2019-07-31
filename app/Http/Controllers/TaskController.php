@@ -402,9 +402,13 @@ class TaskController extends Controller
      */
     public function fetchAvailableHours($point, $taskid)
     {
-        $userHours = TaskComment::where('task_id', $taskid)->selectRaw('time(sum(task_hours)) as hourstotal')->get();
-        $usedHours = Carbon::parse($userHours[0]->hourstotal);        
+        $userHours = TaskComment::where('task_id', $taskid)->selectRaw('sec_to_time(sum(time_to_sec(task_hours))) as hourstotal')->get();
         $hours = StoryPointMaster::pointtohours($point);
+        if($userHours[0]->hourstotal == null)
+        {
+            return sprintf("%02d", $hours).':00';
+        }
+        $usedHours = Carbon::parse($userHours[0]->hourstotal);        
         $totalHours = Carbon::parse($hours.':00:00');
         $availableHours = $usedHours->diff($totalHours)->format("%H:%i");
 

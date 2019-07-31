@@ -54,10 +54,9 @@
                                     <v-text-field type="number" v-model="form.userstory_point" label="Task Point" placeholder="Task Point" :rules="rules.userstory_point" :messages="form.errors.get('userstory_point')"></v-text-field>
                                 </v-card>
                                 <v-textarea rows="3" v-model="form.comment" hide-details flat label="Leave a comment..." solo @keydown.enter="comment" >
-                                    <template v-slot:append>
-                                        <v-btn class="mx-0" depressed type="submit">Post</v-btn>
-                                    </template>
+                                    
                                 </v-textarea>
+                                <v-btn class="mx-0" depressed type="submit">Post</v-btn>
                             </v-timeline-item>
                             </form>
 <!--                             <form @submit.prevent="onApprove" @keydown="form.errors.clear()" enctype="multipart/form-data"> 
