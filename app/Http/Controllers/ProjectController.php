@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use App\UserRole;
+use App\CompanyManager;
 
 class ProjectController extends Controller
 {
@@ -35,12 +36,22 @@ class ProjectController extends Controller
             return Project::with('status')->with('program')->with('managers')->with('stakeholders')->where('is_deleted',0)->latest()->get();
         }
 
+        if(User::isRole(5))
+        {            
+            $companies = CompanyManager::where('user_id', auth()->user()->id)->pluck('company_id');
+            $programs = Program::whereIn('company_id', $companies)->where('is_deleted',0)->pluck('program_id');
+            return Project::with('status')->with('program')->with('managers')->with('stakeholders')->whereIn('program_id', $programs)->where('is_deleted',0)->latest()->get();   
+        }
+
         if(User::isRole(6))
         {
             return Project::with('status')->with('program')->with('managers')->with('stakeholders')->whereIn('program_id',ProgramManager::where('user_id', auth()->user()->id)->pluck('program_id'))->where('is_deleted',0)->latest()->get();
         }
 
-        return Project::with('status')->with('program')->with('managers')->with('stakeholders')->whereIn('id',ProjectManager::where('user_id', auth()->user()->id)->pluck('project_id'))->where('is_deleted',0)->latest()->get();
+        if(User::isRole(7))
+        {
+            return Project::with('status')->with('program')->with('managers')->with('stakeholders')->whereIn('id',ProjectManager::where('user_id', auth()->user()->id)->pluck('project_id'))->where('is_deleted',0)->latest()->get();    
+        }
     }
 
     /**

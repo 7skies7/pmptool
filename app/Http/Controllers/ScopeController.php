@@ -67,8 +67,9 @@ class ScopeController extends Controller
         $attributes['modified_by'] = auth()->user()->id;
         $attributes['crd_status'] = $attributes['crd_status']['id'];
         $attributes['project_id'] = request('project_id');
-        $lastScopeId = Scope::orderBy('id', 'desc')->limit(1)->pluck('id');
-        $attributes['crd_id'] = 'CRD_'.request('project_id').'_'.($lastScopeId[0] + 1);
+        $lastScope = Scope::orderBy('id', 'desc')->limit(1)->pluck('id');
+        $lastScopeId = isset($lastScope[0]) ? $lastScope : 0;
+        $attributes['crd_id'] = 'CR_'.request('project_id').'_'.($lastScopeId[0] + 1);
         //store scope details in database
         $scope = Scope::create($attributes);
         //save in session
