@@ -57,7 +57,7 @@ Route::post('/acl/update', 'AclController@update');
 
 Route::get('/acl/fakeaccess', 'AclController@fakeaccess');
 Route::get('/acl/userdetails', function(){
-	return json_encode(auth()->user()->toArray());
+	return json_encode(App\User::with('companies')->find(auth()->user()->id)->toArray());
 });
 
 

@@ -1,8 +1,9 @@
 <template>
-    
-  <v-app style="background:transparent!important">
-    <div class="text-xs-center">
-      <v-menu
+
+  <v-app style="background:transparent!important" v-if="userdetails">
+    <div class="text-xs-center" style="display:flex">
+        <v-btn v-if="userdetails.companies">{{ this.userdetails.companies[0].company_name }}</v-btn>
+      <v-menu v-if="userdetails"
         v-model="menu"
         :close-on-content-click="false"
         :nudge-width="200"
