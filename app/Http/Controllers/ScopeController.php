@@ -147,6 +147,13 @@ class ScopeController extends Controller
         {
             return abort('403');
         }
+    
+        $userstory = Userstory::where('cr_id', $scopeid)->count();
+        if($userstory > 0)
+        {
+            $message['errors']['message'] = 'Sorry! Scope cannot be deleted as it has userstory associated with it.';
+            return response()->json($message, 422); 
+        }
         
         $attributes['is_deleted'] = 1;
         $attributes['deleted_by'] = auth()->user()->id;

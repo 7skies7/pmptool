@@ -28,6 +28,7 @@
                 @yield('content')
             @else
                 <router-view></router-view>
+                
             @endguest
         </main>
     </div>

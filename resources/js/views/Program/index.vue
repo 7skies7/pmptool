@@ -24,6 +24,8 @@
             </div>
             <add-program v-if="addProgram" :key="latestPrograms" @completed="addNewProgram" @closeAddForm="closeForm"></add-program>
             <edit-program v-if="editProgram" :key="latestPrograms" :program="program" @updatecompleted="updateProgram" @closeEditForm="closeForm"></edit-program>
+            <confirm ref="confirm"></confirm>
+
         </div>
     </div>
     
@@ -85,10 +87,20 @@
                 this.closeForm();
             },
             deleteprogram(programid) {
-                this.form.post('/program/delete/'+programid)
-                    .then(program => this.latestPrograms += 1);
-                    this.$toasted.success('Congratulations! Program has been deleted successfully.');  
-                    this.latestPrograms += 1;
+                var self = this;
+                this.$refs.confirm.open('Delete', 'Are you sure?', { color: 'red',showAgree: true })
+                .then((confirm) => {
+                    if(confirm){
+                        this.form.post('/program/delete/'+programid)
+                        .then((company) => {
+                            this.latestPrograms += 1
+                            this.$toasted.success('Congratulations! Program has been deleted successfully.');  
+                        })
+                        .catch((error) => {
+                            this.$refs.confirm.open('Delete Error', error.message, { color: 'red',showAgree: false });
+                        });
+                    }
+                });
 
             },
             closeForm() {

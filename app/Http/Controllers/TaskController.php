@@ -191,21 +191,39 @@ class TaskController extends Controller
      * @param  \App\Project  $Project
      * @return \Illuminate\Http\Response
      */
-    public function destroy($scopeid)
+    public function destroy($taskid)
     {
         // Authorize user requests to delete resource
         if(Gate::allows('Delete_Scope') != true)
         {
             return abort('403');
         }
+
+        $taskHeirarchy = Task::find($taskid)->task_heirarchy;
+        if($taskHeirarchy == 1)
+        {
+            $subtasks = Task::where('parent_id', $taskid)->count();
+            if($subtasks > 0)
+            {
+                $message['errors']['message'] = 'Sorry! Task cannot be deleted as it has subtasks associated with it.';
+                return response()->json($message, 422); 
+            }
+        }else{
+            $taskComment = TaskComment::where('task_id', $taskid)->count();
+            if($taskComment > 0)
+            {
+                $message['errors']['message'] = 'Sorry! Sub Task cannot be deleted as it has hours and comments associated with it.';
+                return response()->json($message, 422); 
+            }
+        }
         
         $attributes['is_deleted'] = 1;
         $attributes['deleted_by'] = auth()->user()->id;
         $attributes['deleted_at'] = (new Carbon)->toDateTimeString();
         
-        $scope = Task::where('id', $scopeid)->update($attributes);
+        $task = Task::where('id', $taskid)->update($attributes);
         
-        return $scope;  
+        return $task;  
     }
 
     /**

@@ -28,6 +28,8 @@
             <add-userstory v-if="addUserstory" :scopeid="scopeid" @completed="addNewUserstory" @closeAddForm="closeForm"></add-userstory>
             <edit-userstory v-if="editUserstory" :userstoryid="userstoryid" @updatecompleted="updateUserstory" @closeEditForm="closeForm"></edit-userstory>
             <userstory-comments v-if="userstoryComments" :key="latestUserstoryCommented" :userstoryid="userstoryid" :scopeid="scopeid" @completed="commentAdded" @closeCommentForm="closeForm" @approvecompleted="approvedComment"></userstory-comments>
+            <confirm ref="confirm"></confirm>
+
         </div>
     </div>
 </template>
@@ -123,17 +125,39 @@
                 this.closeForm();
             },
             deleteScope(scopeid) {
-                this.form.post('/scope/delete/'+scopeid)
-                    .then(scope => this.latestScope += 1);
-                    this.$toasted.success('Congratulations! Scope has been deleted successfully.');  
-                    this.latestScope += 1;
+                var self = this;
+                this.$refs.confirm.open('Delete', 'Are you sure?', { color: 'red',showAgree: true })
+                .then((confirm) => {
+                    if(confirm){
+                        this.form.post('/scope/delete/'+scopeid)
+                        .then((company) => {
+                            this.latestScope += 1
+                            this.$toasted.success('Congratulations! Scope has been deleted successfully.');  
+                        })
+                        .catch((error) => {
+                            this.$refs.confirm.open('Delete Error', error.message, { color: 'red',showAgree: false });
+                        });
+                    }
+                });
 
             },
             deleteUserstory(userstoryid) {
-                this.form.post('/userstory/delete/'+userstoryid)
-                    .then(userstory => this.latestScope += 1);
-                    this.$toasted.success('Congratulations! Userstory has been deleted successfully.');  
-                    this.latestScope += 1;
+                
+                var self = this;
+                this.$refs.confirm.open('Delete', 'Are you sure?', { color: 'red',showAgree: true })
+                .then((confirm) => {
+                    if(confirm){
+                        this.form.post('/userstory/delete/'+userstoryid)
+                        .then((company) => {
+                            this.latestScope += 1
+                            this.$toasted.success('Congratulations! Userstory has been deleted successfully.');  
+                        })
+                        .catch((error) => {
+                            this.$refs.confirm.open('Delete Error', error.message, { color: 'red',showAgree: false });
+                        });
+                    }
+                });
+                
 
             },
             closeForm() {

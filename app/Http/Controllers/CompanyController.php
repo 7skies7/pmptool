@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\CompanyManager;
 use App\UserRole;
 use App\UserCompany;
+use App\Program;
 
 class CompanyController extends Controller
 {
@@ -177,6 +178,13 @@ class CompanyController extends Controller
         if(Gate::allows('Delete_Organization') != true)
         {
             return abort('403');
+        }
+
+        $company = Program::where('company_id', $companyid)->count();
+        if($company > 0)
+        {
+            $message['errors']['message'] = 'Sorry! Company cannot be deleted as it has programs associated with it.';
+            return response()->json($message, 422); 
         }
 
         $attributes['is_deleted'] = 1;

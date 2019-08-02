@@ -71,6 +71,8 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 // Vue.component('dropdown', require('./components/Dropdown.vue').default);
 Vue.component('usercard', require('./components/Usercard.vue').default);
+Vue.component('confirm', require('./components/Confirm.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

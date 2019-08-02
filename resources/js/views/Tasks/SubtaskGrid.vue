@@ -51,7 +51,7 @@
                     <!-- <td class="text-xs-left">{{ props.item.project_budget }}</td> -->
                     <td class="justify-center layout px-0 smallbtn">
                         <v-btn v-if="isEditVisible" @click="showEditTask(props.item)" color="primary" fab depressed small dark><v-icon>edit</v-icon></v-btn>
-                        <v-btn v-if="isDeleteVisible" @click="deleteProject(props.item.id)" color="error" fab depressed small dark><v-icon>delete</v-icon></v-btn>
+                        <v-btn v-if="isDeleteVisible" @click="deleteTask(props.item.id)" color="error" fab depressed small dark><v-icon>delete</v-icon></v-btn>
                     </td>
                 </tr>
             </template>
@@ -111,8 +111,8 @@
             showEditTask(task) {
                 this.$emit('showedittask', task)
             },
-            deleteProject(id) {
-                this.$emit('deleteproject', id)
+            deleteTask(id) {
+                this.$emit('deletetask', id)
             }
         },
         mounted() {

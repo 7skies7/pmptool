@@ -24,6 +24,7 @@
             </div>
             <add-company v-if="addCompany" :key="latestCompanies" @completed="addNewCompany" @closeAddForm="closeForm"></add-company>
             <edit-company v-if="editCompany" :key="latestCompanies" :company="company" @updatecompleted="updateCompany" @closeEditForm="closeForm"></edit-company>
+            <confirm ref="confirm"></confirm>
         </div>
     </div>
     
@@ -86,10 +87,21 @@
                 this.closeForm();
             },
             deleteCompany(companyid) {
-                this.form.post('/company/delete/'+companyid)
-                    .then(company => this.latestCompanies += 1);
-                    this.$toasted.success('Congratulations! Organization has been deleted successfully.');  
-                    this.latestCompanies += 1;
+                var self = this;
+                this.$refs.confirm.open('Delete', 'Are you sure?', { color: 'red',showAgree: true })
+                .then((confirm) => {
+                    if(confirm){
+                        this.form.post('/company/delete/'+companyid)
+                        .then((company) => {
+                            this.latestCompanies += 1
+                            this.$toasted.success('Congratulations! Company has been deleted successfully.');  
+                        })
+                        .catch((error) => {
+                            this.$refs.confirm.open('Delete Error', error.message, { color: 'red',showAgree: false });
+                        });
+                    }
+                });
+                
 
             },
             closeForm() {

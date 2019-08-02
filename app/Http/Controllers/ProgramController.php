@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use App\ProgramManager;
 use App\UserRole;
 use App\CompanyManager;
+use App\Project;
 
 class ProgramController extends Controller
 {
@@ -193,6 +194,13 @@ class ProgramController extends Controller
             return abort('403');
         }
         
+        $project = Project::where('program_id', $programid)->count();
+        if($project > 0)
+        {
+            $message['errors']['message'] = 'Sorry! Program cannot be deleted as it has projects associated with it.';
+            return response()->json($message, 422); 
+        }
+
         $attributes['is_deleted'] = 1;
         $attributes['deleted_by'] = auth()->user()->id;
         $attributes['deleted_at'] = (new Carbon)->toDateTimeString();

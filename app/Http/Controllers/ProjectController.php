@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use App\UserRole;
 use App\CompanyManager;
+use App\Scope;
 
 class ProjectController extends Controller
 {
@@ -263,6 +264,13 @@ class ProjectController extends Controller
             return abort('403');
         }
         
+        $scope = Scope::where('project_id', $projectid)->count();
+        if($scope > 0)
+        {
+            $message['errors']['message'] = 'Sorry! Project cannot be deleted as it has scope associated with it.';
+            return response()->json($message, 422); 
+        }
+
         $attributes['is_deleted'] = 1;
         $attributes['deleted_by'] = auth()->user()->id;
         $attributes['deleted_at'] = (new Carbon)->toDateTimeString();

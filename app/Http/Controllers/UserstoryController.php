@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Storage;
+use App\Task;
 
 class UserstoryController extends Controller
 {
@@ -121,6 +122,13 @@ class UserstoryController extends Controller
             return abort('403');
         }
         
+        $task = Task::where('userstory_id', $userstoryid)->count();
+        if($task > 0)
+        {
+            $message['errors']['message'] = 'Sorry! Userstory cannot be deleted as it has tasks associated with it.';
+            return response()->json($message, 422); 
+        }
+
         $attributes['is_deleted'] = 1;
         $attributes['deleted_by'] = auth()->user()->id;
         $attributes['deleted_at'] = (new Carbon)->toDateTimeString();

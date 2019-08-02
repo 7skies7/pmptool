@@ -24,6 +24,8 @@
             </div>
             <add-project v-if="addProject" :key="latestProjects" @completed="addNewProject" @closeAddForm="closeForm"></add-project>
             <edit-project v-if="editProject" :key="latestProjects" :project="project" @updatecompleted="updateProject" @closeEditForm="closeForm"></edit-project>
+            <confirm ref="confirm"></confirm>
+            
         </div>
     </div>
     
@@ -85,10 +87,20 @@
                 this.closeForm();
             },
             deleteproject(projectid) {
-                this.form.post('/project/delete/'+projectid)
-                    .then(project => this.latestProjects += 1);
-                    this.$toasted.success('Congratulations! Project has been deleted successfully.');  
-                    this.latestProjects += 1;
+                var self = this;
+                this.$refs.confirm.open('Delete', 'Are you sure?', { color: 'red',showAgree: true })
+                .then((confirm) => {
+                    if(confirm){
+                        this.form.post('/project/delete/'+projectid)
+                        .then((company) => {
+                            this.latestProjects += 1
+                            this.$toasted.success('Congratulations! Project has been deleted successfully.');  
+                        })
+                        .catch((error) => {
+                            this.$refs.confirm.open('Delete Error', error.message, { color: 'red',showAgree: false });
+                        });
+                    }
+                });
 
             },
             closeForm() {

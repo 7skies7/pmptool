@@ -52,13 +52,13 @@
                     <!-- <td class="text-xs-left">{{ props.item.project_budget }}</td> -->
                     <td class="justify-center layout px-0 smallbtn">
                         <v-btn v-if="isEditVisible" @click="showEditTask(props.item)" color="primary" fab depressed small dark><v-icon>edit</v-icon></v-btn>
-                        <v-btn v-if="isDeleteVisible" @click="deleteProject(props.item.id)" color="error" fab depressed small dark><v-icon>delete</v-icon></v-btn>
+                        <v-btn v-if="isDeleteVisible" @click="deleteTask(props.item.id)" color="error" fab depressed small dark><v-icon>delete</v-icon></v-btn>
                         <v-btn v-if="addAccess" @click="showAddTask(props.item.id,props.item.task_point)" color="success" fab depressed small dark><v-icon>add</v-icon></v-btn>
                     </td>
                 </tr>
             </template>
             <template v-slot:expand="props" >
-                <subtask-grid :editAccess="isEditVisible" :deleteAccess="isDeleteVisible" :taskid="props.item.id" :key="props.item.id" @showedittask="showEditTask"></subtask-grid>
+                <subtask-grid :editAccess="isEditVisible" :deleteAccess="isDeleteVisible" :taskid="props.item.id" :key="props.item.id" @showedittask="showEditTask" @deletetask="deleteTask"></subtask-grid>
             </template>
             <template v-slot:no-results>
                 <v-alert :value="true" color="error" icon="warning">
@@ -121,8 +121,8 @@
             showAddTask(id, point) {
                 this.$emit('showaddtask', id, point)
             },
-            deleteProject(id) {
-                this.$emit('deleteproject', id)
+            deleteTask(id) {
+                this.$emit('deletetask', id)
             }
         },
         mounted() {
