@@ -28,7 +28,7 @@
             <template v-slot:items="props">
                 <tr @click="props.expanded = !props.expanded">
                     <td>
-                        <v-btn :href="'#/project/'+props.item.id+'/detail'" flat small color="primary">{{ props.item.task_desc }}</v-btn>
+                        <v-btn  flat small color="primary">{{ props.item.task_desc }}</v-btn>
                     </td>
                     <td class="text-xs-cebter">
                         <!-- <v-btn v-if="props.item.priority" flat icon  small> -->

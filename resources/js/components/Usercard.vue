@@ -1,76 +1,53 @@
 <template>
-
   <v-app style="background:transparent!important" v-if="userdetails">
     <div class="text-xs-center" style="display:flex">
-        <v-btn v-if="userdetails.companies">{{ this.userdetails.companies[0].company_name }}</v-btn>
-      <v-menu v-if="userdetails"
-        v-model="menu"
-        :close-on-content-click="false"
-        :nudge-width="200"
-        offset-x
-      >
-        <template v-slot:activator="{ on }">
-          <v-btn
-            color="indigo"
-            dark
-            v-on="on"
-          >
-            {{ userName }}
-          </v-btn>
-        </template>
-  
-        <v-card>
-          <v-list>
-            <v-list-tile avatar>
-              <v-list-tile-avatar>
-                <img src="/images/User.png" alt="John">
-              </v-list-tile-avatar>
-  
-              <v-list-tile-content>
-                <v-list-tile-title>{{ userName}}</v-list-tile-title>
-                <v-list-tile-sub-title>{{ this.userdetails.email }}</v-list-tile-sub-title>
-              </v-list-tile-content>
-  
-<!--               <v-list-tile-action>
-                <v-btn
-                  :class="fav ? 'red--text' : ''"
-                  icon
-                  @click="fav = !fav"
-                >
-                  <v-icon>favorite</v-icon>
+        <v-chip v-if="userdetails.companies" color="indigo" medium text-color="white">
+            {{ this.userdetails.companies[0].company_name }}
+        </v-chip>
+        <v-menu v-if="userdetails" v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-x>
+            <template v-slot:activator="{ on }">
+                <v-btn color="indigo" dark v-on="on">
+                    {{ userName }}
                 </v-btn>
-              </v-list-tile-action> -->
-            </v-list-tile>
-          </v-list>
+            </template>
   
-          <v-divider></v-divider>
-  
-          <v-list>
-            <v-list-tile>
-              <v-list-tile-action>
-                <v-switch v-model="message" color="purple"></v-switch>
-              </v-list-tile-action>
-              <v-list-tile-title>Enable messages</v-list-tile-title>
-            </v-list-tile>
-  
-            <v-list-tile>
-              <v-list-tile-action>
-                <v-switch v-model="hints" color="purple"></v-switch>
-              </v-list-tile-action>
-              <v-list-tile-title>Enable hints</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-  
-          <v-card-actions>
-            <v-spacer></v-spacer>
-  
-            <v-btn flat @click="menu = false">Cancel</v-btn>
-            <slot></slot>
-          </v-card-actions>
-        </v-card>
-      </v-menu>
+            <v-card>
+                <v-list>
+                    <v-list-tile avatar>
+                        <v-list-tile-avatar>
+                            <img src="/images/User.png" alt="John">
+                        </v-list-tile-avatar>
+      
+                        <v-list-tile-content>
+                            <v-list-tile-title>{{ userName}}</v-list-tile-title>
+                            <v-list-tile-sub-title>{{ this.userdetails.email }}</v-list-tile-sub-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                </v-list>
+                <v-divider></v-divider>
+            <v-list>
+                <v-list-tile>
+                    <v-list-tile-action>
+                        <v-switch v-model="message" color="purple"></v-switch>
+                    </v-list-tile-action>
+                    <v-list-tile-title>Enable messages</v-list-tile-title>
+                </v-list-tile>
+                <v-list-tile>
+                    <v-list-tile-action>
+                        <v-switch v-model="hints" color="purple"></v-switch>
+                    </v-list-tile-action>
+                    <v-list-tile-title>Enable hints</v-list-tile-title>
+                </v-list-tile>
+            </v-list>  
+            <v-card-actions>
+                <v-spacer></v-spacer>  
+                    <v-btn flat @click="menu = false">Cancel</v-btn>
+                    <slot></slot>
+                </v-card-actions>
+            </v-card>
+        </v-menu>
     </div>
-  </v-app>
+</v-app>
 
 </template>
 

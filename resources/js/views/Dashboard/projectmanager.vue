@@ -115,9 +115,10 @@
                                         <td class="text-xs-left">{{ props.item.project.project_name }}</td>
                                         <td class="text-xs-left" v-if="props.item.assignee">{{ props.item.assignee.first_name }}</td>
                                         <td class="text-xs-left" v-else>-</td>
-                                        <td class="text-xs-left">{{ props.item.status.status_name }}</td>
-                                        <td class="text-xs-left">{{ props.item.task_end_date }}</td>
+                                        <!-- <td class="text-xs-left">{{ props.item.status.status_name }}</td> -->
                                         <td class="text-xs-center"><v-progress-linear v-model="props.item.task_completion" thumb-label="always"></v-progress-linear></td>
+                                        <td class="text-xs-left">{{ props.item.task_end_date }}</td>
+                                        
                                     </template>
                                 </v-data-table>
                             </v-card>
@@ -229,9 +230,9 @@
                 { text: 'Task ', align: 'left', sortable: false, value: 'task_desc' },
                 { text: 'Project',  value: 'project.project_name' },
                 { text: 'Assigned To', value: 'assignee.first_name' },
-                { text: 'Task Status', value: 'status.status_name' },
-                { text: 'Task End Date', value: 'task_end_date' },
+                // { text: 'Task Status', value: 'status.status_name' },
                 { text: 'Task Completion', value: 'task_completion' },
+                { text: 'Task End Date', value: 'task_end_date' },
 
             ],
             userstories: [],

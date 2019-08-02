@@ -11334,7 +11334,7 @@ table.v-table tbody td:first-child {
   margin-left: 5px !important;
 }
 
-#wpsform .application--wrap,
+.wpsform .application--wrap,
 .subtaskgrid .application--wrap {
   min-height: unset !important;
 }
@@ -11343,11 +11343,11 @@ table.v-table tbody td:first-child {
   margin-bottom: 10px !important;
 }
 
-#wpsform .v-input input {
+.wpsform .v-input input {
   max-height: unset !important;
 }
 
-#wpsform .container {
+.wpsform .container {
   padding: 0px !important;
 }
 
@@ -11654,5 +11654,128 @@ a.v-btn {
 
 #dev .v-card {
   box-shadow: unset !important;
+}
+
+#scopeTabs {
+  background: #fff !important;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+#scopeTabs .container.grid-list-md .layout .flex {
+  padding: 14px;
+  text-align: center;
+  vertical-align: center;
+  vertical-align: middle;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+#scopeTabs .projectName {
+  font-size: 21px;
+  color: #19BDF0 !important;
+}
+
+#scopeTabs .container {
+  padding: 7px !important;
+}
+
+#scopeTabs .xs2 {
+  letter-spacing: 0.7px;
+  color: #777;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+#scopeTabs .xs2 a {
+  color: #777;
+  text-decoration: none;
+}
+
+#scopeTabs .xs2 a:hover {
+  color: #EF4667;
+  text-decoration: none;
+}
+
+#scopeTabs .router-link-exact-active,
+#scopeTabs .router-link-active {
+  color: #EF4667 !important;
+  text-decoration: none;
+}
+
+#scopeTabs .router-link-exact-active:after,
+#scopeTabs .router-link-active:after {
+  content: unset !important;
+}
+
+.scopeexpan .container {
+  padding: 0px !important;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
+
+.scopeexpan .searchbar {
+  padding: 0px !important;
+  padding-bottom: 16px !important;
+}
+
+.scopeexpan .layout ul {
+  box-shadow: 0 2px 1px -1px rgba(220, 211, 211, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0) !important;
+  margin-bottom: 1px;
+}
+
+.scopeexpan td,
+.scopeexpan .v-list {
+  padding: 0px !important;
+}
+
+.scopeexpan .v-list__tile__title,
+.scopeexpan .v-list__tile__sub-title {
+  text-transform: unset !important;
+}
+
+.scopeexpan .v-list__tile__sub-title {
+  font-size: 12px !important;
+  color: #5f6368 !important;
+}
+
+.scopeexpan .v-list__tile__title {
+  height: 20px !important;
+  line-height: 20px !important;
+  font-weight: 500 !important;
+  color: #202124 !important;
+}
+
+.scopeexpan .v-list__tile {
+  font-size: 14px !important;
+}
+
+.scopebtn .v-btn--floating.v-btn--small {
+  width: 30px !important;
+  height: 30px !important;
+  margin-top: 13px !important;
+}
+
+.accordianbtn .v-icon {
+  font-size: 17px !important;
+}
+
+.userstorytable .v-datatable__actions__select .v-select {
+  margin: 0px 0 -2px 34px !important;
+}
+
+.userstorytable table.v-table thead th {
+  color: rgba(0, 0, 0, 0.87) !important;
+  height: 42px !important;
+}
+
+.userstorytable table.v-table thead tr.v-datatable__progress th {
+  height: auto !important;
+}
+
+.userstorytable table.v-table tbody td {
+  height: 40px !important;
+  color: #202124 !important;
 }
 

@@ -4,25 +4,28 @@
             <div class="card-header">Add Tasks</div>
 
             <div class="card-body">
-                <v-app id="wpsform">
+                <v-app id="editTask" class="wpsform">
                     <v-form v-model="valid" enctype="multipart/form-data" @submit.prevent="onSubmit">
-                        <v-container>
-                            <v-layout>
-                                <v-flex xs12 md8>
-                                    <div class="v-input v-text-field v-input--is-label-active theme--light">
-                                        <div class="v-input__control">
-                                            <div class="v-input__slot">
-                                                <div class="v-text-field__slot multiselectwps">
-                                                    <multiselect @input="onChangeScope" v-model="form.scope" :options="scopes" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select CR" label="crd_title" track-by="id" :preselect-first="false" >
-                                                        <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
-                                                    </multiselect>
+                        <v-container grid-list-md text-xs-center>
+                            <v-layout row wrap>
+                                <v-flex xs12 md12>
+                                    <v-card color="white">
+                                        <div class="v-input v-text-field v-input--is-label-active theme--light">
+                                            <div class="v-input__control">
+                                                <div class="v-input__slot">
+                                                    <div class="v-text-field__slot multiselectwps">
+                                                        <multiselect @input="onChangeScope" v-model="form.scope" :options="scopes" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select CR" label="crd_title" track-by="id" :preselect-first="false" >
+                                                            <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
+                                                        </multiselect>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </v-card>
                                 </v-flex>
-                                <v-flex xs12 md8>
-                                    <div class="v-input v-text-field v-input--is-label-active theme--light">
+                                <v-flex xs12 md12>
+                                    <v-card color="white">
+                                        <div class="v-input v-text-field v-input--is-label-active theme--light">
                                         <div class="v-input__control">
                                             <div class="v-input__slot">
                                                 <div class="v-text-field__slot multiselectwps">
@@ -32,10 +35,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                        </div>
+                                    </v-card>
                                 </v-flex>
-                                <v-flex xs12 md8>
-                                    <div class="v-input v-text-field v-input--is-label-active v-input--is-dirty theme--light">
+                                <v-flex xs12 md12>
+                                    <v-card color="white">
+                                        <div class="v-input v-text-field v-input--is-label-active v-input--is-dirty theme--light">
                                         <div class="v-input__control">
                                             <div class="v-input__slot">
                                                 <div class="v-text-field__slot">
@@ -44,16 +49,18 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    
+                                        </div>
+                                    </v-card>
                                 </v-flex>
-                                <v-flex xs12 md8 class="uploadBtnDiv">
-                                    <v-btn v-if="isUploadVisible" :loading="uploadwbs" color="blue-grey" class="white--text" @click="loader = 'uploadwbs'" type="submit">
+                                <v-flex xs12 md12 class="uploadBtnDiv">
+                                    <v-card color="white">
+                                        <v-btn v-if="isUploadVisible" :loading="uploadwbs" color="blue-grey" class="white--text" @click="loader = 'uploadwbs'" type="submit">
                                         Upload
                                         <v-icon right dark>cloud_upload</v-icon>
-                                    </v-btn>
-                                    <v-btn color="info" href="/download/WBS_Sample_Template.xlsx"> WBS Template</v-btn>
-                                    <v-btn @click="closeWBSForm"> Close Form</v-btn>
+                                        </v-btn>
+                                        <v-btn color="info" href="/download/WBS_Sample_Template.xlsx"> WBS Template</v-btn>
+                                        <v-btn @click="closeWBSForm"> Close Form</v-btn>
+                                    </v-card>
                                 </v-flex>                                
                             </v-layout>
                         </v-container> 

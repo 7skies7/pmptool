@@ -38,7 +38,7 @@
                                 <!-- <v-divider inset></v-divider> -->
                                 <v-list-tile @click="">
                                     <v-list-tile-action>
-                                        108
+                                        {{ this.user.hours_clocked[0].hours }}
                                     </v-list-tile-action>
                   
                                     <v-list-tile-content>

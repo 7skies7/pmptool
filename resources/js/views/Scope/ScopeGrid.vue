@@ -11,7 +11,7 @@
     <v-app id="inspire">
     <div class="scopeexpan">
         <v-container fluid grid-list-md>
-            <v-card-title>
+            <v-card-title class="searchbar">
                 <v-spacer></v-spacer>
                 <v-spacer></v-spacer>
                 <v-spacer></v-spacer>
@@ -32,12 +32,47 @@
                             <!-- <div> -->
                                 <table class="table accordtable">
                                     <tr>
-                                        <td width="30%">
-                                            {{ props.item.crd_id }}
+                                        <td width="20%">
+                                            <v-list>
+                                                <v-list-tile avatar>
+                                                    <v-list-tile-content>
+                                                        <v-list-tile-sub-title>CR</v-list-tile-sub-title>
+                                                        <v-list-tile-title >{{ props.item.crd_id }}</v-list-tile-title>
+                                                    </v-list-tile-content>
+                                                </v-list-tile>
+                                            </v-list>
+
                                         </td>
-                                        <td width="50%">{{ props.item.crd_title }}</td>
-                                        <td width="20%" v-if="props.item.status" class="text-xs-left"><h5><b-badge pill variant="info">{{ props.item.status.status_name }}</b-badge></h5></td>
-                                        <td width="20%" v-else class="text-xs-left">-</td>
+                                        <td width="45%">
+                                            <v-list>
+                                                <v-list-tile avatar>
+                                                    <v-list-tile-content>
+                                                        <v-list-tile-sub-title>Title</v-list-tile-sub-title>
+                                                        <v-list-tile-title >{{ props.item.crd_title }}</v-list-tile-title>
+                                                    </v-list-tile-content>
+                                                </v-list-tile>
+                                            </v-list>
+                                        </td>
+                                        <td width="20%" class="text-xs-left">
+                                            <v-list>
+                                                <v-list-tile avatar>
+                                                    <v-list-tile-content v-if="props.item.status" >
+                                                        <v-list-tile-sub-title>Status</v-list-tile-sub-title>
+                                                        <v-list-tile-title ><h5><b-badge pill variant="info">{{ props.item.status.status_name }}</b-badge></h5></v-list-tile-title>
+                                                    </v-list-tile-content>
+                                                    <v-list-tile-content v-else>
+                                                        <v-list-tile-title ><h5>-</h5></v-list-tile-title>
+
+                                                    </v-list-tile-content>
+                                                </v-list-tile>
+                                            </v-list>
+                                        </td>
+                                        
+                                        <td width="15%" style="background:#fff;" class="scopebtn">
+                                            <v-btn v-if="isEditVisible" @click="showEditScope(props.item.id)" color="primary accordianbtn" fab depressed small dark><v-icon>edit</v-icon></v-btn>
+                                            <v-btn v-if="isEditVisible" color="error accordianbtn" @click="deleteScope(props.item.id)" fab depressed small dark><v-icon>delete</v-icon></v-btn>
+                                            <v-btn color="success accordianbtn" v-if="isAddStoryVisible" fab depressed small dark  @click="showAddUserstory(props.item.id)"><v-icon>add</v-icon></v-btn>
+                                        </td>
                                     </tr>
 
                                 </table>
@@ -45,16 +80,6 @@
                         </template>
                         <v-card>
                             <v-card-text>
-                            <table class="table accordtable">
-                                <tr>
-                                    <td width="60%">{{ props.item.crd_desc }}</td>
-                                    <td width="40%">
-                                        <v-btn v-if="isEditVisible" small @click="showEditScope(props.item.id)">Edit</v-btn>
-                                        <v-btn v-if="isDeleteVisible" small @click="deleteScope(props.item.id)">Delete</v-btn>
-                                        <v-btn v-if="isAddStoryVisible" small  @click="showAddUserstory(props.item.id)">Add Story</v-btn>
-                                    </td>
-                                </tr>
-                            </table>
                             <userstory-grid :crid="props.item.id" :isEditVisible="isEditUserstoryVisible" :isDeleteVisible="isDeleteUserstoryVisible" :key="props.item.id" @showedituserstory="showEditUserstory" @deleteuserstory="deleteUserstory" @showuserstorycomments="showUserstoryComments"></userstory-grid>
                         </v-card-text>
                         </v-card>
@@ -63,50 +88,7 @@
                 </template>
             </v-data-iterator>
         </v-container>
-        <!-- This is grid old -->
-        <!-- <v-card-title>
-            <v-spacer></v-spacer>
-            <v-spacer></v-spacer>
-            <v-spacer></v-spacer>
-            <v-spacer></v-spacer>
-            <v-text-field
-              v-model="search"
-              append-icon="search"
-              label="Search"
-              single-line
-              hide-details
-            ></v-text-field>
-        </v-card-title> -->
-        <!-- <v-data-table
-            :headers="headers"
-            :items="scopes"
-            :loading="isLoading"
-            :search="search"
-            :rows-per-page-items='[10, 20, 40, 80]'
-            class="elevation-1"
-        >
-            <v-progress-linear v-show="isLoading" v-slot:progress color="blue" indeterminate></v-progress-linear>
-            <template v-slot:items="props">
-                <td>
-                    <v-btn flat small color="primary"  @click="showScopeComments(props.item.id)">{{ props.item.crd_id }}</v-btn>
-                </td>
-                <td class="text-xs-left">{{ props.item.userstory_id }}</td>
-                <td class="text-xs-left">{{ props.item.crd_desc }}</td>
-                <td v-if="props.item.approveddocument" class="text-xs-left">{{ props.item.approveddocument.file_name }}</td>
-                <td v-else class="text-xs-left">-</td>
-                <td v-if="props.item.status" class="text-xs-left"><h5><b-badge pill variant="info">{{ props.item.status.status_name }}</b-badge></h5></td>
-                <td v-else class="text-xs-left">-</td>
-                <td class="justify-center layout px-0 tdaction" style="padding:7px 24px!important">
-                    <button v-if="isEditVisible" class="btn btn-sm btn-primary" @click="showEditScope(props.item.id)"><font-awesome-icon icon="edit" ></font-awesome-icon></button>
-                    <button v-if="isDeleteVisible" class="btn btn-sm btn-danger" @click="deleteScope(props.item.id)"><font-awesome-icon icon="trash" ></font-awesome-icon></button>
-                </td>
-            </template>
-            <template v-slot:no-results>
-                <v-alert :value="true" color="error" icon="warning">
-                    Your search for "{{ search }}" found no results.
-                </v-alert>
-            </template>
-       </v-data-table> -->
+        
     </div>
   </v-app>
 </div>

@@ -1,7 +1,7 @@
     <template>
     <div class="col-md-6">
         <div class="card card-default shadow-sm">
-            <div class="card-header">Edit Sub Task</div>
+            <div class="card-header">{{ this.task.task_desc }}</div>
 
             <div class="card-body">
                 <v-app id="editTask">

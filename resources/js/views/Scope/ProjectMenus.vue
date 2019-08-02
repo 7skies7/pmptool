@@ -2,6 +2,33 @@
         <div class="projectTabs">
             <div class="row justify-content-center">
                 <div class="col-md-12">
+                    <v-app id="scopeTabs">
+                        <v-container grid-list-md text-xs-center>
+                            <v-layout row wrap>
+                                <v-flex xs2>
+                                    Dashboard
+                                </v-flex>
+                                <v-flex xs2>
+                                    <router-link :to="'/project/'+project.id+'/scope'" class="">Change Request</router-link>
+                                    
+                                </v-flex>
+                                <v-flex xs4 class="projectName">
+                                    Accusamus laboriosam.
+                                </v-flex>
+                                <v-flex xs2>
+                                    <router-link :to="'/project/'+project.id+'/tasks'" class="">Tasks</router-link>
+                                </v-flex>
+                                <v-flex xs2>
+                                    Sprint
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                    </v-app>
+                    
+                </div>
+            </div>
+            <div class="row justify-content-center" style="display:none">
+                <div class="col-md-12">
 
                     <v-toolbar tabs>
                         <div>

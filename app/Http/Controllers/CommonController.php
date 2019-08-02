@@ -60,14 +60,14 @@ class CommonController extends Controller
             return Program::select('id',"program_name")->get();
         }
 
-        // if(User::isRole(5))
-        // {
-        //     $companies = UserCompany::where('user_id', auth()->user()->id)->pluck('company_id');  
-        //     return Program::select('id',"program_name")->whereIn('company_id', $companies)->get();
-        // }
+        if(User::isRole(5))
+        {
+            $companies = UserCompany::where('user_id', auth()->user()->id)->pluck('company_id');  
+            return Program::select('id',"program_name")->whereIn('company_id', $companies)->get();
+        }
 
         // If role is Organization Manager, show list of all programs within that organization
-        if(User::isRole(6) || User::isRole(7) || User::isRole(5))
+        if(User::isRole(6) || User::isRole(7))
         {
             $programs = ProgramManager::where('user_id', auth()->user()->id)->pluck('program_id');
             return Program::with('managers')->with('company')->whereIn('id', $programs)->where('is_deleted',0)->latest()->get();

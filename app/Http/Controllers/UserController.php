@@ -320,7 +320,10 @@ class UserController extends Controller
      */
     public function fetchUserDetails()
     {
+        $currentMonth = date('m');
         $user = User::with('roles')->find(auth()->user()->id);
+        $user->hours_clocked = Timecard::where('user_id', auth()->user()->id)->where('log_in_time', '!=','')->where('log_out_time', '!=','')->selectRaw('time_format(sec_to_time(sum(time_to_sec(timediff(log_out_time, log_in_time)))), "%H:%i") as hours')->whereRaw('MONTH(created_at) = ?',[$currentMonth])->get();
+        // dd($user);
         return $user;
     }
 

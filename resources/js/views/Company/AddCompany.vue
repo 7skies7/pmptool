@@ -69,7 +69,8 @@
                     company_desc: '',
                     company_manager: '',
                 }),
-                options: []
+                options: [],
+                isLoading: false,
             }
         },
         methods: {
@@ -77,7 +78,7 @@
                 this.form.post('/company/store')
                .then(company => this.$emit('completed', company));
             },                                                  
-            closeAddForm() {
+            closeForm() {
                 this.$emit('closeAddForm');
             }
         },

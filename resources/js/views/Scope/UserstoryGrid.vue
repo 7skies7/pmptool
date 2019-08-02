@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-card-title>
+        <!-- <v-card-title>
             <v-text-field
               v-model="search"
               append-icon="search"
@@ -12,7 +12,7 @@
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
-        </v-card-title>
+        </v-card-title> -->
         <v-data-table
             :headers="headers"
             :items="userstories"
@@ -31,9 +31,9 @@
                 <td class="text-xs-center"><b>{{ props.item.userstory_point }}</b></td>
                 <td class="text-xs-center"><h5 v-if="props.item.status"><b-badge pill variant="info">{{ props.item.status.status_name }}</b-badge></h5><h5 v-else="-"></h5></td>
                 <td class="text-xs-center"><h5 v-if="props.item.priority"><b-badge pill variant="info" :class="props.item.priority.priority_type">{{ props.item.priority.priority_type }}</b-badge></h5><h5 v-else="-"></h5></td>
-                <td class="justify-center layout px-0 smallbtn" style="padding:7px 24px!important">
-                    <v-btn v-if="isEditVisible" @click="showEditUserstory(props.item.id)" color="primary" fab depressed small dark><v-icon>edit</v-icon></v-btn>
-                    <v-btn v-if="isDeleteVisible" @click="deleteUserstory(props.item.id)" color="error" fab depressed small dark><v-icon>delete</v-icon></v-btn>
+                <td class="justify-center layout px-0 smallbtn" style="margin-top:0px;padding:7px 24px!important">
+                    <v-btn v-if="isEditVisible" @click="showEditUserstory(props.item.id)" color="primary" fab depressed small dark style="margin-top:0px;"><v-icon>edit</v-icon></v-btn>
+                    <v-btn v-if="isDeleteVisible" @click="deleteUserstory(props.item.id)" color="error" fab depressed small dark style="margin-top:0px;"><v-icon>delete</v-icon></v-btn>
                 </td>
             </template>
             <template v-slot:no-results>
