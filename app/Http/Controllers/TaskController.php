@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Gate;
 use Storage;
 use App\Imports\TasksImport;
 use Maatwebsite\Excel\Facades\Excel;
-
+use DB;
 
 class TaskController extends Controller
 {
@@ -426,11 +426,16 @@ class TaskController extends Controller
         {
             return sprintf("%02d", $hours).':00';
         }
-        $usedHours = Carbon::parse($userHours[0]->hourstotal);        
-        $totalHours = Carbon::parse($hours.':00:00');
-        $availableHours = $usedHours->diff($totalHours)->format("%H:%i");
 
-        return $availableHours;
+        // $usedHours = Carbon::parse($userHours[0]->hourstotal);        
+        // $totalHours = Carbon::parse($hours.':00:00');
+        $totalHours = $hours.':00:00';
+
+        // $availableHours = $usedHours->diff($totalHours)->format("%H:%i");
+        $query = "select time_format(timediff('".$totalHours."','".$userHours[0]->hourstotal."'), '%H:%i') as availablehours";
+        
+        $hoursremain = DB::select($query);
+        return $hoursremain[0]->availablehours;
     }
 
     /**
