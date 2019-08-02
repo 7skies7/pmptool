@@ -13,7 +13,7 @@
                                     
                                 </v-flex>
                                 <v-flex xs4 class="projectName">
-                                    Accusamus laboriosam.
+                                    {{this.project.project_name}}
                                 </v-flex>
                                 <v-flex xs2>
                                     <router-link :to="'/project/'+project.id+'/tasks'" class="">Tasks</router-link>
