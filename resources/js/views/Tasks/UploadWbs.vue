@@ -58,7 +58,7 @@
                                         Upload
                                         <v-icon right dark>cloud_upload</v-icon>
                                         </v-btn>
-                                        <v-btn color="info" href="/download/WBS_Sample_Template.xlsx"> WBS Template</v-btn>
+                                        <v-btn color="info" href="/download/1/WBS_Sample_Template.xlsx"> WBS Template</v-btn>
                                         <v-btn @click="closeWBSForm"> Close Form</v-btn>
                                     </v-card>
                                 </v-flex>                                

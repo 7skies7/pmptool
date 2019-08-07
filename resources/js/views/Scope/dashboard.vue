@@ -1,29 +1,74 @@
 <template>
-<div id="dashboard" style="margin-top:-24px!important">
-    <v-app id="inspire">
-        <v-container grid-list-md text-xs-center class="unsetWidth">
-          <!-- <v-layout row wrap> -->
-            
-            
-          <!-- </v-layout> -->
-     
-          <v-layout row wrap>
-            
-            
-          </v-layout>
-      </v-container>
-    </v-app>
+<div class="container-fluid">
+    <project-menus selected="1"></project-menus>
+    <div class="row justify-content-center">
+        <div class="col-md-3">
+            <div class="card" >
+                <div class="card-body">
+                    <div class="sflex spacebetween">
+                        <div class="childFlex">
+                            <span><h5 class="card-title" style="margin-bottom:0">All Members</h5></span>
+                        </div>
+                        <div class="pb-11">
+                            <!-- <button v-if="isAddVisible" class="btn btn-add float-right" @click="showUploadWbs">Add Tasks</button> -->
+                            <v-btn color="info" small> Invite</v-btn>
+
+                        </div>
+                    </div>
+                    <div><v-chip color="default" small >Abner Williams</v-chip><v-chip color="default" small >Abner Williams</v-chip><v-chip color="default" small >Abner Williams</v-chip><v-chip color="default" small >Abner Williams</v-chip><v-chip color="default" small >Abner Williams</v-chip><v-chip color="default" small >Abner Williams</v-chip></div>
+
+                </div>
+            </div>
+            <div class="card" >
+                <div class="card-body">
+                    <h5 class="card-title">Description</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <div class="hr-line-dashed"></div>    
+                    <h5 class="card-title">Project Managers</h5>
+                    <p><v-chip color="teal" text-color="white">Abner Williams</v-chip><v-chip color="teal" text-color="white">John Doe</v-chip></p>
+                    <div class="hr-line-dashed"></div>    
+                    <h5 class="card-title">Project Start & End Date</h5>
+                    <p>
+                        <v-chip color="primary" text-color="white" small>
+                            2019-08-01
+                        </v-chip>
+                        <v-chip color="primary" text-color="white" small>
+                            2020-08-01
+                        </v-chip>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="col-md-12">
+                <div class="card" >
+                    <div class="card-body">
+                        asdasd
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card" >
+                    <div class="card-body">
+                        asdasd
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 </template>
 
 <script>
+    import ProjectMenus from './ProjectMenus.vue';
     import Datepicker from 'vuejs-datepicker';
     import moment from 'moment';
     
     import {Chart} from 'highcharts-vue'
     export default {
         components: {
-            Datepicker,highcharts: Chart
+            Datepicker,highcharts: Chart, ProjectMenus
         },
         data() {
             return{

@@ -28,7 +28,7 @@
             <template v-slot:items="props">
                 <tr @click="props.expanded = !props.expanded">
                     <td>
-                        <v-btn  flat small color="primary">{{ props.item.task_desc }}</v-btn>
+                        <v-btn @click="openTaskDetails(props.item.id, props.item.task_point)" flat small color="primary">{{ props.item.task_desc }}</v-btn>
                     </td>
                     <td class="text-xs-cebter">
                         <!-- <v-btn v-if="props.item.priority" flat icon  small> -->
@@ -113,6 +113,9 @@
             },
             deleteTask(id) {
                 this.$emit('deletetask', id)
+            },
+            openTaskDetails(task_id, task_point) {
+                this.$emit('opentaskdetails', task_id, task_point);
             }
         },
         mounted() {

@@ -126,8 +126,11 @@ class DashboardController extends Controller
         if(User::isRole(6) || User::isRole(7))
         {
             $projects = $this->getProjectsBasedOnRole();
+            dd($projects);
             if(count($projects) > 0)
             {
+                $taskid = Task::whereIn('project_id', $projects)->where('is_deleted',0)->pluck('id');
+                dd($taskid);
                 $comments = TaskComment::with('users')->select('task_comment','task_hours','task_completion','id','created_at')->where('is_deleted',0)->get();
             }
         }

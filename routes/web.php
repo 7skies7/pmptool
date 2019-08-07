@@ -97,7 +97,7 @@ Route::get('/403', function(){
 	abort(403, "Permission Denied");
 });
 
-Route::get('/download/{file}', 'DownloadsController@download');
+Route::get('/download/{file_type}/{file}', 'DownloadsController@download');
 
 Route::post('/task/wps/{projectid}/store', 'TaskController@storeWBS');
 Route::get('/task/{projectid}', 'TaskController@index');

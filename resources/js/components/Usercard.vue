@@ -1,12 +1,12 @@
 <template>
   <v-app style="background:transparent!important" v-if="userdetails">
     <div class="text-xs-center" style="display:flex">
-        <v-chip v-if="userdetails.companies" color="indigo" medium text-color="white">
+        <v-chip v-if="userdetails.companies" small color="#EF4667" medium text-color="white" style="margin-top:5%">
             {{ this.userdetails.companies[0].company_name }}
         </v-chip>
         <v-menu v-if="userdetails" v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-x>
             <template v-slot:activator="{ on }">
-                <v-btn color="indigo" dark v-on="on">
+                <v-btn color="indigo" dark v-on="on" v-if="userdetails">
                     {{ userName }}
                 </v-btn>
             </template>
@@ -66,7 +66,7 @@
         },
         created() {
             Acl.getUserDetails(userdetails => this.userdetails = userdetails);
-            console.log(this.userdetails);
+            // console.log(this.userdetails);
         },
         computed: {
             userName: function() {

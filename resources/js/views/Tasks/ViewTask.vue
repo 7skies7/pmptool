@@ -18,12 +18,12 @@
                     <v-app id="taskcomment1">
                     <v-container grid-list-md text-xs-center class="commentContainer">
                         <v-layout row wrap>
-                            <v-flex xs8>
+                            <v-flex xs7>
                                 <v-layout row wrap>
                                     <task-comments :key="latestTaskComment" @commented="onCommented" :taskid="taskid" :taskpoint="taskpoint"></task-comments>   
                                 </v-layout>
                             </v-flex>
-                            <v-flex xs4>
+                            <v-flex xs5>
                                 <v-layout row wrap>
                                     <v-flex xs12>
                                         <v-card dark>
@@ -128,7 +128,22 @@
                                                 <v-slider v-model="value" step="10" thumb-label="always" tick ></v-slider>
                                           </v-card-text>
                                         </v-card>
-                                    </v-flex>   
+                                    </v-flex> 
+                                    <v-flex xs12 style="background:#ddd">  
+                                        <div id="app">
+                                            <v-app id="inspire">
+                                                <v-subheader style="color:#FB8C00">Issues Reported</v-subheader>
+                                                <v-data-table :headers="headers" :items="issues" :items-per-page="5" class="elevation-1">
+                                                    <template v-slot:items="props">
+                                                        <td class="text-xs-left"><v-btn flat small color="primary">{{ props.item.issue_desc }}</v-btn></td>
+                                                        <td class="text-xs-center">{{ props.item.status }}</td>
+                                                        <td class="text-xs-center">{{ props.item.reported_by }}</td>
+                                                        <td class="text-xs-center">{{ props.item.reported_date }}</td>
+                                                      </template>
+                                                </v-data-table>
+                                            </v-app>
+                                        </div>    
+                                    </v-flex>
                                 </v-layout>
                             </v-flex>                            
                         </v-layout>
@@ -168,6 +183,26 @@
                 }),
                 timeline:'',
                 latestTaskComment:0,
+                headers: [
+                    { text: 'Issue', align: 'left', value: 'issue_desc' },
+                    { text: 'Status', value: 'status' },
+                    { text: 'Reported By', value: 'reported_by' },
+                    { text: 'Date', value: 'created_at' },
+                ],
+                issues: [
+                    {
+                        issue_desc: 'Require Validations for Hours',
+                        reported_by: 'John Doe',
+                        status: 'Open',
+                        reported_date: '2019-08-01',
+                    },
+                    {
+                        issue_desc: 'Change Task Timeline for Mobile',
+                        reported_by: 'Jane Doe',
+                        status: 'Closed',
+                        reported_date: '2019-20-01',
+                    }
+                ],                    
             }
         },
         created() {

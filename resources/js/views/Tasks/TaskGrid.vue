@@ -58,7 +58,7 @@
                 </tr>
             </template>
             <template v-slot:expand="props" >
-                <subtask-grid :editAccess="isEditVisible" :deleteAccess="isDeleteVisible" :taskid="props.item.id" :key="props.item.id" @showedittask="showEditTask" @deletetask="deleteTask"></subtask-grid>
+                <subtask-grid :editAccess="isEditVisible" :deleteAccess="isDeleteVisible" :taskid="props.item.id" :key="props.item.id" @showedittask="showEditTask" @deletetask="deleteTask" @opentaskdetails="openTaskDetails"></subtask-grid>
             </template>
             <template v-slot:no-results>
                 <v-alert :value="true" color="error" icon="warning">
@@ -123,6 +123,9 @@
             },
             deleteTask(id) {
                 this.$emit('deletetask', id)
+            },
+            openTaskDetails(task_id, task_point) {
+                this.$emit('opentaskdetails', task_id, task_point);                    
             }
         },
         mounted() {

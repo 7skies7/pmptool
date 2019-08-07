@@ -33,7 +33,7 @@ class ProjectController extends Controller
         }
         
         //show all projects to Super Admin, Admin, Organization Manager
-        if(User::isRole(1) || User::isRole(2) || User::isRole(3))
+        if(User::isRole(1) || User::isRole(2))
         {
             return Project::with('status')->with('program')->with('managers')->with('stakeholders')->where('is_deleted',0)->latest()->get();
         }

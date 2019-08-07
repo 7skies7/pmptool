@@ -28,7 +28,7 @@
                 <template v-slot:item="props">
                 <v-expansion-panel focusable>
                     <v-expansion-panel-content>
-                        <template v-slot:header>
+                        <template v-slot:header class="accordback">
                             <!-- <div> -->
                                 <table class="table accordtable">
                                     <tr>
@@ -68,7 +68,7 @@
                                             </v-list>
                                         </td>
                                         
-                                        <td width="15%" style="background:#fff;" class="scopebtn">
+                                        <td width="15%" class="scopebtn">
                                             <v-btn v-if="isEditVisible" @click="showEditScope(props.item.id)" color="primary accordianbtn" fab depressed small dark><v-icon>edit</v-icon></v-btn>
                                             <v-btn v-if="isEditVisible" color="error accordianbtn" @click="deleteScope(props.item.id)" fab depressed small dark><v-icon>delete</v-icon></v-btn>
                                             <v-btn color="success accordianbtn" v-if="isAddStoryVisible" fab depressed small dark  @click="showAddUserstory(props.item.id)"><v-icon>add</v-icon></v-btn>

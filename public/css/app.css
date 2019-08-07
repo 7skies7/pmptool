@@ -10848,7 +10848,7 @@ a.text-dark:focus {
 }
 
 body {
-  font-family: "Raleway", sans-serif;
+  font-family: "Roboto", sans-serif;
   background: #F6F6F7;
 }
 
@@ -10889,7 +10889,7 @@ body {
   padding: 15px;
   color: #bbb;
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: 500;
 }
 
 .top-nav .nav-link:hover {
@@ -10980,8 +10980,9 @@ body {
 
 .card-header {
   text-align: center;
-  font-weight: bold;
+  font-weight: 400;
   font-size: 20px;
+  line-height: 25px;
   text-transform: uppercase;
   color: #19BDF0;
   background: #fff;
@@ -11730,6 +11731,11 @@ a.v-btn {
   padding: 0px !important;
 }
 
+.accordtable td,
+.accordtable .v-list {
+  background: #eee !important;
+}
+
 .scopeexpan .v-list__tile__title,
 .scopeexpan .v-list__tile__sub-title {
   text-transform: unset !important;
@@ -11777,5 +11783,49 @@ a.v-btn {
 .userstorytable table.v-table tbody td {
   height: 40px !important;
   color: #202124 !important;
+}
+
+.loginform {
+  margin-top: 25%;
+}
+
+.loginform .card {
+  background: transparent;
+}
+
+.loginform .card-body {
+  background: transparent;
+}
+
+.loginform .hr-line-dashed {
+  border-top: 1px dashed #238fd7;
+  background-color: unset;
+}
+
+.loginform .form-control {
+  background: transparent;
+}
+
+.info {
+  background-color: #2196f3 !important;
+  border-color: #2196f3 !important;
+  color: #fff;
+}
+
+.checkbx .v-input--selection-controls {
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+.checkbx .v-messages {
+  display: none !important;
+}
+
+.checkbx .v-input__slot {
+  margin-bottom: 0px !important;
+}
+
+.npuppercase {
+  text-transform: unset !important;
 }
 

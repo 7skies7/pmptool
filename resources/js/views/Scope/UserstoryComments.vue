@@ -12,7 +12,28 @@
                             </v-timeline-item>
                             <v-slide-x-transition group>
                                 <v-timeline-item v-for="event in timeline" :key="event.id" class="mb-3" color="grey" small>
-                                <v-layout justify-space-between>
+                                    <v-layout justify-space-between>
+                                    <v-flex xs12 >
+                                        <v-card class="singleComBlock" style="background:#fff!important">
+                                            <div>
+                                                <span v-if="event.text">{{ event.text }}</span>
+                                            </div>
+                                            <div>
+                                                <v-chip class="white--text ml-0" color="info" label small>{{event.username}}</v-chip>
+                                                <v-chip class="white--text ml-0" color="info" label small>Hours: {{event.userstory_point}}</v-chip>
+                                                <v-btn :href="'/download/2/'+userstoryid+'!!$'+event.filename" class="ml-0 npuppercase" flat small> <v-icon>attach_file</v-icon>{{event.filename}}</v-btn>
+                                            </div>
+                                        </v-card>                         
+                                    </v-flex>
+                                    <v-flex xs5 text-xs-center>
+                                        {{ event.time}}
+                                        <div v-if="event.userstory_point && approve">
+                                        <v-icon v-if="event.approved" color="#009688" class="approveicon" @click="onApprove(event.id)">check_circle</v-icon>
+                                        <v-icon v-else class="approveicon" @click="onApprove(event.id)">check_circle</v-icon>
+                                        </div>
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout justify-space-between style="display:none">
                                     <v-flex xs7 >
                                         <v-chip class="white--text ml-0" color="purple" label small>
                                             {{event.username}}

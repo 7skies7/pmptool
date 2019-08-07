@@ -20,7 +20,7 @@
                     <div class="card-body p-0">
                         <div class="d-flex flex-column">
                             <div class="flex-1">
-                                <task-grid :addAccess="isAddVisible" :key="latestTasks" @showaddtask="showAddTask" @showedittask="showEditTask" @closeForm="closeForm" @deletetask="deleteTask"></task-grid>
+                                <task-grid :addAccess="isAddVisible" :key="latestTasks" @showaddtask="showAddTask" @showedittask="showEditTask" @closeForm="closeForm" @deletetask="deleteTask" @opentaskdetails="openTaskDetails"></task-grid>
                             </div>
                         </div>
                     </div>
@@ -30,6 +30,8 @@
             <edit-task v-if="isEditTaskVisible" :task="task" @completed="onTaskUpdate" @closeForm="closeForm"></edit-task>
             <upload-wbs v-if="isUploadWbsVisible" :key="latestTasks" @wbsuploaded="onWbsUpload" @closeWBSForm="closeWBSForm"></upload-wbs>
             <confirm ref="confirm"></confirm>
+            <view-task v-if="isTaskCommentVisible" :taskid="taskid" :taskpoint="taskpoint"></view-task>
+
         </div>
     </v-app>
 </div>
@@ -43,9 +45,11 @@
     import EditTask from './EditTask.vue';
     import AddTask from './AddTask.vue';
     import ProjectMenus from '../Scope/ProjectMenus.vue';
+    import ViewTask from './ViewTask';
+
     export default {
         components: {
-            Multiselect, TaskGrid, UploadWbs, EditTask, AddTask, ProjectMenus
+            Multiselect, TaskGrid, UploadWbs, EditTask, AddTask, ProjectMenus, ViewTask
         },
         data() {
             return {
@@ -61,6 +65,9 @@
                 taskid: '',
                 point:'',
                 task:'',
+                isTaskCommentVisible: false,
+                taskid:'',
+                taskpoint:'',
             }
         },
         created() {
@@ -126,8 +133,11 @@
                         });
                     }
                 });
-
-                
+            },
+            openTaskDetails(task_id, task_point) {
+                this.isTaskCommentVisible = true;
+                this.taskid = task_id;
+                this.taskpoint = task_point;
             }
 
         },

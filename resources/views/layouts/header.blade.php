@@ -35,11 +35,11 @@
                         <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                         <!-- <router-link to='/login' class="nav-link">{{ __('Login') }}</router-link> -->
                     </li>
-                    @if (Route::has('register'))
+                    <!-- @if (Route::has('register'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
-                    @endif
+                    @endif -->
 
                 @else
                 <v-flex xs2 style="margin-right:10px;margin-top:12px">
@@ -53,8 +53,8 @@
                 <usercard>  
                     <form id="logout-form" method="POST" action="/logout">
                         @csrf
-
-                        <button type="submit" class="btn btn-add ">Logout</button>
+                        <v-btn type="submit" color="info">Logout</v-btn>
+                        <!-- <button type="submit" class="btn btn-add ">Logout</button> -->
                     </form>
                 </usercard>
                 @endguest

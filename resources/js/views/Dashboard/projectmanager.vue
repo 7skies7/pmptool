@@ -77,7 +77,8 @@
                                 <v-subheader inset>My Projects</v-subheader>
                                 <v-data-table dense :height="400" :headers="headers_projects" :items="projects" class="elevation-1" dense>
                                     <template v-slot:items="props">
-                                        <td class="text-xs-left">{{ props.item.project_name }}</td>
+                                        <td class="text-xs-left">
+                                            <v-btn :href="'#/project/'+props.item.id+'/dashboard'" flat class="npuppercase" color="info" >{{ props.item.project_name }}</v-btn></td>
                                         <!-- <td class="text-xs-left">{{ props.item.scope.crd_title }}</td> -->
                                         <td class="text-xs-left">{{ props.item.project_start_date }}</td>
                                         <!-- <td class="text-xs-left">{{ props.item.project_end_date }}</td> -->

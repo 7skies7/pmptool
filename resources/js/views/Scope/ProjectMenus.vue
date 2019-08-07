@@ -6,7 +6,7 @@
                         <v-container grid-list-md text-xs-center>
                             <v-layout row wrap>
                                 <v-flex xs2>
-                                    Dashboard
+                                    <router-link :to="'/project/'+project.id+'/dashboard'" class="">Dashboard</router-link>
                                 </v-flex>
                                 <v-flex xs2>
                                     <router-link :to="'/project/'+project.id+'/scope'" class="">Change Request</router-link>
