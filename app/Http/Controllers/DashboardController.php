@@ -130,7 +130,7 @@ class DashboardController extends Controller
             if(count($projects) > 0)
             {
                 $taskid = Task::whereIn('project_id', $projects)->where('is_deleted',0)->pluck('id');
-                dd($taskid);
+                // dd($taskid);
                 $comments = TaskComment::with('users')->select('task_comment','task_hours','task_completion','id','created_at')->where('is_deleted',0)->get();
             }
         }
