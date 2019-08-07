@@ -126,7 +126,7 @@ class DashboardController extends Controller
         if(User::isRole(6) || User::isRole(7))
         {
             $projects = $this->getProjectsBasedOnRole();
-            dd($projects);
+            
             if(count($projects) > 0)
             {
                 $taskid = Task::whereIn('project_id', $projects)->where('is_deleted',0)->pluck('id');
