@@ -135,10 +135,11 @@
                                     <template v-for="(item, index) in comments">
                                     
                                     <v-list-tile :key="item.id" avatar @click="">
-                                        <v-list-tile-avatar>
-                                            <img src="/images/User.png">
-                                        </v-list-tile-avatar>  
+                                        <!-- <v-list-tile-avatar> -->
+                                            <v-avatar color="#EF4667" size="35"><span class="white--text headlinesmal" :title="item.users.first_name+' '+ item.users.last_name">{{ item.users.first_name[0]}}{{ item.users.last_name[0]}}</span></v-avatar>
+                                        <!-- </v-list-tile-avatar>   -->
                                         <v-list-tile-content>
+                                            <v-list-tile-sub-title style="font-size:10px!important" v-html="item.project[0].project_name+'/'"></v-list-tile-sub-title>
                                             <v-list-tile-title v-html="item.task_comment"></v-list-tile-title>
                                             <v-list-tile-sub-title >
                                                 <b-badge pill variant="info">Hours:{{ item.task_hours }}</b-badge>

@@ -131,7 +131,7 @@ class DashboardController extends Controller
             {
                 $taskid = Task::whereIn('project_id', $projects)->where('is_deleted',0)->pluck('id');
                 // dd($taskid);
-                $comments = TaskComment::with('users')->select('task_comment','task_hours','task_completion','id','created_at')->where('is_deleted',0)->get();
+                $comments = TaskComment::with('users')->with('project')->select('task_id','task_comment','task_hours','task_completion','id','created_at','created_by')->where('is_deleted',0)->get();
             }
         }
         return $comments;
