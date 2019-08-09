@@ -77,9 +77,8 @@ class TaskController extends Controller
         }
 
         //validate
-        $attributes = request()->validate(['task_desc'=> 'required', 
+        $attributes = request()->validate(['task_title'=> 'required', 
                                             'task_point' => 'required',
-                                            'task_assignee' => 'required',
                                             'task_status' => 'required',
                                             'task_priority' => 'required',
                                             'task_start_date' => 'required',
@@ -154,9 +153,8 @@ class TaskController extends Controller
             return abort('403');
         }
         //validate
-        $attributes = request()->validate(['task_desc'=> 'required', 
+        $attributes = request()->validate(['task_title'=> 'required', 
                                             'task_point' => 'required',
-                                            'task_assignee' => 'required',
                                             'task_status' => 'required',
                                             'task_priority' => 'required',
                                             'task_start_date' => 'required',
@@ -167,7 +165,7 @@ class TaskController extends Controller
         $id = request('task_heirarchy') == 1 ? request('userstory_id') : $id;
         if($this->fetchAvailablePoints($id, request('task_heirarchy'), 1) < $attributes['task_point'])
         {  
-            $message['errors']['task_point'][] = "Points added should be less than Approved Point"; 
+            $message['errors']['task_point'][] = "Points added should be less than Approved Point";
             $message['errors']['message'] = 'The given data was invalid';
             return response()->json($message, 422); 
         }
@@ -427,11 +425,8 @@ class TaskController extends Controller
             return sprintf("%02d", $hours).':00';
         }
 
-        // $usedHours = Carbon::parse($userHours[0]->hourstotal);        
-        // $totalHours = Carbon::parse($hours.':00:00');
         $totalHours = $hours.':00:00';
 
-        // $availableHours = $usedHours->diff($totalHours)->format("%H:%i");
         $query = "select time_format(timediff('".$totalHours."','".$userHours[0]->hourstotal."'), '%H:%i') as availablehours";
         
         $hoursremain = DB::select($query);
@@ -448,7 +443,7 @@ class TaskController extends Controller
     {   
         if($task_type == 1)
         {
-            $userstorypoint = Userstory::find($id)->pluck('userstory_point');
+            $userstorypoint = Userstory::where('id',$id)->pluck('userstory_point');
             $sumTaskPoints = Task::where('userstory_id', $id)->where('task_heirarchy', 1)->sum('task_point');
             return $userstorypoint[0] - $sumTaskPoints;
         }elseif($task_type == 2) {
@@ -459,9 +454,9 @@ class TaskController extends Controller
             {
                 $points = Task::where('is_deleted',0)->where('task_heirarchy',2)->where('parent_id',$childtask['parent_id'])->where('id', '!=', $id)->sum('task_point');    
             }else{
-
                 $points = Task::where('is_deleted',0)->where('task_heirarchy',2)->where('parent_id',$childtask['parent_id'])->sum('task_point');
             }
+
 
             // dd('asdasdasd');
             return $parenttaskPoint->task_point - $points;

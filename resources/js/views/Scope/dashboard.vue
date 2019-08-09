@@ -43,7 +43,21 @@
             <div class="col-md-12">
                 <div class="card" >
                     <div class="card-body">
-                        asdasd
+                        <v-app id="inspire">
+                        <v-stepper alt-labels>
+                          <v-stepper-header>
+                            <v-stepper-step step="3" complete>Design</v-stepper-step>
+                            <v-divider></v-divider>
+                            <v-stepper-step step="4" complete>Development</v-stepper-step>
+                            <v-divider></v-divider>
+                            <v-stepper-step step="5" complete>Testing</v-stepper-step>
+                            <v-divider></v-divider>
+                            <v-stepper-step step="6" complete>Staging</v-stepper-step>
+                            <v-divider></v-divider>
+                            <v-stepper-step step="7">UAT</v-stepper-step>
+                          </v-stepper-header>
+                        </v-stepper>
+                    </v-app>
                     </div>
                 </div>
             </div>

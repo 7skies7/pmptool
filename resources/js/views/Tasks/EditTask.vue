@@ -10,6 +10,11 @@
                             <v-layout row wrap>
                                 <v-flex xs12>
                                     <v-card color="white">
+                                        <v-text-field v-model="form.task_title" label="Task name" placeholder="Task Name" :messages="form.errors.get('task_title')"></v-text-field>
+                                    </v-card>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-card color="white">
                                         <v-text-field v-model="form.task_desc" label="Task Description" placeholder="Task Description" :messages="form.errors.get('task_desc')"></v-text-field>
                                     </v-card>
                                 </v-flex>
@@ -18,7 +23,7 @@
                                         <v-text-field v-model="form.task_point" label="Task Point" placeholder="Task Point" :messages="form.errors.get('task_point')" :suffix="calcRemainingPoint"></v-text-field>
                                     </v-card>
                                 </v-flex>
-                                <v-flex xs6>
+                                <v-flex xs6 v-if="task.task_heirarchy == 2">
                                     <v-card color="white">
                                         <div class="v-input v-text-field v-input--is-label-active theme--light">
                                             <div class="v-input__control">
@@ -119,6 +124,7 @@
         data() {
             return {
                 form: new Form({
+                    task_title: this.task.task_title,
                     task_desc: this.task.task_desc,
                     task_start_date: this.task.task_start_date,
                     task_end_date: this.task.task_end_date,

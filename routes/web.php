@@ -132,6 +132,8 @@ Route::get('/user/timecard', 'UserController@getTimecard');
 Route::get('/user/today/comment', 'UserController@getTodayComment');
 Route::get('/user/details', 'UserController@fetchUserDetails');
 Route::get('/user/timesheet', 'UserController@fetchUserTimesheet');
+Route::post('/user/changepassword', 'UserController@changePassword');
+
 
 Route::get('/dashboard/userstoryprogress', 'DashboardController@fetchUserstoryProgress');
 Route::get('/dashboard/userstorypending', 'DashboardController@fetchUserstoryPending');

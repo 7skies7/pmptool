@@ -374,13 +374,28 @@ class UserController extends Controller
             $tableContent .= '<tr><td>'.$timecard->log_in_date.'</td><td>'.$timecard->log_in_time.'</td><td>'.$timecard->log_out_time.'</td><td>'.$recordArr['title'].'</td></tr>';
             $recordArr['comments'] = $tableContent;
             $recordArr['color'] = '#29B4E6';
-
-
             $finalArr[] = $recordArr;  
-
         }
-        
+
+        ksort($finalArr);
         // dd($finalArr);
         return json_encode($finalArr);
+    }
+
+     /**
+     * Change user password on first login.
+     *
+     * @param  \App\Program  $Program
+     * @return \Illuminate\Http\Response
+     */
+    public function changePassword(Request $request)
+    {
+        //validate
+        $attributes = request()->validate(['password' => 'required|confirmed']);
+        $updateArr['password'] = Hash::make($attributes['password']); 
+        $updateArr['password_changed'] = 1;
+        $attributes['modified_by'] = auth()->user()->id;
+        $user = User::where('id', auth()->user()->id)->update($updateArr);
+        return $user;
     }
 }

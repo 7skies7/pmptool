@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-md-5" >
                     @guest
-                        @yield('content')                
+                        @yield('content')
                     @endguest
                     </div>
 

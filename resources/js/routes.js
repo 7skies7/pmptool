@@ -58,6 +58,10 @@ var routes = [
 		path: '/users',
 		component: require('./views/User/index').default
 	},
+	{
+		path: '/myactivity',
+		component: require('./views/Dashboard/developer').default
+	}
 
 	// {
 	// 	path: '/login',

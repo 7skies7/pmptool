@@ -7,6 +7,7 @@ use App\TaskHierarchy;
 use App\TaskType;
 use App\Priority;
 use App\Userstory;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -55,10 +56,13 @@ class TasksImport implements ToModel, WithValidation, WithHeadingRow
         return  new Task([
             'task_id' => $task_id,
             'task_heirarchy' => TaskHierarchy::where('level_initial',$row['task_level'])->pluck('id')[0],
+            'task_title'  => $row['task_title'],
             'task_desc'  => $row['task_desc'],
             'task_type'  => TaskType::where('type',$row['task_type'])->pluck('id')[0],
             'task_priority' => Priority::where('priority_type',$row['task_priority'])->pluck('id')[0],
             'task_status' => 6,
+            'task_start_date' => date('Y-m-d'),
+            'task_end_date' => date('Y-m-d'),
             'task_point'  => $row['task_point'],
             'parent_id' => $this->parent_id,
             'project_id' => request('project'),

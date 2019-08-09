@@ -37,8 +37,11 @@
                             <v-list two-line>
                                 <!-- <v-divider inset></v-divider> -->
                                 <v-list-tile @click="">
-                                    <v-list-tile-action>
+                                    <v-list-tile-action v-if="this.user.hours_clocked[0].hours != null">
                                         {{ this.user.hours_clocked[0].hours }}
+                                    </v-list-tile-action>
+                                    <v-list-tile-action v-else>
+                                        00:00
                                     </v-list-tile-action>
                   
                                     <v-list-tile-content>
@@ -306,7 +309,7 @@
         },
         watch: {
             timecard() {
-                if(this.timecard != '')
+                if(this.timecard.length)
                 {
                     if(this.timecard[0].log_out_image !=  null && this.timecard[0].log_in_image !=  null){
                         this.login.login =  moment(this.timecard[0].log_in_time).format('hh:mm');

@@ -126,6 +126,14 @@
                 <router-link to='/mytasks' class="nav-link"><i class="material-icons">event</i>My Tasks</router-link>
             </li>
         </div>
+        @if(Gate::allows('View_Project') || Gate::allows('View_Program') || Gate::allows('View_Organisation'))
+        <div class="text-center main-menu-links"> 
+            <li class="nav-item ">
+                <!-- <a class="nav-link">Program</a> -->
+                <router-link to='/myactivity' class="nav-link"><i class="material-icons">event</i>My Activity</router-link>
+            </li>
+        </div>
+        @endif
     <!-- </div> -->
     <!-- </div> -->
 </nav>
