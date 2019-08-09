@@ -51,7 +51,7 @@
                                 </v-list-tile>
                                 <v-list-tile @click="">
                                     <v-list-tile-action>
-                                        90%
+                                        100%
                                     </v-list-tile-action>
                   
                                     <v-list-tile-content>

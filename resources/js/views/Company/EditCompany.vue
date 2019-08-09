@@ -27,7 +27,7 @@
                                                         <multiselect v-model="form.company_manager" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select Orgnaization Manager" label="name" track-by="id" :preselect-first="false" >
                                                             <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
                                                         </multiselect>
-                                                        <h5><b-badge pill variant="info" v-for="manager in form.company_manager" v-bind:key="manager.id">{{ manager.name }} </b-badge></h5>
+                                                        <h5><b-badge pill variant="info" v-for="manager in form.company_manager" v-bind:key="manager.id">{{ manager.first_name }} {{ manager.last_name }} </b-badge></h5>
                                                     </div>                        
                                                 </div>
                                                 <div class="v-text-field__details"><div class="v-messages theme--light"><div class="v-messages__wrapper">{{form.errors.get('program_manager')}}</div></div></div>

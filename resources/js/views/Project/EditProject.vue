@@ -66,7 +66,7 @@
                                                         <multiselect v-model="form.project_managers" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select Project Manager" label="name" track-by="id" :preselect-first="false" >
                                                             <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
                                                         </multiselect>
-                                                        <h5><b-badge pill variant="info" v-for="manager in form.project_managers" v-bind:key="manager.id">{{ manager.name }} </b-badge></h5>
+                                                        <h5><b-badge pill variant="info" v-for="manager in form.project_managers" v-bind:key="manager.id">{{ manager.first_name }} {{ manager.last_name }} </b-badge></h5>
                                                     </div>                        
                                                 </div>
                                                 <div class="v-text-field__details"><div class="v-messages theme--light"><div class="v-messages__wrapper">{{form.errors.get('project_managers')}}</div></div></div>
@@ -84,7 +84,7 @@
                                                         <multiselect v-model="form.project_stakeholders" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select Stakeholders" label="name" track-by="id" :preselect-first="false" >
                                                             <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
                                                         </multiselect>
-                                                        <h5><b-badge pill variant="info" v-for="stakeholder in form.project_stakeholders" v-bind:key="stakeholder.id">{{ stakeholder.name }} </b-badge></h5>
+                                                        <h5><b-badge pill variant="info" v-for="stakeholder in form.project_stakeholders" v-bind:key="stakeholder.id">{{ stakeholder.first_name }} {{ stakeholder.last_name }} </b-badge></h5>
                                                     </div>                        
                                                 </div>
                                                 <div class="v-text-field__details"><div class="v-messages theme--light"><div class="v-messages__wrapper">{{form.errors.get('project_stakeholders')}}</div></div></div>
