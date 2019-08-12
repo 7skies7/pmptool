@@ -39,7 +39,7 @@ class CommonController extends Controller
         // If role is Super Admin / Admin, show list of all users
         if(User::isRole(1) || User::isRole(2))
         {
-            return User::select('id',DB::raw("CONCAT(users.first_name,' ',users.last_name) as name", "email"))->get();    
+            return User::select('id',DB::raw("CONCAT(users.first_name,' ',users.last_name) as name", "email"))->where('is_deleted', 0)->get();    
         }
         
         //Once authorized return all users associated to the program
@@ -47,7 +47,7 @@ class CommonController extends Controller
         {
             $companies = UserCompany::where('user_id', auth()->user()->id)->pluck('company_id');
             $userid = Usercompany::whereIn('company_id', $companies)->pluck('user_id');
-            return User::select('id',DB::raw("CONCAT(users.first_name,' ',users.last_name) as name", "email"))->whereIn('id', $userid)->get();    
+            return User::select('id',DB::raw("CONCAT(users.first_name,' ',users.last_name) as name", "email"))->whereIn('id', $userid)->where('is_deleted', 0)->get();    
 
         }
     }
