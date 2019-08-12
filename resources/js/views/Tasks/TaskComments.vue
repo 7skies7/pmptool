@@ -29,7 +29,7 @@
                               </v-timeline-item>
                             </v-slide-x-transition> 
                         </v-timeline>
-                        <v-timeline dense clipped v-if="isAddCommentForm">
+                        <v-timeline dense clipped v-if="isAddCommentForm && this.form.task_completion != 100">
                             <form @submit.prevent="onSubmit" @keydown="form.errors.clear()">
                             <v-timeline-item fill-dot class="white--text mb-0" color="info" large>
                                 <template v-slot:icon> <span><v-icon medium dark>comment</v-icon></span> </template>

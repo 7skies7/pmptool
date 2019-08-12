@@ -4,7 +4,7 @@
         <v-chip v-if="userdetails.companies" small color="#EF4667" medium text-color="white" style="margin-top:5%">
             {{ this.userdetails.companies[0].company_name }}
         </v-chip>
-        <v-menu v-if="userdetails" v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-x>
+        <v-menu v-if="userdetails" v-model="menu" :close-on-content-click="true" :nudge-width="100" offset-x open-on-hover="true">
             <template v-slot:activator="{ on }">
                 <v-btn color="indigo" dark v-on="on" v-if="userdetails">
                     {{ userName }}
@@ -42,7 +42,7 @@
             </v-list>  
             <v-card-actions>
                 <v-spacer></v-spacer>  
-                    <v-btn flat @click="menu = false">Cancel</v-btn>
+                    <v-btn small flat @click="menu = false">Cancel</v-btn>
                     <slot></slot>
                 </v-card-actions>
             </v-card>

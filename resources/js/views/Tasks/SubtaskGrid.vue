@@ -28,7 +28,9 @@
             <template v-slot:items="props">
                 <tr @click="props.expanded = !props.expanded">
                     <td>
-                        <v-btn @click="openTaskDetails(props.item.id, props.item.task_point)" flat small color="primary">{{ props.item.task_desc }}</v-btn>
+                        <!-- <v-btn @click="openTaskDetails(props.item.id, props.item.task_point)" flat small color="primary">{{ props.item.task_desc }}</v-btn> -->
+                        <span @click="openTaskDetails(props.item.id, props.item.task_point)" class="titleBtn">{{ props.item.task_title }}</span>
+
                     </td>
                     <td class="text-xs-cebter">
                         <!-- <v-btn v-if="props.item.priority" flat icon  small> -->
@@ -81,17 +83,18 @@
                 search: '',
                 projects: [],
                 headers:[
-                            { text: 'Name', width:"15%", align: 'center', value: 'task_desc'
+                            { text: 'Task Name', width:"40%", align: 'left', value: 'task_title'
                             },
-                            { text: 'Priority', width:"10%", align: 'center', value: 'priority.priority_type' },
-                            { text: 'Assignee', width:"10%", align: 'center', value: 'assignee.first_name'
+                            { text: 'Priority', width:"5%", align: 'center', value: 'priority.priority_type' },
+                            { text: 'Assignee', width:"5%", align: 'center', value: 'assignee.first_name'
                             },
-                            { text: 'Story Point', width:"10%", align: 'center', value: 'task_point' },
-                            { text: 'Userstory', width:"10%", align: 'center', value: 'userstory.userstory_desc' },
-                            { text: 'Start Date', width:"10%", align: 'center', value: 'project_status_date' },
+                            { text: 'Story Point', width:"5%", align: 'center', value: 'task_point' },
+                            { text: 'Userstory', width:"5%", align: 'center', value: 'userstory.userstory_desc' },
+                            // { text: 'Type', width:"10%", align: 'center', value: 'tasktype.type' },
+                            { text: 'Start Date', width:"5%", align: 'center', value: 'project_status_date' },
                             { text: 'End Date', width:"10%", align: 'center', value: 'project_end_date' },
                             { text: 'Status', width:"10%", align: 'center', value: 'status.status_name' },
-                            { text: 'Actions', width:"15%", align: 'center', value: 'actions', sortable: false }
+                            { text: 'Actions', width:"10%", align: 'center', value: 'actions', sortable: false },
                         ],
                 tasks: [],
                 isLoading: true,

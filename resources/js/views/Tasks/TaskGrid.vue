@@ -27,8 +27,9 @@
             <v-progress-linear v-show="isLoading" v-slot:progress color="blue" indeterminate></v-progress-linear>
             <template v-slot:items="props">
                 <tr>
-                    <td @click="props.expanded = !props.expanded">
-                        <v-btn  flat small color="primary">{{ props.item.task_title }}</v-btn>
+                    <td class="text-xs-left" @click="props.expanded = !props.expanded">
+                        <!-- <v-btn class="titleBtn" flat small color="primary">{{ props.item.task_title }}</v-btn> -->
+                        <span class="titleBtn">{{ props.item.task_title }}</span>
                     </td>
                     <td class="text-xs-center">
                         <!-- <v-btn v-if="props.item.priority" flat icon  small> -->
@@ -88,18 +89,18 @@
                 search: '',
                 projects: [],
                 headers:[
-                            { text: 'Task Name', width:"15%", align: 'center', value: 'task_title'
+                            { text: 'Task Name', width:"40%", align: 'left', value: 'task_title'
                             },
-                            { text: 'Priority', width:"10%", align: 'center', value: 'priority.priority_type' },
-                            { text: 'Assignee', width:"10%", align: 'center', value: 'assignee.first_name'
+                            { text: 'Priority', width:"5%", align: 'center', value: 'priority.priority_type' },
+                            { text: 'Assignee', width:"5%", align: 'center', value: 'assignee.first_name'
                             },
-                            { text: 'Story Point', width:"10%", align: 'center', value: 'task_point' },
-                            { text: 'Userstory', width:"10%", align: 'center', value: 'userstory.userstory_desc' },
+                            { text: 'Story Point', width:"5%", align: 'center', value: 'task_point' },
+                            { text: 'Userstory', width:"5%", align: 'center', value: 'userstory.userstory_desc' },
                             // { text: 'Type', width:"10%", align: 'center', value: 'tasktype.type' },
-                            { text: 'Start Date', width:"10%", align: 'center', value: 'project_status_date' },
+                            { text: 'Start Date', width:"5%", align: 'center', value: 'project_status_date' },
                             { text: 'End Date', width:"10%", align: 'center', value: 'project_end_date' },
                             { text: 'Status', width:"10%", align: 'center', value: 'status.status_name' },
-                            { text: 'Actions', width:"15%", align: 'center', value: 'actions', sortable: false },
+                            { text: 'Actions', width:"10%", align: 'center', value: 'actions', sortable: false },
                         ],
                 tasks: [],
                 isLoading: true,

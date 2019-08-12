@@ -951,3 +951,21 @@ a.v-btn {
 .npuppercase{
 	text-transform:unset!important;
 }
+.titleBtn {
+	display:block!important;
+	text-decoration:unset!important;
+	color:#1976d2 !important;
+	caret-color:#1976d2 !important;
+	align-items: center;
+    display: block;
+    flex: 1 0 auto;
+    margin: 0 auto;
+    position: relative;
+    font-size:13px;
+    font-weight:500; 
+    float:unset!important;
+    cursor:pointer;
+}
+table.v-table tbody td:first-child, table.v-table tbody td:not(:first-child), table.v-table tbody th:first-child, table.v-table tbody th:not(:first-child), table.v-table thead td:first-child, table.v-table thead td:not(:first-child), table.v-table thead th:first-child, table.v-table thead th:not(:first-child){
+	padding:0px 10px!important;
+}

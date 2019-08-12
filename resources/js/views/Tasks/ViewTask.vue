@@ -103,7 +103,8 @@
                                             <v-list-tile avatar>
                                                 <v-list-tile-content>
                                                     <v-list-tile-title>Status</v-list-tile-title>
-                                                    <v-list-tile-sub-title v-if="task.status">{{ task.status.status_name }}</v-list-tile-sub-title>
+                                                    <v-list-tile-sub-title v-if="task.status">
+                                                        <v-chip class="white--text ml-0" color="info" label small>{{ task.status.status_name }}</v-chip></v-list-tile-sub-title>
                                                 </v-list-tile-content>
                                             </v-list-tile>
                                             </v-list>
@@ -132,8 +133,8 @@
                                     <v-flex xs12 style="background:#ddd">  
                                         <div id="app">
                                             <v-app id="inspire">
-                                                <v-subheader style="color:#FB8C00">Issues Reported</v-subheader>
-                                                <v-data-table :headers="headers" :items="issues" :items-per-page="5" class="elevation-1">
+                                                <v-subheader style="color:#FB8C00">0 Issues Reported<span class="float:right"></span></v-subheader>
+                                                <v-data-table :headers="headers" :items="issues" :items-per-page="5" class="elevation-1" style="display:none">
                                                     <template v-slot:items="props">
                                                         <td class="text-xs-left"><v-btn flat small color="primary">{{ props.item.issue_desc }}</v-btn></td>
                                                         <td class="text-xs-center">{{ props.item.status }}</td>

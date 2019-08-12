@@ -46,7 +46,7 @@
                                                 <div class="v-input__slot">
                                                     <div class="v-text-field__slot multiselectwps">
                                                         <label aria-hidden="true" class="v-label v-label--active theme--light" style="left: 0px; right: auto; position: absolute;">Organization</label>
-                                                        <multiselect v-model="form.company" :options="companies" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select Organization" label="company_name" track-by="id" :preselect-first="false" >
+                                                        <multiselect v-model="form.company" :options="companies" :preserve-search="false" placeholder="Select Organization" label="company_name" track-by="id" :preselect-first="false" >
                                                             <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
                                                         </multiselect>
                                                     </div>                                   

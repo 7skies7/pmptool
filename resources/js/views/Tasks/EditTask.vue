@@ -1,7 +1,7 @@
     <template>
     <div class="col-md-6">
         <div class="card card-default shadow-sm">
-            <div class="card-header">{{ this.task.task_desc }}</div>
+            <div class="card-header">{{ this.task.task_title }}</div>
 
             <div class="card-body">
                 <v-app id="editTask">
@@ -135,6 +135,7 @@
                     task_priority:this.task.priority,
                     task_id: this.task.id,
                     task_point:this.task.task_point,
+                    task_initial_point:this.task.task_point,
                     userstory_id: this.task.userstory_id,
                     task_heirarchy: this.task.task_heirarchy,
                     remainingPoint:0,
@@ -196,7 +197,10 @@
         },
         watch: {
             priority() {
-                this.form.task_assignee = {id: this.task.assignee.id, name:this.task.assignee.first_name + ' ' + this.task.assignee.last_name};
+                if(this.form.task_heirarchy == 2)
+                {
+                    this.form.task_assignee = {id: this.task.assignee.id, name:this.task.assignee.first_name + ' ' + this.task.assignee.last_name};
+                }
             }
         }   
     }

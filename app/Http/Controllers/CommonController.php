@@ -22,10 +22,10 @@ class CommonController extends Controller
      */
     public function getStatus()
     {
-        if(User::isRole(1) || User::isRole(2) || User::isRole(5) || User::isRole(6))
-        {
-            return Status::select('id',"status_name")->get();
-        }
+        //if(User::isRole(1) || User::isRole(2) || User::isRole(5) || User::isRole(6))
+        //{
+          //  return Status::select('id',"status_name")->get();
+        //}
         return  Status::select('id',"status_name")->where('id','!=',2)->get();
     }
 

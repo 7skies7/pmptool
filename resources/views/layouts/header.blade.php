@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-light navbar-laravel top-nav">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url('/') }}">
+        <a class="navbar-brand" href="{{ url('/home#/dashboard') }}">
             <!-- {{ config('app.name', 'Laravel') }} -->
             <img src="/svg/cisco.jpg">
             <!-- CISCO PMS -->
@@ -53,7 +53,7 @@
                 <usercard>  
                     <form id="logout-form" method="POST" action="/logout">
                         @csrf
-                        <v-btn type="submit" color="info">Logout</v-btn>
+                        <v-btn type="submit" small color="info">Logout</v-btn>
                         <!-- <button type="submit" class="btn btn-add ">Logout</button> -->
                     </form>
                 </usercard>

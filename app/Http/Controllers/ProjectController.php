@@ -197,8 +197,8 @@ class ProjectController extends Controller
 
         //validate
         $attributes = request()->validate(['project_name'=> 'required', 
-                                            'project_start_date' => 'required',
-                                            'project_end_date' => 'required',
+                                            'project_start_date' => 'required|date|before:project_end_date',
+                                            'project_end_date' => 'required|date|after:project_start_date',
                                             'project_desc' => 'required',
                                             'project_managers' => 'required',
                                             'project_status' => 'required',

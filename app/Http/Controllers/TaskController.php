@@ -94,10 +94,11 @@ class TaskController extends Controller
         $attributes['created_by'] = auth()->user()->id;
         $attributes['modified_by'] = auth()->user()->id;
         $attributes['task_status'] = $attributes['task_status']['id'];
-        $attributes['task_assignee'] = $attributes['task_assignee']['id'];
+        $attributes['task_assignee'] = request('task_assignee')['id'];
         $attributes['task_priority'] = $attributes['task_priority']['id'];
         $attributes['project_id'] = request('project_id');
         $attributes['parent_id'] = request('parent_id');
+        $attributes['task_desc'] = request('task_desc'); 
         $parentTask = Task::find(request('parent_id'));
         $attributes['cr_id'] = $parentTask->cr_id;
         $attributes['userstory_id'] = $parentTask->userstory_id;
@@ -160,10 +161,15 @@ class TaskController extends Controller
                                             'task_start_date' => 'required',
                                             'task_end_date' => 'required',
                                         ]);
-        
-        
-        $id = request('task_heirarchy') == 1 ? request('userstory_id') : $id;
-        if($this->fetchAvailablePoints($id, request('task_heirarchy'), 1) < $attributes['task_point'])
+
+        if(request('task_heirarchy') == 1 && request('task_point') < request('task_initial_point'))
+        {  
+            $message['errors']['task_point'][] = "Task point should be greater than ".request('task_initial_point');
+            return response()->json($message, 422); 
+        }
+
+        $checkId = request('task_heirarchy') == 1 ? request('userstory_id').'_'.$id : $id;
+        if($this->fetchAvailablePoints($checkId, request('task_heirarchy'), 1) < $attributes['task_point']) 
         {  
             $message['errors']['task_point'][] = "Points added should be less than Approved Point";
             $message['errors']['message'] = 'The given data was invalid';
@@ -171,11 +177,14 @@ class TaskController extends Controller
         }
 
         $attributes['modified_by'] = auth()->user()->id;
+        $attributes['task_desc'] = request('task_desc'); 
         $attributes['task_status'] = $attributes['task_status']['id'];
-        $attributes['task_assignee'] = $attributes['task_assignee']['id'];
+        if(request('task_heirarchy') == 2 && !empty(request('task_assignee')))
+        {
+            $attributes['task_assignee'] = request('task_assignee')['id'];                        
+        }
         $attributes['task_priority'] = $attributes['task_priority']['id'];
 
-            
         //store in database
         $task = Task::where('id', $id)->update($attributes);
 
@@ -234,7 +243,7 @@ class TaskController extends Controller
     {
         $failures = [];
         # VAlidate the request
-        $attributes = request()->validate(['file'=> 'required']);
+        $attributes = request()->validate(['userstory' => 'required', 'scope' => 'required', 'file'=> 'required']);
         # Validate the entries and save it 
 
         //check if file is attachment then save it to the directory and return filename
@@ -370,7 +379,12 @@ class TaskController extends Controller
         //update Task completion too
         if($task)
         {
-            $taskCompletion  = Task::where('id', $request->get('task_id'))->update(['task_completion' => $attributes['task_completion']]);
+            $taskAttributes['task_completion'] = $attributes['task_completion'];
+            if($attributes['task_completion'] == 100)
+            {
+                $taskAttributes['task_status'] = 7;
+            }
+            $taskCompletion  = Task::where('id', $request->get('task_id'))->update($taskAttributes);
         }
         return $task;
     }
@@ -386,11 +400,10 @@ class TaskController extends Controller
         $commentsArr = [];
         $comments = TaskComment::with('users')->where('task_id', $taskid)->orderBy('id', 'asc')->get();
         
-        
         foreach($comments as $comment)
         {
             $commentArr['id'] = $comment->id;
-            $commentArr['username'] = $comment->users[0]->first_name.' '.$comment->users[0]->last_name;
+            $commentArr['username'] = $comment->users->first_name.' '.$comment->users->last_name;
             $commentArr['text'] = $comment->task_comment;
             $commentArr['time'] = Carbon::createFromFormat('Y-m-d H:i:s',  $comment->created_at)->format('F j, Y');
             $commentArr['task_completion'] = null;
@@ -439,12 +452,19 @@ class TaskController extends Controller
      * @param  \App\Task  $taskid
      * @return \Illuminate\Http\Response
      */
-    public function fetchAvailablePoints($id, $task_type, $server = 0)
+    public function fetchAvailablePoints($id = '',$task_type, $server = 0)
     {   
         if($task_type == 1)
         {
-            $userstorypoint = Userstory::where('id',$id)->pluck('userstory_point');
-            $sumTaskPoints = Task::where('userstory_id', $id)->where('task_heirarchy', 1)->sum('task_point');
+            $task_explode = explode('_', $id);
+            $userstorypoint = Userstory::where('id',$task_explode[0])->pluck('userstory_point');
+            if($server == 1)
+            {
+
+                $sumTaskPoints = Task::where('userstory_id', $task_explode[0])->where('id','!=', $task_explode[1])->where('task_heirarchy', 1)->sum('task_point');
+            }else{
+                $sumTaskPoints = Task::where('userstory_id', $task_explode[0])->where('task_heirarchy', 1)->sum('task_point');
+            }
             return $userstorypoint[0] - $sumTaskPoints;
         }elseif($task_type == 2) {
             $childtask = Task::find($id);
@@ -463,6 +483,8 @@ class TaskController extends Controller
         }
         
     }
+
+
 
     
 }

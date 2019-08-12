@@ -46,12 +46,10 @@ import Toasted from 'vue-toasted';
 Vue.use(Toasted, 
 	{
 		position:'bottom-right',
-		action : {
-	        text : 'Cancel',
-	        onClick : (e, toastObject) => {
-	            toastObject.goAway(0);
-	        }
-	    }
+		duration: 1500,
+		defaultCloseOnHover: true,
+	    classNames: ["animated", "zoomInUp"],
+
 })
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)

@@ -10,6 +10,11 @@
                             <v-layout row wrap>
                                 <v-flex xs12>
                                     <v-card color="white">
+                                        <v-text-field v-model="form.task_title" label="Task name" placeholder="Task Name" :messages="form.errors.get('task_title')"></v-text-field>
+                                    </v-card>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-card color="white">
                                         <v-text-field v-model="form.task_desc" label="Task Description" placeholder="Task Description" :messages="form.errors.get('task_desc')"></v-text-field>
                                     </v-card>
                                 </v-flex>
@@ -136,6 +141,7 @@
         data() {
             return {
                 form: new Form({
+                    task_title: '',
                     task_desc: '',
                     task_start_date: new Date().toISOString().substr(0, 10),
                     task_end_date: new Date().toISOString().substr(0, 10),

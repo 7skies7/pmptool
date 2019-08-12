@@ -33,10 +33,6 @@ class TasksImport implements ToModel, WithValidation, WithHeadingRow
     */
     public function model(array $row)
     {   
-        // Sum of story points for all tasks should be less than the approved points for the userstory
-        
-        $this->validateStoryPoints($row);
-
         
         $lastTask = Task::orderBy('id', 'desc')->limit(1)->pluck('id');
         $lastTaskId = isset($lastTask[0]) ? $lastTask[0] : 0;
@@ -52,6 +48,9 @@ class TasksImport implements ToModel, WithValidation, WithHeadingRow
         }else{
             $this->parent_id = 0;
         }
+
+        // Sum of story points for all tasks should be less than the approved points for the userstory
+        $this->validateStoryPoints($row);
 
         return  new Task([
             'task_id' => $task_id,
@@ -106,14 +105,33 @@ class TasksImport implements ToModel, WithValidation, WithHeadingRow
 
     public function validateStoryPoints($row)
     {
+        if($row['task_level'] == 'ST')
+        {
+            $task = Task::where('id', $this->parent_id)->pluck('task_point');
+            $subtasksum = Task::where('parent_id', $this->parent_id)->sum('task_point');
+            $sumSubTasks = $subtasksum + $row['task_point'];
+            if($task[0] < $sumSubTasks)
+            {
+                $error = \Illuminate\Validation\ValidationException::withMessages([
+                           'task_point' => ['Sorry! We cannot upload the file as it has calculation error for the Subtask title "'.$row['task_title'].'". Sum of all Subtask('.$sumSubTasks   .') points should be less than the parent Task('.$task[0].') point.'],
+                        ]);
+                throw $error;
+            }
+        }
 
         if($row['task_level'] == 'T')
         {
 
             $this->tasks_story_points += $row['task_point'];
-            $userstory_point = Userstory::find(request('userstory'))->pluck('userstory_point')[0];
-            if($userstory_point < $this->tasks_story_points)
-            {
+
+            $userstory_point = Userstory::where('id', request('userstory'))->pluck('userstory_point')[0];
+            $tasks_sum = Task::where('userstory_id', request('userstory'))->where('task_heirarchy', 1)->where('is_deleted', 0)->sum('task_point');
+
+            $available = $userstory_point - $tasks_sum;
+
+            if($available < $row['task_point'])
+            {   
+                
                 $error = \Illuminate\Validation\ValidationException::withMessages([
                            'task_point' => ['Total story points of all the tasks('.$this->tasks_story_points.') in the excelsheet exceeds the points approved for the userstory('.$userstory_point.')'],
                         ]);
