@@ -62,7 +62,7 @@ class CompanyController extends Controller
             return abort('403');
         }
         //validate
-        $attributes = request()->validate(['company_name'=> 'required||unique:companies,company_name', 
+        $attributes = request()->validate(['company_name'=> 'required||unique:companies,company_name,null,null,is_deleted,0', 
                                             'company_desc' => 'required',
                                             'company_manager' => 'required',
                                         ]);
@@ -133,7 +133,7 @@ class CompanyController extends Controller
         }
 
         //validate
-        $attributes = request()->validate(['company_name'=> 'required|unique:companies,company_name', 
+        $attributes = request()->validate(['company_name'=> 'required|unique:companies,company_name,'.$id.',id,is_deleted,0', 
                                             'company_desc' => 'required',
                                             'company_manager' => 'required',
                                         ]);

@@ -61,6 +61,10 @@ var routes = [
 	{
 		path: '/myactivity',
 		component: require('./views/Dashboard/developer').default
+	},
+	{
+		path: '/reports',
+		component: require('./views/Reports/index').default
 	}
 
 	// {

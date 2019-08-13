@@ -4,13 +4,12 @@
             <div :class="cardWidth">
                 <div class="card card-default shadow-sm border-0">
                     <div class="card-header">
-                        <div class="d-flex">
-                            <div class="flex-1">
-                                <img src="/svg/project.svg" class="header-svg"/>
+                        <div class="sflex spacebetween">
+                            <div class="childFlex">
                                 <span>ACL</span>
                             </div>
                             <div class="pb-11">
-                                <button class="btn btn-add float-right" >Add New</button>
+                                <v-btn color="info">Add New</v-btn>
                             </div>
                         </div>
                     </div>
