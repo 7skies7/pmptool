@@ -34,8 +34,8 @@
 <script>
     import Datepicker from 'vuejs-datepicker';
     import moment from 'moment';
-    import addProject from './addProject.vue';
-    import editProject from './editProject.vue';
+    import addProject from './AddProject.vue';
+    import editProject from './EditProject.vue';
     import Grid from './Grid.vue';
     import Project from '../../models/Project';
     export default {

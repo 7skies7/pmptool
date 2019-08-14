@@ -32,8 +32,8 @@
 <script>
     import Datepicker from 'vuejs-datepicker';
     import moment from 'moment';
-    import addUser from './addUser.vue';
-    import editUser from './editUser.vue';
+    import addUser from './AddUser.vue';
+    import editUser from './EditUser.vue';
     import Grid from './Grid.vue';
     import User from '../../models/User';
     export default {
