@@ -64,7 +64,17 @@ var routes = [
 	},
 	{
 		path: '/reports',
-		component: require('./views/Reports/index').default
+		component: require('./views/Reports/index').default,
+		children: [
+			{	
+         		path: 'general',
+          		component: require('./views/Reports/generalreport').default
+        	},
+        	{
+         		path: 'summary',
+          		component: require('./views/Reports/reportsummary').default
+        	},
+		]
 	}
 
 	// {

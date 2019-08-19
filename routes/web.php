@@ -145,6 +145,9 @@ Route::get('/dashboard/taskdeadlinepassed', 'DashboardController@fetchTasksDeadl
 Route::get('/dashboard/upcomingtasks', 'DashboardController@fetchUpcomingTasks');
 
 
+Route::get('/report/resourcereport', 'ReportController@fetchResourceReport');
+Route::post('/report/advancesearch', 'ReportController@fetchDynamicReport');
+
 // Master Table Routes
 
 Route::get('/roles', function(){
@@ -157,3 +160,6 @@ Route::get('/project/getStatus', 'CommonController@getStatus');
 Route::get('/project/getPriority', 'CommonController@getPriority');
 Route::get('/company/getResources', 'CommonController@getResources');
 Route::get('/project/getPrograms', 'CommonController@getPrograms');
+
+
+

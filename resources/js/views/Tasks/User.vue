@@ -46,7 +46,7 @@
                                         <template v-slot:items="props">
                                             <tr>
                                                 <td >
-                                                   {{ props.item.task_desc }}
+                                                   {{ props.item.task_title }}
                                                 </td>
                                                 <td class="text-xs-center">
                                                     <!-- <v-btn v-if="props.item.priority" flat icon  small> -->
