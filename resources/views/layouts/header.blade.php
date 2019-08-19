@@ -136,7 +136,7 @@
         <div class="text-center main-menu-links"> 
             <li class="nav-item ">
                 <!-- <a class="nav-link">Program</a> -->
-                <router-link to='/reports' class="nav-link"><i class="material-icons">event</i>Reports</router-link>
+                <router-link to='/reports/summary' class="nav-link"><i class="material-icons">event</i>Reports</router-link>
             </li>
         </div>
         @endif
