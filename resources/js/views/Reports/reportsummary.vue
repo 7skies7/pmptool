@@ -199,7 +199,7 @@
                 cardWidth: 'col-md-12',
                 isLoading: false,
                 reports: [{ id: 1, type: 'Project Report'}, { id: 2, type: 'Resource Report'}],
-                zooms: [{ id: 1, type: 'Monthly'}, { id: 2, type: 'Daily'}],
+                zooms: [{ id: 1, type: 'Monthly'}],
                 projects:[],
                 resources:[],
                 search: '',
@@ -297,14 +297,11 @@
             }
         },
         mounted() {
-            // this.isLoading = true;
-            // Acl.roles(roles => this.roles = roles)      
             console.log('Component mounted.')
+            this.onSubmit();
         },
         watch: {
-            resources() {
-                this.onSubmit();
-            }
+            
         }
     }
 </script>
