@@ -166,7 +166,7 @@ class ScopeController extends Controller
 
     public function getProjectScope($project_id)
     {
-        return Scope::select('id', 'crd_title', 'crd_id')->where('is_deleted',0)->where('project_id', $project_id)->where('crd_status', 2)->latest()->get();
+        return Scope::select('id', 'crd_title', 'crd_id')->where('is_deleted',0)->where('project_id', $project_id)->latest()->get();
     }
 
     public function getScopeUserstory($scope_id)
