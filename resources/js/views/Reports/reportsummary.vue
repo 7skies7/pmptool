@@ -275,6 +275,7 @@
                         this.report_text = this.form.resource.name;
                     }
                     this.form.project = '';
+                    this.form.resource = '';
                     this.searchloader = false;
                 }); 
             },
