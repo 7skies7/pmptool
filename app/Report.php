@@ -45,6 +45,16 @@ class Report extends Model
    public function allProjectResourceReport($request)
    {
    		// dd($request->project[0]['id']);
-   		return DB::select("select cast(time_to_sec(sec_to_time(sum(time_to_sec(task_hours)))) / (60 * 60) as decimal(10, 1)) as hours, MONTH(tc.created_at) as month, project_id, tc.created_by, concat(first_name,' ', last_name ) as name from task_comments tc inner join tasks tk on tk.id = tc.task_id inner join users u on u.id = tc.created_by where  project_id = {$request->project['id']} group by tc.created_by, MONTH(tc.created_at) ASC");
+   		return DB::select("select cast(time_to_sec(sec_to_time(sum(time_to_sec(task_hours)))) / (60 * 60) as decimal(10, 1)) as hours, MONTH(tc.created_at) as month, project_id, tc.created_by, concat(first_name,' ', last_name ) as resource_name from task_comments tc inner join tasks tk on tk.id = tc.task_id inner join users u on u.id = tc.created_by where project_id = {$request->project['id']} group by tc.created_by, MONTH(tc.created_at) ASC");
+   }
+
+   public function allResourceReport()
+   {
+   		return DB::select("select cast(time_to_sec(sec_to_time(sum(time_to_sec(task_hours)))) / (60 * 60) as decimal(10, 1)) as hours, MONTH(tc.created_at) as month, tc.created_by, concat(u.first_name, ' ', u.last_name) as resource_name from task_comments tc inner join users u on u.id = tc.created_by group by  tc.created_by ASC, MONTH(tc.created_at) ASC");
+   }
+
+   public function allResourceProjectReport($request)
+   {
+   		return DB::select("select cast(time_to_sec(sec_to_time(sum(time_to_sec(task_hours)))) / (60 * 60) as decimal(10, 1)) as hours, MONTH(tc.created_at) as month, project_id, project_name from task_comments tc inner join tasks tk on tk.id = tc.task_id inner join project prj on prj.id = tk.project_id where tc.created_by = {$request->resource['id']} group by  tk.project_id ASC, MONTH(tc.created_at) ASC");
    }
 }

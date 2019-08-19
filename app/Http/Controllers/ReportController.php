@@ -37,72 +37,106 @@ class ReportController extends Controller
      */
     public function fetchDynamicReport(Request $request)
     {
-        // dd($request->project);
+        
         //Scenario 1 : All Projects With Hours Worked Monthly
-        if(empty($request->project) && empty($request->resource) && $request->report_type['id'] == 1)
+        if($request->report_type['id'] == 1)
         {
-            $scenario1 = (new Report)->allProjectReport();
-            $scenario1['end']  = -1;
+            if(empty($request->project)){
+                $scenario1 = (new Report)->allProjectReport();    
+                $variableId = 'project_id'; 
+                $variableName = 'project_name'; 
 
+            }elseif(!empty($request->project)){
+                $scenario1 = (new Report)->allProjectResourceReport($request);;    
+                $variableId = 'created_by';
+                $variableName = 'resource_name';
+            }
+            $scenario1['end']  = -1;
             $finalArray = [];
             $projectArr=[];
             foreach($scenario1 as $key => $record)
             {
-                if(!empty($projectArr) && ($key == 'end' || $record->project_id != $oldProjectId))
+                if(!empty($projectArr) && ($key == 'end' || $record->$variableId != $oldProjectId))
                 {
                     $finalArray[] = $projectArr;
                     $projectArr = [];
                 }
 
-                if(isset($record->project_id))
+                if(isset($record->$variableId))
                 {
-                    $projectArr['project_name'] = $record->project_name; 
+                    $projectArr[$variableName] = $record->$variableName; 
                     $projectArr[$record->month] = $record->hours; 
 
-                    $oldProjectId = $record->project_id;
-                }
-            }
-
-
-            return $finalArray;
-
-        }
-
-        if(!empty($request->project) && empty($request->resource) && $request->report_type['id'] == 1)
-        {
-            $scenario1 = (new Report)->allProjectResourceReport($request);
-            $scenario1['end']  = -1;
-
-            $finalArray = [];
-            $resourceArr=[];
-            foreach($scenario1 as $key => $record)
-            {
-                if(!empty($resourceArr) && ($key == 'end' || $record->created_by != $oldCreatedBy))
-                {
-                    $finalArray[] = $resourceArr;
-                    $resourceArr = [];
-                }
-
-                if(isset($record->created_by))
-                {
-                    $resourceArr['resource_name'] = $record->name; 
-                    $resourceArr[$record->month] = $record->hours; 
-
-                    $oldCreatedBy = $record->created_by;
+                    $oldProjectId = $record->$variableId;
                 }
             }
 
             return $finalArray;
-
         }
+
+        // if(!empty($request->project) && $request->report_type['id'] == 1)
+        // {
+        //     $scenario1 = (new Report)->allProjectResourceReport($request);
+        //     $scenario1['end']  = -1;
+
+        //     $finalArray = [];
+        //     $resourceArr=[];
+        //     foreach($scenario1 as $key => $record)
+        //     {
+        //         if(!empty($resourceArr) && ($key == 'end' || $record->created_by != $oldCreatedBy))
+        //         {
+        //             $finalArray[] = $resourceArr;
+        //             $resourceArr = [];
+        //         }
+
+        //         if(isset($record->created_by))
+        //         {
+        //             $resourceArr['resource_name'] = $record->name; 
+        //             $resourceArr[$record->month] = $record->hours; 
+
+        //             $oldCreatedBy = $record->created_by;
+        //         }
+        //     }
+
+        //     return $finalArray;
+
+        // }
 
         //Scenario 2 : All Resources With Hours Worked Monthly
-        if(empty($request->project) && empty($request->resource) && $request->report_type['id'] == 2)
+        if($request->report_type['id'] == 2)
         {
-            echo "Scenario 2";
-        }
+            if(empty($request->resource)){
+                $scenario1 = (new Report)->allResourceReport();    
+                $variableId = 'created_by'; 
+                $variableName = 'resource_name'; 
 
-        dd($request);
+            }elseif(!empty($request->resource)){
+                $scenario1 = (new Report)->allResourceProjectReport($request);    
+                $variableId = 'project_id';
+                $variableName = 'project_name';
+            }
+            $scenario1['end']  = -1;
+            $finalArray = [];
+            $projectArr=[];
+            foreach($scenario1 as $key => $record)
+            {
+                if(!empty($projectArr) && ($key == 'end' || $record->$variableId != $oldProjectId))
+                {
+                    $finalArray[] = $projectArr;
+                    $projectArr = [];
+                }
+
+                if(isset($record->$variableId))
+                {
+                    $projectArr[$variableName] = $record->$variableName; 
+                    $projectArr[$record->month] = $record->hours; 
+
+                    $oldProjectId = $record->$variableId;
+                }
+            }
+
+            return $finalArray;
+        }
 
     }   
 

@@ -969,3 +969,20 @@ a.v-btn {
 table.v-table tbody td:first-child, table.v-table tbody td:not(:first-child), table.v-table tbody th:first-child, table.v-table tbody th:not(:first-child), table.v-table thead td:first-child, table.v-table thead td:not(:first-child), table.v-table thead th:first-child, table.v-table thead th:not(:first-child){
 	padding:0px 10px!important;
 }
+.reportContainer {
+	max-width:100%!important;
+	padding:7px!important;
+}
+.reportContainer form{
+	width:100%!important;
+}
+.tableMainColor {
+	color:#19BDF0!important;
+}
+.reporttable table, .reporttable table tr, .reporttable table td, .reporttable table th{
+	border:1px solid #dee2e6!important;
+	font-size:14px!important;
+	color:#000!important;
+}
+
+
