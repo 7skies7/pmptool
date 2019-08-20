@@ -117,7 +117,9 @@
                         <v-card-title>
                             <v-toolbar-title>{{ this.report_text }}</v-toolbar-title>
                             <v-divider class="mx-2" inset vertical></v-divider>
-                            <v-btn type="submit" :loading="exportloader" color="primary" @click="loader = 'exportloader'">Export</v-btn>
+                            <v-form @submit.prevent="onExport" @keydown="form.errors.clear()">
+                                <v-btn type="submit" :loading="exportloader" color="primary" @click="loader = 'exportloader'">Export</v-btn>
+                            </v-form>
                             <v-spacer></v-spacer>
                             <v-spacer></v-spacer>
                             <v-spacer></v-spacer>
@@ -144,7 +146,9 @@
                         <v-card-title>
                             <v-toolbar-title>{{ this.report_text }}</v-toolbar-title>
                             <v-divider class="mx-2" inset vertical></v-divider>
-                            <v-btn type="submit" :loading="exportloader" color="primary" @click="loader = 'exportloader'">Export</v-btn>
+                            <v-form @submit.prevent="onExport" @keydown="form.errors.clear()">
+                                <v-btn type="submit" :loading="exportloader" color="primary" @click="loader = 'exportloader'">Export</v-btn>
+                            </v-form>
                             <v-spacer></v-spacer>
                             <v-spacer></v-spacer>
                             <v-spacer></v-spacer>
@@ -193,6 +197,7 @@
                     start_date:'',
                     end_date:'',
                     zoom_level:'',
+                    type:1,
                 }),
                 start_date: false,
                 end_date: false,
@@ -250,6 +255,7 @@
         methods: {
             onSubmit() {
                 this.searchloader = true;
+                this.form.type = 1;
                 var self = this;
                 this.form.post('/report/advancesearch')
                 .then((records) => {
@@ -259,12 +265,12 @@
                         this.report_text = this.form.project.project_name;
                         this.resource_reports = records;    
                     }
-                    if(this.form.report_type.id == 1 && this.form.project == '')
+                    if(this.form.report_type.id == 1 && (this.form.project == '' || this.form.project == null))
                     {
                         this.project_reports = records;    
                         this.report_text = 'All Projects';
                     }
-                    if(this.form.report_type.id == 2 && this.form.resource == '')
+                    if(this.form.report_type.id == 2 && (this.form.resource == '' || this.form.resource == null))
                     {
                         this.resource_reports = records;    
                         this.report_text = 'All Resources';
@@ -274,8 +280,8 @@
                         this.project_reports = records;    
                         this.report_text = this.form.resource.name;
                     }
-                    this.form.project = '';
-                    this.form.resource = '';
+                    // this.form.project = '';
+                    // this.form.resource = '';
                     this.searchloader = false;
                 }); 
             },
@@ -294,6 +300,14 @@
                 {
                     this.isResourceVisible = true;
                 }
+            },
+            onExport() {
+                alert('asdasd');
+                this.form.type = 2;
+                this.exportloader = true;
+                var self = this;
+                this.form.post('/report/advancesearch')
+                .then((records) => console.log(records));
             }
         },
         mounted() {

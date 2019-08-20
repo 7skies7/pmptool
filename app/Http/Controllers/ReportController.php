@@ -71,36 +71,14 @@ class ReportController extends Controller
                 }
             }
 
+            if($request->type == 2)
+            {
+                $this->exportReport($finalArray);die;
+            }
+
             return $finalArray;
         }
 
-        // if(!empty($request->project) && $request->report_type['id'] == 1)
-        // {
-        //     $scenario1 = (new Report)->allProjectResourceReport($request);
-        //     $scenario1['end']  = -1;
-
-        //     $finalArray = [];
-        //     $resourceArr=[];
-        //     foreach($scenario1 as $key => $record)
-        //     {
-        //         if(!empty($resourceArr) && ($key == 'end' || $record->created_by != $oldCreatedBy))
-        //         {
-        //             $finalArray[] = $resourceArr;
-        //             $resourceArr = [];
-        //         }
-
-        //         if(isset($record->created_by))
-        //         {
-        //             $resourceArr['resource_name'] = $record->name; 
-        //             $resourceArr[$record->month] = $record->hours; 
-
-        //             $oldCreatedBy = $record->created_by;
-        //         }
-        //     }
-
-        //     return $finalArray;
-
-        // }
 
         //Scenario 2 : All Resources With Hours Worked Monthly
         if($request->report_type['id'] == 2)
@@ -130,14 +108,16 @@ class ReportController extends Controller
                 {
                     $projectArr[$variableName] = $record->$variableName; 
                     $projectArr[$record->month] = $record->hours; 
-
                     $oldProjectId = $record->$variableId;
                 }
             }
-
             return $finalArray;
         }
+    }
 
+    public function exportReport($records)
+    {
+        dd($records);
     }   
 
 }
