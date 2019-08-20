@@ -33,7 +33,7 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough(
             Role::class,          // The model to access to
-            Userrole::class, // The intermediate table that connects the Company with the User.
+            UserRole::class, // The intermediate table that connects the Company with the User.
             'user_id',                 // The column of the intermediate table that connects to this model by its ID.
             'id',              // The column of the intermediate table that connects the Company by its ID.
             'id',                      // The column that connects this model with the intermediate model table.
