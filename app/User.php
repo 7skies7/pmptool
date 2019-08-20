@@ -45,7 +45,7 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough(
             Company::class,          // The model to access to
-            Usercompany::class, // The intermediate table that connects the Company with the User.
+            UserCompany::class, // The intermediate table that connects the Company with the User.
             'user_id',                 // The column of the intermediate table that connects to this model by its ID.
             'id',              // The column of the intermediate table that connects the Company by its ID.
             'id',                      // The column that connects this model with the intermediate model table.
@@ -106,7 +106,7 @@ class User extends Authenticatable
     public static function fetchCompanyUsers()
     {
         $companies = UserCompany::where('user_id', auth()->user()->id)->pluck('company_id');
-        $userid = Usercompany::whereIn('company_id', $companies)->pluck('user_id');
+        $userid = UserCompany::whereIn('company_id', $companies)->pluck('user_id');
         return User::with('roles')->with('companies')->whereIn('id', $userid)->where('is_deleted',0)->get();
 
     }
