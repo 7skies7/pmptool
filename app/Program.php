@@ -13,7 +13,7 @@ class Program extends Model
      * @var array
      */
     protected $fillable = [
-        'program_name', 'program_start_date', 'program_end_date', 'program_desc','created_by','created_at','modified_at','modified_by','program_manager','company_id'
+        'id','program_name', 'program_start_date', 'program_end_date', 'program_desc','created_by','created_at','modified_at','modified_by','program_manager','company_id'
     ];
 
 	public function user()

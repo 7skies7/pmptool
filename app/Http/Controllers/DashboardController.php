@@ -166,7 +166,7 @@ class DashboardController extends Controller
     public function fetchUpcomingTasks()
     {
         $tasks = [];
-        $tasks = Task::with('project')->with('assignee')->with('priority')->where('task_assignee', auth()->user()->id)->whereDate('task_end_date','>=',DB::raw('CURDATE()'))->where('is_deleted',0)->orderby('task_end_date')->get();
+        $tasks = Task::with('project')->with('assignee')->with('priority')->where('task_assignee', auth()->user()->id)->where('is_deleted',0)->latest()->get();
         return $tasks;
     }
     

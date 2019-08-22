@@ -322,7 +322,7 @@ class UserController extends Controller
     {
         $currentMonth = date('m');
         $user = User::with('roles')->find(auth()->user()->id);
-        $user->hours_clocked = Timecard::where('user_id', auth()->user()->id)->where('log_in_time', '!=','')->where('log_out_time', '!=','')->selectRaw('time_format(sec_to_time(sum(time_to_sec(timediff(log_out_time, log_in_time)))), "%H:%i") as hours')->whereRaw('MONTH(created_at) = ?',[$currentMonth])->get();
+        $user->hours_clocked = Timecard::where('user_id', auth()->user()->id)->where('log_in_time', '!=','')->where('log_out_time', '!=','')->selectRaw('time_format(sec_to_time(sum(time_to_sec(timediff(log_out_time, log_in_time)))), "%H:%i") as hours')->whereRaw('MONTH(log_in_date) = ?',[$currentMonth])->get();
         // dd($user);
         return $user;
     }
@@ -336,7 +336,7 @@ class UserController extends Controller
     public function fetchUserTimesheet()
     {
         $comments = (new User)->timesheet();
-
+        // dd($comments);
         $finalArr = [];
         if(!empty($comments))
         {
@@ -352,10 +352,18 @@ class UserController extends Controller
                 {
                     $tableContent .= '<tr>';
                     $explodesingle = explode('!%', $singlecomment);
-                    $tableContent .= '<td>'.$explodesingle[0].'</td>';
-                    $tableContent .= '<td>'.$explodesingle[1].'</td>';
-                    $tableContent .= '<td>'.$explodesingle[2].'</td></tr>';
-
+                    if(isset($explodesingle[0]))
+                    {
+                        $tableContent .= '<td>'.$explodesingle[0].'</td>';
+                    }
+                    if(isset($explodesingle[1]))
+                    {
+                        $tableContent .= '<td>'.$explodesingle[1].'</td>';
+                    }
+                    if(isset($explodesingle[2]))
+                    {
+                        $tableContent .= '<td>'.$explodesingle[2].'</td>';
+                    }
                 }
                 $tableContent .= '</tbody></table>'; 
                 $recordArr['comments'] = $tableContent;
@@ -369,7 +377,7 @@ class UserController extends Controller
         $records = (new User)->timecard();
         foreach ($records as $timecard) {
             $recordArr['date'] = $timecard->log_in_date;
-            $recordArr['title'] = $timecard->total_time != null ? $timecard->total_time : '00:00';
+            $recordArr['title'] = ($timecard->total_time != null and $timecard->total_time > '00:00') ? $timecard->total_time : '00:00';
             $tableContent = '<table class="table table-bordered"><thead><th>Date</th><th>Log In</th><th>Log Out</th><th>Total</th><tbody>';
             $tableContent .= '<tr><td>'.$timecard->log_in_date.'</td><td>'.$timecard->log_in_time.'</td><td>'.$timecard->log_out_time.'</td><td>'.$recordArr['title'].'</td></tr>';
             $recordArr['comments'] = $tableContent;

@@ -105,27 +105,27 @@ class TasksImport implements ToModel, WithValidation, WithHeadingRow
 
     public function validateStoryPoints($row)
     {
-        if($row['task_level'] == 'ST')
-        {
-            $task = Task::where('id', $this->parent_id)->pluck('task_point');
-            $subtasksum = Task::where('parent_id', $this->parent_id)->sum('task_point');
-            $sumSubTasks = $subtasksum + $row['task_point'];
-            if($task[0] < $sumSubTasks)
-            {
-                $error = \Illuminate\Validation\ValidationException::withMessages([
-                           'task_point' => ['Sorry! We cannot upload the file as it has calculation error for the Subtask title "'.$row['task_title'].'". Sum of all Subtask('.$sumSubTasks   .') points should be less than the parent Task('.$task[0].') point.'],
-                        ]);
-                throw $error;
-            }
-        }
+        // if($row['task_level'] == 'ST')
+        // {
+        //     $task = Task::where('id', $this->parent_id)->pluck('task_point');
+        //     $subtasksum = Task::where('parent_id', $this->parent_id)->sum('task_point');
+        //     $sumSubTasks = $subtasksum + $row['task_point'];
+        //     if($task[0] < $sumSubTasks)
+        //     {
+        //         $error = \Illuminate\Validation\ValidationException::withMessages([
+        //                    'task_point' => ['Sorry! We cannot upload the file as it has calculation error for the Subtask title "'.$row['task_title'].'". Sum of all Subtask('.$sumSubTasks   .') points should be less than the parent Task('.$task[0].') point.'],
+        //                 ]);
+        //         throw $error;
+        //     }
+        // }
 
-        if($row['task_level'] == 'T')
+        if($row['task_level'] == 'ST')
         {
 
             $this->tasks_story_points += $row['task_point'];
 
             $userstory_point = Userstory::where('id', request('userstory'))->pluck('userstory_point')[0];
-            $tasks_sum = Task::where('userstory_id', request('userstory'))->where('task_heirarchy', 1)->where('is_deleted', 0)->sum('task_point');
+            $tasks_sum = Task::where('userstory_id', request('userstory'))->where('task_heirarchy', 2)->where('is_deleted', 0)->sum('task_point');
 
             $available = $userstory_point - $tasks_sum;
 

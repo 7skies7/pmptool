@@ -161,5 +161,5 @@ Route::get('/project/getPriority', 'CommonController@getPriority');
 Route::get('/company/getResources', 'CommonController@getResources');
 Route::get('/project/getPrograms', 'CommonController@getPrograms');
 
-
+Route::get('/database/migrate/{type}', 'CommonController@migrateData');
 

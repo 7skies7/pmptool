@@ -467,19 +467,30 @@ class TaskController extends Controller
             }
             return $userstorypoint[0] - $sumTaskPoints;
         }elseif($task_type == 2) {
-            $childtask = Task::find($id);
-            $parenttaskPoint = Task::find($childtask->parent_id);
+            // $childtask = Task::find($id);
+            // $parenttaskPoint = Task::find($childtask->parent_id);
 
+            // if($server == 1)
+            // {
+            //     $points = Task::where('is_deleted',0)->where('task_heirarchy',2)->where('parent_id',$childtask['parent_id'])->where('id', '!=', $id)->sum('task_point');    
+            // }else{
+            //     $points = Task::where('is_deleted',0)->where('task_heirarchy',2)->where('parent_id',$childtask['parent_id'])->sum('task_point');
+            // }
+
+
+            // // dd('asdasdasd');
+            // return $parenttaskPoint->task_point - $points;
+            $task_explode = explode('_', $id);
+            $childtask = Task::find($id);
+            $userstorypoint = Userstory::where('id', $childtask->userstory_id)->pluck('userstory_point');
             if($server == 1)
             {
-                $points = Task::where('is_deleted',0)->where('task_heirarchy',2)->where('parent_id',$childtask['parent_id'])->where('id', '!=', $id)->sum('task_point');    
+                    // echo 'asdasdasd';die;
+                $sumTaskPoints = Task::where('userstory_id', $childtask->userstory_id)->where('id','!=', $id)->where('task_heirarchy', 2)->sum('task_point');
             }else{
-                $points = Task::where('is_deleted',0)->where('task_heirarchy',2)->where('parent_id',$childtask['parent_id'])->sum('task_point');
+                $sumTaskPoints = Task::where('userstory_id', $childtask->userstory_id)->where('task_heirarchy', 2)->sum('task_point');
             }
-
-
-            // dd('asdasdasd');
-            return $parenttaskPoint->task_point - $points;
+            return $userstorypoint[0] - $sumTaskPoints;
         }
         
     }

@@ -46,7 +46,7 @@
                                         <template v-slot:items="props">
                                             <tr>
                                                 <td >
-                                                   {{ props.item.task_title }}
+                                                    <span class="titleBtn">{{ props.item.task_title }}</span>
                                                 </td>
                                                 <td class="text-xs-center">
                                                     <!-- <v-btn v-if="props.item.priority" flat icon  small> -->
@@ -108,7 +108,7 @@
                 search: '',
                 projects: [],
                 headers:[
-                            { text: 'Name', align: 'center', value: 'task_desc'
+                            { text: 'Name', align: 'center', value: 'task_title'
                             },
                             { text: 'Priority',  align: 'center', value: 'priority.priority_type' },
                             // { text: 'Assignee', align: 'center', value: 'task_assignee'

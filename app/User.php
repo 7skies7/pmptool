@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'role_id', 'designation_id', 'alternate_email', 'password',
+        'id','first_name', 'last_name', 'email', 'password', 'role_id', 'designation_id', 'alternate_email', 'password',
     ];
 
     /**
@@ -94,7 +94,7 @@ class User extends Authenticatable
 
     public function timesheet()
     {
-        return DB::select("select TIME_FORMAT(SEC_TO_TIME(SUM(TIME_TO_SEC(task_hours))), '%H:%i') as hours, date_format(tc.created_at, '%Y-%m-%d') as day, group_concat(concat(tk.task_desc,'!%',task_comment,'!%',TIME_FORMAT(task_hours, '%H:%i')) SEPARATOR '!;') as task_details from task_comments tc inner join tasks tk on tk.id = tc.task_id where tc.created_by = ".auth()->user()->id." group by date_format(tc.created_at, '%Y-%m-%d')
+        return DB::select("select TIME_FORMAT(SEC_TO_TIME(SUM(TIME_TO_SEC(task_hours))), '%H:%i') as hours, date_format(tc.created_at, '%Y-%m-%d') as day, group_concat(concat(tk.task_title,'!%',task_comment,'!%',TIME_FORMAT(task_hours, '%H:%i')) SEPARATOR '!;') as task_details from task_comments tc inner join tasks tk on tk.id = tc.task_id where tc.created_by = ".auth()->user()->id." group by date_format(tc.created_at, '%Y-%m-%d')
             ");
     }
 

@@ -104,7 +104,8 @@
                             <v-subheader inset>Task Deadline Passed (High Risk)</v-subheader>
                             <v-data-table dense :height="400" :headers="headers_task_deadlin" :items="taskdeadlinepassed" class="elevation-1" dense>
                                 <template v-slot:items="props">
-                                    <v-btn class="text-xs-left" href="#/mytasks" flat small color="primary">{{ props.item.task_desc }}</v-btn>
+                                    <!-- <v-btn class="text-xs-left" href="#/mytasks" flat small color="primary">{{ props.item.task_title }}</v-btn> -->
+                                    <span  @click="onShowComments(props.item.id, props.item.task_point)" class="titleBtn">{{ props.item.task_title }}</span>
                                     <td class="text-xs-left">{{ props.item.project.project_name }}</td>
                                     <td class="text-xs-left">{{ props.item.task_end_date }}</td>
 
@@ -120,7 +121,8 @@
                             <v-data-table dense :height="400" :headers="headers_task_upcoming" :items="upcomingtasks" class="elevation-1" dense>
                                 <template v-slot:items="props">
                                     <td class="text-xs-left">
-                                        <v-btn href="#/mytasks" flat small color="primary">{{ props.item.task_desc }}</v-btn>
+                                        <!-- <v-btn href="#/mytasks" flat small color="primary">{{ props.item.task_title }}</v-btn> -->
+                                        <span  @click="onShowComments(props.item.id, props.item.task_point)" class="titleBtn">{{ props.item.task_title }}</span>
                                     </td>
                                     <td class="text-xs-left">{{ props.item.project.project_name }}</td>
                                     <td class="text-xs-left">{{ props.item.task_end_date }}</td>
@@ -164,7 +166,7 @@
         
       </v-container>
     </v-app>
-    <v-dialog v-model="dialog" width="900" height="700">
+    <v-dialog v-model="dialog" width="900" height="700" persistent>
         <v-card>
             <v-card-title class="headline grey lighten-2" primary-title> Login / Logout</v-card-title>
   
@@ -180,6 +182,7 @@
             <v-btn color="primary" flat @click="dialog = false">
               Close
             </v-btn>
+
           </v-card-actions>
         </v-card>
     </v-dialog>
@@ -196,6 +199,7 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
+    <view-task v-if="isTaskCommentVisible" :taskid="taskid" :taskpoint="taskpoint"></view-task>
 </div>
 </template>
 
@@ -209,10 +213,11 @@
     import Camera from '../../components/Camera.vue';
     import User from '../../models/User';
     import Dashboard from '../../models/Dashboard';
+    import ViewTask from '../Tasks/ViewTask';
 
     export default {
         components: {
-            Datepicker,Chart, FullCalendar, Camera, moment, Dashboard
+            Datepicker,Chart, FullCalendar, Camera, moment, Dashboard, ViewTask
         },
         data() {
             return{
@@ -244,14 +249,15 @@
                 taskdeadlinepassed: [],
                 upcomingtasks:[],
                 commenttable:'',
+                isTaskCommentVisible:false,
                 headers_task_deadlin: [
-                    { text: 'Task Name ', align: 'left', sortable: false, value: 'task_desc' },
+                    { text: 'Task Name ', align: 'left', sortable: false, value: 'task_title' },
                     { text: 'Project',  value: 'project.project_name' },
                     { text: 'End Date', value: 'task_end_date' },
                     { text: 'Progress', value: 'task_completion' },
                 ],
                 headers_task_upcoming: [
-                    { text: 'Task Name ', align: 'left', sortable: false, value: 'task_desc' },
+                    { text: 'Task Name ', align: 'left', sortable: false, value: 'task_title' },
                     { text: 'Project',  value: 'project.project_name' },
                     { text: 'End Date', value: 'task_end_date' },
                     // { text: 'Priority', value: 'priority.priority_type' },
@@ -301,7 +307,12 @@
             onEventClick(e){
                 this.commenttable = e.event.extendedProps.comments;
                 this.taskdialog = true;
-            }
+            },
+            onShowComments(id, taskpoint) {
+                this.isTaskCommentVisible = !this.isTaskCommentVisible;
+                this.taskid = id;
+                this.taskpoint = taskpoint;
+            },
 
         },
         mounted() {

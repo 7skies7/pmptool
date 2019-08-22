@@ -30,7 +30,7 @@
                                                 <div class="v-input__slot">
                                                     <div class="v-text-field__slot multiselectwps">
                                                         <label aria-hidden="true" class="v-label v-label--active theme--light" style="left: 0px; right: auto; position: absolute;">Assignee</label>
-                                                        <multiselect v-model="form.task_assignee" :options="users" :searchable="true" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select Assignee" label="name" track-by="id" :preselect-first="false" >
+                                                        <multiselect v-model="form.task_assignee" :options="users" :searchable="true" :clear-on-select="true" :preserve-search="false" placeholder="Select Assignee" label="name" track-by="id" :preselect-first="false" >
                                                             <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
                                                         </multiselect>
                                                     </div>                        
@@ -47,7 +47,7 @@
                                                 <div class="v-input__slot">
                                                     <div class="v-text-field__slot multiselectwps">
                                                         <label aria-hidden="true" class="v-label v-label--active theme--light" style="left: 0px; right: auto; position: absolute;">Task Type</label>
-                                                        <multiselect v-model="form.task_type" :options="tasktypes" :searchable="true" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select Type" label="type" track-by="id" :preselect-first="false" >
+                                                        <multiselect v-model="form.task_type" :options="tasktypes" :searchable="true" :clear-on-select="true" :preserve-search="false" placeholder="Select Type" label="type" track-by="id" :preselect-first="false" >
                                                             <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
                                                         </multiselect>
                                                     </div>                        
@@ -59,7 +59,7 @@
                                 </v-flex>
                                 <v-flex xs6>
                                     <v-card color="white" >
-                                        <v-menu v-model="start_date" :close-on-content-click="false" :nudge-right="40" lazy transition="scale-transition" offset-y full-width min-width="290px">
+                                        <v-menu v-model="start_date" :close-on-content-click="true" :nudge-right="40" lazy transition="scale-transition" offset-y full-width min-width="290px">
                                             <template v-slot:activator="{ on }">
                                                 <v-text-field v-model="form.task_start_date" label="Select Start Date" prepend-icon="event" readonly v-on="on" :messages="form.errors.get('task_start_date')"></v-text-field>
                                           </template>
@@ -69,7 +69,7 @@
                                 </v-flex>
                                 <v-flex xs6>
                                     <v-card color="white">
-                                        <v-menu v-model="end_date" :close-on-content-click="false" :nudge-right="40" lazy transition="scale-transition" offset-y full-width min-width="290px">
+                                        <v-menu v-model="end_date" :close-on-content-click="true" :nudge-right="40" lazy transition="scale-transition" offset-y full-width min-width="290px">
                                             <template v-slot:activator="{ on }">
                                                 <v-text-field v-model="form.task_end_date" label="Select End Date" prepend-icon="event" readonly v-on="on" :messages="form.errors.get('task_end_date')"></v-text-field>
                                           </template>
@@ -85,7 +85,7 @@
                                                 <div class="v-input__slot">
                                                     <div class="v-text-field__slot multiselectwps">
                                                         <label aria-hidden="true" class="v-label v-label--active theme--light" style="left: 0px; right: auto; position: absolute;">Status</label>
-                                                        <multiselect v-model="form.task_status" :options="status" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select Status" label="status_name" track-by="id" :preselect-first="false" >
+                                                        <multiselect v-model="form.task_status" :options="status" :clear-on-select="true" :preserve-search="false" placeholder="Select Status" label="status_name" track-by="id" :preselect-first="false" >
                                                             <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
                                                         </multiselect>
                                                     </div>                                   
@@ -102,7 +102,7 @@
                                                 <div class="v-input__slot">
                                                     <div class="v-text-field__slot multiselectwps">
                                                         <label aria-hidden="true" class="v-label v-label--active theme--light" style="left: 0px; right: auto; position: absolute;">Priority</label>
-                                                        <multiselect v-model="form.task_priority" :options="priority" :close-on-select="false" :clear-on-select="true" :preserve-search="false" placeholder="Select Priority" label="priority_type" track-by="id" :preselect-first="false" >
+                                                        <multiselect v-model="form.task_priority" :options="priority"  :clear-on-select="true" :preserve-search="false" placeholder="Select Priority" label="priority_type" track-by="id" :preselect-first="false" >
                                                             <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
                                                         </multiselect>
                                                     </div>

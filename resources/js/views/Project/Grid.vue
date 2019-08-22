@@ -26,7 +26,7 @@
             <v-progress-linear v-show="isLoading" v-slot:progress color="blue" indeterminate></v-progress-linear>
             <template v-slot:items="props">
                 <td>
-                    <v-btn :href="'#/project/'+props.item.id+'/scope'" flat small color="primary">{{ props.item.project_name }}</v-btn>
+                    <v-btn :href="'#/project/'+props.item.id+'/scope'" flat small color="primary" style="justify-content:left">{{ props.item.project_name }}</v-btn>
                 </td>
                 <td class="text-xs-left">{{ props.item.project_desc }}</td>
                 <td class="text-xs-left" v-if="props.item.program">{{ props.item.program.program_name }}</td>
