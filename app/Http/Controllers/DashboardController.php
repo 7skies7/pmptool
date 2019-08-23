@@ -38,7 +38,7 @@ class DashboardController extends Controller
                     {
                         $usreport['userstory_name'] = $story->userstory_desc;
                         $usreport['userstory_point'] = $story->userstory_point;
-                        $usreport['userstory_priority'] = $story->priority->priority_type;
+                        $usreport['userstory_priority'] = $story->priority->priority_type ?? 3;
                         $usreport['userstory_status'] = $story->userstory_status;
                         $usreport['userstory_project'] = Project::find($story->project_id)->pluck('project_name')[0];
                         $usreport['userstory_progress'] = floor(Task::where('userstory_id', $story->id)->where('task_heirarchy', 2)->where('is_deleted', 0)->avg('task_completion'));

@@ -111,7 +111,7 @@
                                 <v-subheader inset>All Current Tasks</v-subheader>
                                 <v-data-table dense :height="400" :headers="headers_tasks" :items="tasks" class="elevation-1" dense>
                                     <template v-slot:items="props">
-                                        <td class="text-xs-left">{{ props.item.task_desc }}</td>
+                                        <td class="text-xs-left">{{ props.item.task_title }}</td>
                                         <!-- <td class="text-xs-left">{{ props.item.scope.crd_title }}</td> -->
                                         <td class="text-xs-left">{{ props.item.project.project_name }}</td>
                                         <td class="text-xs-left" v-if="props.item.assignee">{{ props.item.assignee.first_name }}</td>
@@ -229,7 +229,7 @@
             ],
 
             headers_tasks: [
-                { text: 'Task ', align: 'left', sortable: false, value: 'task_desc' },
+                { text: 'Task ', align: 'left', sortable: false, value: 'task_title' },
                 { text: 'Project',  value: 'project.project_name' },
                 { text: 'Assigned To', value: 'assignee.first_name' },
                 // { text: 'Task Status', value: 'status.status_name' },

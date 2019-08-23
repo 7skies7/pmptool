@@ -37,7 +37,11 @@ class ReportController extends Controller
      */
     public function fetchDynamicReport(Request $request)
     {
-        
+        // Authorize user requests to view all resource
+        if(Gate::allows('View_ACL') != true)
+        {
+            return abort('403');
+        }  
         //Scenario 1 : All Projects With Hours Worked Monthly
         if($request->report_type['id'] == 1)
         {
