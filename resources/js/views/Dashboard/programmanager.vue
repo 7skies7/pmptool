@@ -168,13 +168,12 @@
             ],
 
             headers_tasks: [
-                { text: 'Task ', align: 'left', sortable: false, value: 'task_desc' },
+                { text: 'Task ', align: 'left', sortable: false, value: 'task_title' },
                 { text: 'Project',  value: 'project.project_name' },
                 { text: 'Assigned To', value: 'assignee.first_name' },
                 { text: 'Task Status', value: 'status.status_name' },
                 { text: 'Task End Date', value: 'task_end_date' },
                 { text: 'Task Completion', value: 'task_completion' },
-
             ],
             userstories: [],
             userstories_pending:[],
