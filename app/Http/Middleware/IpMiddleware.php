@@ -15,12 +15,23 @@ class IpMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $allowedGateways = ['116.50', '49.38', '127.0'];
+        $flag = false;
+        $allowedGateways = ['116.50', '49.38', '173.39.121', '72.163.217'];
+        // $allowedGatewaysThree = ['173.39.121', '72.163.217'];
         $clientIPArr = explode('.', request()->ip());
-        $clientIP = $clientIPArr[0].'.'.$clientIPArr[1];
-        if (!in_array($clientIP, $allowedGateways)) {
-        // here instead of checking a single ip address we can do collection of ips
-        //address in constant file and check with in_array function
+        $clientIPTwo = $clientIPArr[0].'.'.$clientIPArr[1];
+        $clientIPThree = $clientIPArr[0].'.'.$clientIPArr[1].'.'.$clientIPArr[2];
+        if (in_array($clientIPTwo, $allowedGateways)){
+            // here instead of checking a single ip address we can do collection of ips
+            //address in constant file and check with in_array function
+            $flag = true;
+        }
+        if (in_array($clientIPThree, $allowedGateways)){
+            // here instead of checking a single ip address we can do collection of ips
+            //address in constant file and check with in_array function
+            $flag = true;
+        }
+        if ($flag == false){
             abort('403');
         }
 
