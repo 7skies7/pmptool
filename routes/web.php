@@ -168,8 +168,9 @@ Route::group(['middleware' => 'ipcheck'], function () {
 	Route::get('/project/getPrograms', 'CommonController@getPrograms');
 
 	Route::get('/database/migrate/{type}', 'CommonController@migrateData');
-	Route::get('/clientip', function(){
+});
+
+Route::get('/clientip', function(){
 		echo request()->ip();echo '<br>';
 		// echo $_SERVER["REMOTE_ADDR"];
-	});
 });
