@@ -168,4 +168,4 @@ Route::get('/project/getPrograms', 'CommonController@getPrograms');
 Route::get('/database/migrate/{type}', 'CommonController@migrateData');
 Route::get('/clientip', function(){
 	echo $_SERVER["REMOTE_ADDR"];
-})
+});
