@@ -46,8 +46,9 @@ Route::group(['middleware' => 'ipcheck'], function () {
 	Route::post('/company/update/{id}', 'CompanyController@update');
 	Route::post('/company/delete/{id}', 'CompanyController@destroy');
 	Route::get('/company/fetchAllCompanies', 'CompanyController@fetchAllCompanies');
-
-
+	Route::get('/company/fetchUserCompanies', 'CompanyController@fetchUserCompanies');
+	Route::get('/company/selectedCompany', 'CompanyController@selectedCompany');
+	Route::get('/company/changeCompany/{id}', 'CompanyController@changeCompany');
 
 	Route::get('/access/{module_name}/{access_name}', function($module_name, $access_name){
 

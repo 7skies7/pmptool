@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Program extends Model
 {
@@ -16,7 +17,16 @@ class Program extends Model
         'id','program_name', 'program_start_date', 'program_end_date', 'program_desc','created_by','created_at','modified_at','modified_by','program_manager','company_id'
     ];
 
-	public function user()
+	protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('company', function (Builder $builder) {
+            $builder->where('company_id', '=', session('company_id'));
+        });
+    }
+
+    public function user()
     {
         return $this->hasMany(User::class, 'id','program_manager')->select(['id','first_name','last_name']);
     }

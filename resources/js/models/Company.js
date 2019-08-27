@@ -30,6 +30,22 @@ class Company{
 		return axios.get('/company/fetchAllCompanies')
 			.then(({data}) => then(data));	
 	}
+
+	static getUserCompanies(then) {
+		return axios.get('/company/fetchUserCompanies')
+			.then(({data}) => then(data));	
+	}
+
+	static selectedCompany(then) {
+		return axios.get('/company/selectedCompany')
+			.then(({data}) => then(data));	
+	}
+
+	static changeCompany(then, id) {
+		return axios.get('/company/changeCompany/'+id)
+			.then(({data}) => then(data));	
+	}
+	
 }
 
 export default Company;

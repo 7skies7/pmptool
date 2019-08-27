@@ -16,7 +16,7 @@ class IpMiddleware
     public function handle($request, Closure $next)
     {
         $flag = false;
-        $allowedGateways = ['116.50', '49.38', '173.39.121', '72.163.217'];
+        $allowedGateways = ['116.50', '49.38', '127.0', '173.39.121', '72.163.217'];
         // $allowedGatewaysThree = ['173.39.121', '72.163.217'];
         $clientIPArr = explode('.', request()->ip());
         $clientIPTwo = $clientIPArr[0].'.'.$clientIPArr[1];

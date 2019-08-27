@@ -11,7 +11,7 @@ use App\ProgramManager;
 use App\UserRole;
 use App\CompanyManager;
 use App\Project;
-
+use DB;
 class ProgramController extends Controller
 {
     protected $program_role_id = 6;
@@ -39,7 +39,7 @@ class ProgramController extends Controller
             return Program::with('managers')->with('company')->whereIn('company_id', $companies)->where('is_deleted',0)->latest()->get();
         }
 
-       
+        
         $programs = ProgramManager::where('user_id', auth()->user()->id)->pluck('program_id');
         return Program::with('managers')->with('company')->whereIn('id', $programs)->where('is_deleted',0)->latest()->get();
 

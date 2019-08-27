@@ -984,5 +984,15 @@ table.v-table tbody td:first-child, table.v-table tbody td:not(:first-child), ta
 	font-size:14px!important;
 	color:#000!important;
 }
-
-
+.select_company {
+	margin-top:10px!important;
+}
+.select_company .v-select__selections input{
+	display:none!important;
+}
+.select_company .v-select__selections input,.select_company .v-select__selections .v-input__append-inner{
+	display:none!important;
+}
+.select_company .v-text-field>.v-input__control>.v-input__slot:after, .v-text-field>.v-input__control>.v-input__slot:before{
+	
+}

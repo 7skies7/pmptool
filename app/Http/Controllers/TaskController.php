@@ -97,6 +97,7 @@ class TaskController extends Controller
         $attributes['task_assignee'] = request('task_assignee')['id'];
         $attributes['task_priority'] = $attributes['task_priority']['id'];
         $attributes['project_id'] = request('project_id');
+        $attributes['company_id'] = Project::find($attributes['project_id'])->company_id;
         $attributes['parent_id'] = request('parent_id');
         $attributes['task_desc'] = request('task_desc'); 
         $parentTask = Task::find(request('parent_id'));
@@ -485,7 +486,7 @@ class TaskController extends Controller
             $userstorypoint = Userstory::where('id', $childtask->userstory_id)->pluck('userstory_point');
             if($server == 1)
             {
-                    // echo 'asdasdasd';die;
+                    // edit
                 $sumTaskPoints = Task::where('userstory_id', $childtask->userstory_id)->where('id','!=', $id)->where('task_heirarchy', 2)->sum('task_point');
             }else{
                 $sumTaskPoints = Task::where('userstory_id', $childtask->userstory_id)->where('task_heirarchy', 2)->sum('task_point');

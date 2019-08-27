@@ -34,7 +34,11 @@ class UserController extends Controller
         // If role is Super Admin / Admin, show list of all users
         if(User::isRole(1) || User::isRole(2))
         {
-            return User::with('roles')->with('companies')->where('is_deleted',0)->get();
+            // DB::enableQueryLog();
+            $users = User::with('roles')->with('companies')->where('is_deleted',0)->get();
+            
+            // dd(DB::getQueryLog());
+            // dd($user);
         }
 
         //Once authorized return all users associated to the program
@@ -43,6 +47,9 @@ class UserController extends Controller
             return User::fetchCompanyUsers();
         }
         
+        return $users->filter(function ($user) {
+            return $user->companies->id == session('company_id');
+        });
     }
 
     /**

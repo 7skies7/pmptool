@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Project extends Model
 {
@@ -18,8 +19,17 @@ class Project extends Model
      * @var array
      */
     protected $fillable = [
-        'id','project_name', 'project_start_date', 'project_end_date', 'project_desc','created_by','created_at','modified_at','modified_by','project_status','project_budget','program_id'
+        'id','project_name', 'project_start_date', 'project_end_date', 'project_desc','created_by','created_at','modified_at','modified_by','project_status','project_budget','program_id','company_id'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('company', function (Builder $builder) {
+            $builder->where('company_id', '=', session('company_id'));
+        });
+    }
 
 	public function user()
     {

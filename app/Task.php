@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Task extends Model
 {
@@ -16,6 +17,15 @@ class Task extends Model
      */
     protected $guarded = [];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('company', function (Builder $builder) {
+            $builder->where('company_id', '=', session('company_id'));
+        });
+    }
+    
     public function status()
     {
         return $this->belongsTo(Status::class, 'task_status','id')->select(['id','status_name']);

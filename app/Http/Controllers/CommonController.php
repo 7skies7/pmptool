@@ -114,7 +114,7 @@ class CommonController extends Controller
     public function migrateUser()
     {
         DB::connection('mysql')->delete('DELETE FROM users where id not in (1)');
-        
+        DB::connection('mysql')->delete('DELETE FROM companies');
         $companyArr['company_name'] = 'Cisco';
         $companyArr['company_desc'] = 'A Networking Company';
         $companyArr['created_by'] = 1;
@@ -213,8 +213,9 @@ class CommonController extends Controller
             $userArray['created_by'] = $project->created_by;
             $userArray['modified_by'] = $project->created_by;             
             $userArray['project_status'] = 1;
+            $userArray['company_id'] = 1;             
 
-            $project = Project::firstOrCreate($userArray);
+            $project = Project::withoutGlobalScope('company')->firstOrCreate($userArray);
             echo $project->id.'_'.$project->project_name.' Created';echo '<br>';
         }
     }
@@ -250,7 +251,7 @@ class CommonController extends Controller
             $usArray['userstory_status'] = 2;
             
             $userstory = Userstory::firstOrCreate($usArray);
-            echo '--'.$userstory->cr_id.'_'.$userstory->userstory_title.' Created';echo '<br>';            
+            echo '--'.$userstory->cr_id.'_'.$userstory->userstory_desc.' Created';echo '<br>';            
         }
     }
 
@@ -279,13 +280,14 @@ class CommonController extends Controller
             $taskArr['task_desc'] = $task->task_description;
             $taskArr['task_status'] = 1;
             $taskArr['parent_id'] = 0;
+            $taskArr['company_id'] = 1;             
             $taskArr['task_point'] = $task->total_est_hrs / 4;
             $taskArr['created_by'] = ($task->created_by == 0) ? 1 : $task->created_by;
             $taskArr['modified_by'] = ($task->created_by == 0) ? 1 : $task->created_by;
             // $taskArr['task_assignee'] = $task->emp_id;
 
 
-            $task1 = Task::firstOrCreate($taskArr);
+            $task1 = Task::withoutGlobalScope('company')->firstOrCreate($taskArr);
             echo 'T'.$idss.'_'.$task1->id.'_'.$task1->task_title.' Created';echo '<br>';
             // print_r($task1);
             $idss++;
@@ -310,9 +312,10 @@ class CommonController extends Controller
                 $staskArr['created_by'] = ($sbtask->created_by == 0) ? 1 : $sbtask->created_by;
                 $staskArr['modified_by'] = ($sbtask->created_by == 0) ? 1 : $sbtask->created_by;
                 $staskArr['task_assignee'] = $sbtask->emp_id;
+                $staskArr['company_id'] = 1;             
 
 
-                $stask1 = Task::firstOrCreate($staskArr);
+                $stask1 = Task::withoutGlobalScope('company')->firstOrCreate($staskArr);
                 echo '--ST'.$i.'_'.$stask1->id.'_'.$stask1->task_title.' Created';echo '<br>';
                 // echo 'asdasd';print_r($stask1);
                 $i++;

@@ -1,9 +1,25 @@
 <template>
   <v-app style="background:transparent!important" v-if="userdetails">
     <div class="text-xs-center" style="display:flex">
-        <v-chip v-if="userdetails.companies" small color="#EF4667" medium text-color="white" style="margin-top:5%">
-            {{ this.userdetails.companies[0].company_name }}
-        </v-chip>
+        <!-- <v-chip v-if="userdetails.companies" small color="#EF4667" medium text-color="white" style="margin-top:5%"> -->
+            <!-- {{ this.userdetails.companies[0].company_name }} -->
+        <!-- </v-chip> -->
+         <!-- <v-select item-text="company_name" item-value="id" v-model="defaultSelected" :items="this.userdetails.companies" class="select_company" rounded></v-select> -->
+         <v-menu v-if="userdetails" v-model="menu1" :close-on-content-click="true" :nudge-width="100" offset-x open-on-hover>
+            <template v-slot:activator="{ on }">
+                <v-btn small depressed color="rgb(239, 70, 103)" dark v-on="on" v-if="userdetails" class="select_company">
+                    {{ defaultSelected }}
+                </v-btn>
+            </template>
+  
+            <v-card>
+                <v-list>
+                    <v-list-tile v-for="item in this.userdetails.companies" :key="item.id">
+                        <v-list-tile-title style="cursor:pointer" @click="onChangeCompany(item.id)">{{ item.company_name }}</v-list-tile-title>
+                    </v-list-tile>
+                </v-list>  
+            </v-card>
+        </v-menu>
         <v-menu v-if="userdetails" v-model="menu" :close-on-content-click="true" :nudge-width="100" offset-x open-on-hover>
             <template v-slot:activator="{ on }">
                 <v-btn color="indigo" dark v-on="on" v-if="userdetails">
@@ -94,8 +110,10 @@
 
 <script>
     import Acl from '../models/Acl';
+    import Company from '../models/Company';
+    
     export default {
-        
+        components: {Acl, Company},
         data() {
             return {
                 form: new Form({
@@ -105,17 +123,20 @@
                 }),
                 fav: true,
                 menu: false,
+                menu1: false,
                 message: false,
                 hints: true,
                 userdetails:[],
                 passwordchange:false,
                 isLoading:false,
                 isCloseVisible:false,
-
+                companies:[],
+                defaultSelected:'Loading...',
             }
         },
         created() {
             Acl.getUserDetails(userdetails => this.userdetails = userdetails);
+            // Company.getUserCompanies(companies => this.companies = companies);
             // console.log(this.userdetails);
         },
         methods: {
@@ -131,16 +152,23 @@
             onChangePassword() {
                 this.passwordchange = true;
                 this.isCloseVisible = true;
+            },
+            onChangeCompany(id) {
+                Company.changeCompany((company) => {
+                    location.reload();
+                }, id);
             }
         },
         computed: {
             userName: function() {
                 return this.userdetails.first_name + ' ' + this.userdetails.last_name
-            }
+            },
+
         },
         watch: {
             userdetails() {
                 this.passwordchange = !this.userdetails.password_changed;
+                Company.selectedCompany(company => this.defaultSelected = company[0].company_name);
             }
         }
     }

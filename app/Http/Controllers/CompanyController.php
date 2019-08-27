@@ -210,4 +210,21 @@ class CompanyController extends Controller
             
         }
     }
+
+    public function fetchUserCompanies()
+    {
+        $companies = Company::withoutGlobalScope('company')->whereIn('id', UserCompany::where('user_id', auth()->user()->id)->pluck('company_id'))->where('is_deleted', 0)->select('id','company_name')->get();
+        return $companies;
+    }
+
+    public function selectedCompany()
+    {
+        return Company::withoutGlobalScope('company')->where('id',session('company_id'))->select('company_name')->get();
+    }
+
+    public function changeCompany($id)
+    {
+        session(['company_id' => $id]);
+        return 1;
+    }
 }

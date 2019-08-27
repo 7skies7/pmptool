@@ -95,6 +95,7 @@ class ProjectController extends Controller
         $attributes['modified_by'] = auth()->user()->id;
         $attributes['project_status'] = $attributes['project_status']['id'];
         $attributes['program_id'] = $attributes['program']['id'];
+        $attributes['company_id'] = Program::find($attributes['program']['id'])->company_id;
         $attributes['project_budget'] = 0;
         
         // $managers = request('project_manager');
@@ -208,6 +209,7 @@ class ProjectController extends Controller
 
         $attributes['project_status'] = $attributes['project_status']['id'];
         $attributes['program_id'] = $attributes['program']['id'];
+        $attributes['company_id'] = Program::find($attributes['program']['id'])->company_id;
         $attributes['project_budget'] = 0;
 
         

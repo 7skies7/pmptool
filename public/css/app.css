@@ -11879,3 +11879,16 @@ table.v-table thead th:not(:first-child) {
   color: #000 !important;
 }
 
+.select_company {
+  margin-top: 10px !important;
+}
+
+.select_company .v-select__selections input {
+  display: none !important;
+}
+
+.select_company .v-select__selections input,
+.select_company .v-select__selections .v-input__append-inner {
+  display: none !important;
+}
+

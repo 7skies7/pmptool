@@ -7,6 +7,7 @@ use App\TaskHierarchy;
 use App\TaskType;
 use App\Priority;
 use App\Userstory;
+use App\Project;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
@@ -65,6 +66,7 @@ class TasksImport implements ToModel, WithValidation, WithHeadingRow
             'task_point'  => $row['task_point'],
             'parent_id' => $this->parent_id,
             'project_id' => request('project'),
+            'company_id' => Project::find(request('project'))->company_id,
             'cr_id' => request('scope'),
             'userstory_id' => request('userstory'),
             'created_by' => auth()->user()->id,

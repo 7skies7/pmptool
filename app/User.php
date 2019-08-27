@@ -94,7 +94,7 @@ class User extends Authenticatable
 
     public function timesheet()
     {
-        return DB::select("select TIME_FORMAT(SEC_TO_TIME(SUM(TIME_TO_SEC(task_hours))), '%H:%i') as hours, date_format(tc.created_at, '%Y-%m-%d') as day, group_concat(concat(tk.task_title,'!%',task_comment,'!%',TIME_FORMAT(task_hours, '%H:%i')) SEPARATOR '!;') as task_details from task_comments tc inner join tasks tk on tk.id = tc.task_id where tc.created_by = ".auth()->user()->id." group by date_format(tc.created_at, '%Y-%m-%d')
+        return DB::select("select TIME_FORMAT(SEC_TO_TIME(SUM(TIME_TO_SEC(task_hours))), '%H:%i') as hours, date_format(tc.created_at, '%Y-%m-%d') as day, group_concat(concat(tk.task_title,'!%',task_comment,'!%',TIME_FORMAT(task_hours, '%H:%i')) SEPARATOR '!;') as task_details from task_comments tc inner join tasks tk on tk.id = tc.task_id where tc.created_by = ".auth()->user()->id." and tk.company_id = ".session('company_id')." group by date_format(tc.created_at, '%Y-%m-%d')
             ");
     }
 
@@ -105,7 +105,7 @@ class User extends Authenticatable
 
     public static function fetchCompanyUsers()
     {
-        $companies = UserCompany::where('user_id', auth()->user()->id)->pluck('company_id');
+        $companies = UserCompany::where('user_id', auth()->user()->id)->where('company_id', session('company_id'))->pluck('company_id');
         $userid = UserCompany::whereIn('company_id', $companies)->pluck('user_id');
         return User::with('roles')->with('companies')->whereIn('id', $userid)->where('is_deleted',0)->get();
 
