@@ -29,7 +29,7 @@
                               </v-timeline-item>
                             </v-slide-x-transition> 
                         </v-timeline>
-                        <v-timeline dense clipped v-if="isAddCommentForm && this.form.task_completion != 100">
+                        <v-timeline dense clipped v-if="isAddCommentForm">
                             <form @submit.prevent="onSubmit" @keydown="form.errors.clear()">
                             <v-timeline-item fill-dot class="white--text mb-0" color="info" large>
                                 <template v-slot:icon> <span><v-icon medium dark>comment</v-icon></span> </template>
@@ -125,6 +125,11 @@
                     this.isAddCommentForm = true;
                     this.isLoading = false;
             }, this.taskid);
+
+        },
+        mounted() {
+
+            
         },
         methods: {
             onSubmit() {
@@ -171,6 +176,10 @@
                 if(this.events.length > 0)
                 {
                     this.form.task_completion = this.events[this.events.length - 1].task_completion;
+                    if(this.form.task_completion == 100)
+                    {
+                        this.isAddCommentForm = false;
+                    }
                 }
                 
             },
