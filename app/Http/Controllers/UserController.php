@@ -391,7 +391,7 @@ class UserController extends Controller
         foreach ($records as $timecard) {
             $recordArr['date'] = $timecard->log_in_date;
             $recordArr['title'] = ($timecard->total_time != null and $timecard->total_time > '00:00') ? $timecard->total_time : '00:00';
-            if($timecard->log_out_time == '00:00')
+            if($recordArr['title'] == '838:59')
             {
                 $recordArr['title'] = '00:00';
             } 
