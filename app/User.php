@@ -100,7 +100,7 @@ class User extends Authenticatable
 
     public function timecard()
     {
-        return DB::select("select log_in_date, DATE_FORMAT(log_in_time, '%H:%i') as log_in_time, DATE_FORMAT(log_out_time, '%H:%i') as log_out_time, TIME_FORMAT(TIMEDIFF(log_out_time, log_in_time), '%H:%i') as total_time from timecard where user_id = ".auth()->user()->id." group by log_in_date;");
+        return DB::select("select log_in_date, TIME_FORMAT(log_in_time, '%H:%i') as log_in_time, TIME_FORMAT(log_out_time, '%H:%i') as log_out_time, TIME_FORMAT(TIMEDIFF(log_out_time, log_in_time), '%H:%i') as total_time from timecard where user_id = ".auth()->user()->id." group by log_in_date;");
     }
 
     public static function fetchCompanyUsers()
