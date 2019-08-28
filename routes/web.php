@@ -175,3 +175,8 @@ Route::get('/clientip', function(){
 		echo request()->ip();echo '<br>';
 		// echo $_SERVER["REMOTE_ADDR"];
 });
+
+Route::get('/mailable', function () {
+    $data['title'] = 'asdasasd';
+    return new App\Mail\SendTimecard($data);
+});

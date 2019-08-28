@@ -14,6 +14,8 @@ use App\Timecard;
 use App\TaskComment;
 use DB;
 use Hash;
+use Mail;
+use App\Mail\SendTimecard;
 
 class UserController extends Controller
 {
@@ -252,6 +254,9 @@ class UserController extends Controller
             $attributes['log_in_image'] = $filename;
             
             $timecard = Timecard::create($attributes);
+            if($timecard) {
+                $this->sendLoginLogoutMail();
+            }
             
         }elseif($logtype == 2 && $filename != ''){
 
@@ -329,7 +334,8 @@ class UserController extends Controller
     {
         $currentMonth = date('m');
         $user = User::with('roles')->find(auth()->user()->id);
-        $user->hours_clocked = Timecard::where('user_id', auth()->user()->id)->where('log_in_time', '!=','')->where('log_out_time', '!=','')->selectRaw('time_format(sec_to_time(sum(time_to_sec(timediff(log_out_time, log_in_time)))), "%H:%i") as hours')->whereRaw('MONTH(log_in_date) = ?',[$currentMonth])->get();
+        $hours_clocked = Timecard::where('user_id', auth()->user()->id)->where('log_in_time', '!=','')->where('log_out_time', '!=','')->selectRaw('time_format(sec_to_time(sum(time_to_sec(timediff(log_out_time, log_in_time)))), "%H:%i") as hours')->whereRaw('MONTH(log_in_date) = ?',[$currentMonth])->get();
+        $user->hours_clocked = $hours_clocked[0]->hours;
         // dd($user);
         return $user;
     }
@@ -343,7 +349,7 @@ class UserController extends Controller
     public function fetchUserTimesheet()
     {
         $comments = (new User)->timesheet();
-        // dd($comments);
+        
         $finalArr = [];
         if(!empty($comments))
         {
@@ -385,6 +391,10 @@ class UserController extends Controller
         foreach ($records as $timecard) {
             $recordArr['date'] = $timecard->log_in_date;
             $recordArr['title'] = ($timecard->total_time != null and $timecard->total_time > '00:00') ? $timecard->total_time : '00:00';
+            if($timecard->log_out_time == '00:00:00')
+            {
+                $recordArr['title'] = '00:00';
+            }
             $tableContent = '<table class="table table-bordered"><thead><th>Date</th><th>Log In</th><th>Log Out</th><th>Total</th><tbody>';
             $tableContent .= '<tr><td>'.$timecard->log_in_date.'</td><td>'.$timecard->log_in_time.'</td><td>'.$timecard->log_out_time.'</td><td>'.$recordArr['title'].'</td></tr>';
             $recordArr['comments'] = $tableContent;
@@ -412,5 +422,22 @@ class UserController extends Controller
         $attributes['modified_by'] = auth()->user()->id;
         $user = User::where('id', auth()->user()->id)->update($updateArr);
         return $user;
+    }
+
+    public function sendLoginLogoutMail()
+    {
+        $data['title'] = "This is Test Mail Tuts Make";
+        $emails = [auth()->user()->email, auth()->user()->alternate_email];
+        // Mail::send('emails.email', $data, function($message) use ($emails) {
+        //     $message->to($emails, auth()->user()->first_name.' '.auth()->user()->last_name)
+        //             ->subject('CiscoPMS| Log In Time ');
+        // });
+        Mail::to($emails)->send(new SendTimecard($data));
+ 
+        // if (Mail::failures()) {
+        //    return response()->Fail('Sorry! Please try again latter');
+        //  }else{
+        //    return response()->success('Great! Successfully send in your mail');
+        //  }
     }
 }

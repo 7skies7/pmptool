@@ -37,8 +37,8 @@
                             <v-list two-line>
                                 <!-- <v-divider inset></v-divider> -->
                                 <v-list-tile @click="">
-                                    <v-list-tile-action v-if="this.user.hours_clocked[0].hours != null">
-                                        {{ this.user.hours_clocked[0].hours }}
+                                    <v-list-tile-action v-if="this.user.hours_clocked != null">
+                                        {{ this.user.hours_clocked }}
                                     </v-list-tile-action>
                                     <v-list-tile-action v-else>
                                         00:00

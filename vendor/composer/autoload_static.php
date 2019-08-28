@@ -555,6 +555,7 @@ class ComposerStaticInit261946309ea1b99d3a816fd5bb03dcd5
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Imports\\TasksImport' => __DIR__ . '/../..' . '/app/Imports/TasksImport.php',
         'App\\Listeners\\UserEventSubscriber' => __DIR__ . '/../..' . '/app/Listeners/UserEventSubscriber.php',
+        'App\\Mail\\SendTimecard' => __DIR__ . '/../..' . '/app/Mail/SendTimecard.php',
         'App\\Module' => __DIR__ . '/../..' . '/app/Module.php',
         'App\\Policies\\CompanyPolicy' => __DIR__ . '/../..' . '/app/Policies/CompanyPolicy.php',
         'App\\Priority' => __DIR__ . '/../..' . '/app/Priority.php',

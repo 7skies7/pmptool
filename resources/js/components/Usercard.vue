@@ -1,11 +1,8 @@
 <template>
   <v-app style="background:transparent!important" v-if="userdetails">
     <div class="text-xs-center" style="display:flex">
-        <!-- <v-chip v-if="userdetails.companies" small color="#EF4667" medium text-color="white" style="margin-top:5%"> -->
-            <!-- {{ this.userdetails.companies[0].company_name }} -->
-        <!-- </v-chip> -->
-         <!-- <v-select item-text="company_name" item-value="id" v-model="defaultSelected" :items="this.userdetails.companies" class="select_company" rounded></v-select> -->
-         <v-menu v-if="userdetails" v-model="menu1" :close-on-content-click="true" :nudge-width="100" bottom="true" offset-y="true" open-on-hover>
+
+         <v-menu v-if="userdetails" v-model="menu1" :close-on-content-click="true" :nudge-width="100" :bottom="true" :offset-y="true" open-on-hover>
             <template v-slot:activator="{ on }">
                 <v-btn small depressed color="rgb(239, 70, 103)" dark v-on="on" v-if="userdetails" class="select_company">
                     {{ defaultSelected }}
@@ -20,7 +17,7 @@
                 </v-list>  
             </v-card>
         </v-menu>
-        <v-menu v-if="userdetails" v-model="menu" :close-on-content-click="true" :nudge-width="100" bottom="true" offset-y="true" open-on-hover>
+        <v-menu v-if="userdetails" v-model="menu" :close-on-content-click="true" :nudge-width="100" :bottom="true" :offset-y="true" open-on-hover>
             <template v-slot:activator="{ on }">
                 <v-btn color="indigo" dark v-on="on" v-if="userdetails">
                     {{ userName }}
@@ -132,6 +129,7 @@
                 isCloseVisible:false,
                 companies:[],
                 defaultSelected:'Loading...',
+                defaultTrue:true,
             }
         },
         created() {

@@ -48,6 +48,7 @@ return array(
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
     'App\\Imports\\TasksImport' => $baseDir . '/app/Imports/TasksImport.php',
     'App\\Listeners\\UserEventSubscriber' => $baseDir . '/app/Listeners/UserEventSubscriber.php',
+    'App\\Mail\\SendTimecard' => $baseDir . '/app/Mail/SendTimecard.php',
     'App\\Module' => $baseDir . '/app/Module.php',
     'App\\Policies\\CompanyPolicy' => $baseDir . '/app/Policies/CompanyPolicy.php',
     'App\\Priority' => $baseDir . '/app/Priority.php',

@@ -352,10 +352,10 @@ class CommonController extends Controller
         {
             $timearry['user_id'] = $timecard->user_id;
             $timearry['log_in_date'] = $timecard->todaydate;
-            $timearry['log_in_time'] = date("Y-m-d H:i:s", strtotime("{$timecard->todaydate} {$timecard->in_time}"));
+            $timearry['log_in_time'] = $timecard->in_time;
             // echo $timearry['log_in_time'];die;
             $timearry['log_in_image'] = $timecard->in_image_url;
-            $timearry['log_out_time'] = date("Y-m-d H:i:s", strtotime("{$timecard->todaydate} {$timecard->out_time}"));;
+            $timearry['log_out_time'] = $timecard->out_time;
             $timearry['log_out_image'] = $timecard->out_image_url;
             $timearry['created_by'] = $timecard->user_id;
             $timearry['modified_by'] = $timecard->user_id;
