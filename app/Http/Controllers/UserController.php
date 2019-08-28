@@ -394,7 +394,7 @@ class UserController extends Controller
             if($timecard->log_out_time == '00:00:00')
             {
                 $recordArr['title'] = '00:00';
-            }
+            } 
             $tableContent = '<table class="table table-bordered"><thead><th>Date</th><th>Log In</th><th>Log Out</th><th>Total</th><tbody>';
             $tableContent .= '<tr><td>'.$timecard->log_in_date.'</td><td>'.$timecard->log_in_time.'</td><td>'.$timecard->log_out_time.'</td><td>'.$recordArr['title'].'</td></tr>';
             $recordArr['comments'] = $tableContent;
