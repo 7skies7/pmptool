@@ -33,7 +33,7 @@
         "@material/drawer": "^3.0.0",
         "adminbsb-materialdesign": "^1.0.7",
         "bootstrap-vue": "^2.0.0-rc.21",
-        "highcharts": "^7.1.2",
+        "highcharts": "^9.0.0",
         "highcharts-vue": "^1.3.5",
         "moment": "^2.24.0",
         "nprogress": "^0.2.0",
